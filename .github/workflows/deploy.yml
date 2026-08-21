@@ -1,0 +1,57 @@
+name: LifeStep Web CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 检出代码
+        uses: actions/checkout@v4
+
+      - name: ☕️ 设置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.14.1'
+          cache: 'yarn'
+
+      - name: 📦 安装依赖并构建项目
+        run: yarn install --frozen-lockfile && yarn build:prod
+
+      - name: 🐳 安装 Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
+          echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+      - name: 📦 构建 Docker 镜像
+        run: docker build -t lifestep-web:latest -f Dockerfile .
+
+      - name: 📤 传输镜像并重启 Docker
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_SERVER_IP: ${{ secrets.SSH_SERVER_IP }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${SSH_SERVER_IP} >> ~/.ssh/known_hosts
+
+          docker save lifestep-web:latest -o lifestep-web.tar
+          scp -i private_key lifestep-web.tar ${SSH_USERNAME}@${SSH_SERVER_IP}:/www/wwwroot/lifestep
+
+          ssh -i private_key ${SSH_USERNAME}@${SSH_SERVER_IP} << EOF
+            cd /www/wwwroot/lifestep
+            docker stop lifestep-web || true
+            docker rm lifestep-web || true
+            docker load -i lifestep-web.tar
+            docker run -d --name lifestep-web --restart unless-stopped --network baota_net -p 8084:8084 -v /www/wwwroot/lifestep/logs:/app/logs lifestep-web:latest
+            docker image prune -f
+          EOF

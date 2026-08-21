@@ -1,0 +1,28 @@
+# dependencies
+/node_modules/
+
+# Next.js output
+/.next/
+/out/
+
+# production artifacts
+*.tar
+*.log
+private_key
+
+# local environment files (keep the documented example)
+.env
+.env.*
+!.env.example
+
+# editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+
+# local Codex/Sites metadata
+.openai/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
