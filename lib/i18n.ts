@@ -42,6 +42,31 @@ export function normalizeLocale(value: string | null | undefined): Locale | null
   return value && isLocale(value) ? value : null;
 }
 
+export function getLocaleFromPathname(pathname: string): Locale {
+  const segments = pathname.split("/").filter(Boolean);
+  return normalizeLocale(segments[0]) ?? (segments[0] === "app" ? normalizeLocale(segments[1]) : null) ?? defaultLocale;
+}
+
+export function hasLocalePrefix(pathname: string) {
+  const segments = pathname.split("/").filter(Boolean);
+  return Boolean(normalizeLocale(segments[0]) || (segments[0] === "app" && normalizeLocale(segments[1])));
+}
+
+export function stripLocaleFromPathname(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  const localeIndex = normalizeLocale(segments[0]) ? 0 : segments[0] === "app" && normalizeLocale(segments[1]) ? 1 : -1;
+  if (localeIndex >= 0) {
+    const path = `/${segments.slice(localeIndex + 1).join("/")}`;
+    return path === "/" ? "/" : path.replace(/\/$/, "");
+  }
+  return pathname === "" ? "/" : pathname;
+}
+
+export function localizePath(path: string, locale: Locale) {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return normalizedPath === "/" ? `/app/${locale}` : `/app/${locale}${normalizedPath}`;
+}
+
 export function homePath(path: string, locale: Locale) {
   const normalized = path.startsWith("/") ? path : `/${path}`;
   if (locale === defaultLocale && normalized === "/") return "/";

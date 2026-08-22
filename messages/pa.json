@@ -181,6 +181,10 @@
     "voice": {
       "title": "ਆਵਾਜ਼",
       "voice": { "title": "ਆਵਾਜ਼" },
+      "self": { "title": "ਤੁਹਾਡੀ ਆਵਾਜ਼", "subtitle": "ਸੱਜੇ ਪਾਸੇ ਦੀਆਂ ਲਾਈਨਾਂ ਚਲਾਉਂਦੀ ਹੈ" },
+      "partner": { "title": "ਗੱਲਬਾਤ ਸਾਥੀ", "subtitle": "ਖੱਬੇ ਪਾਸੇ ਦੀਆਂ ਲਾਈਨਾਂ ਚਲਾਉਂਦਾ ਹੈ" },
+      "female": "ਔਰਤ",
+      "male": "ਮਰਦ",
       "rate": { "title": "ਗਤੀ" },
       "pitch": { "title": "ਪਿਚ" },
       "volume": { "title": "ਵਾਲਿਊਮ" }
@@ -188,7 +192,7 @@
   },
   "webPushPage": {
     "latestMessagesOnly": "ਸਿਰਫ਼ ਨਵੀਨਤਮ ਸੁਨੇਹੇ ਦਿਖਾਏ ਜਾਂਦੇ ਹਨ",
-    "title": "Notification Center",
+    "title": "ਸੂਚਨਾਵਾਂ",
     "empty": "You haven't received any messages yet",
     "delete": "Delete message",
     "clearAll": "Clear messages",

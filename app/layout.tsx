@@ -36,15 +36,20 @@ const INITIAL_PREFERENCES_SCRIPT = `
     const appPath = path === "/app" || path.startsWith("/app/");
     root.classList.toggle("app-standalone", standalone);
     root.classList.toggle("app-shell-active", appPath);
+    const mobileStandalone = window.matchMedia?.("(max-width: 767px)").matches && standalone;
+    if (mobileStandalone && Number.isFinite(window.innerHeight) && window.innerHeight > 0) {
+      root.style.setProperty("--app-viewport-height", window.innerHeight + "px");
+    }
     const mobileWeb = window.matchMedia?.("(max-width: 767px)").matches && !standalone;
     if (mobileWeb) root.style.backgroundColor = activeThemeColor;
     let splashShown = false;
     try { splashShown = sessionStorage.getItem(${JSON.stringify(APP_SPLASH_SESSION_KEY)}) === "1"; } catch {}
-    const showSplash = standalone && appPath && !splashShown;
+    const showSplash = mobileStandalone && appPath && !splashShown;
     root.dataset.showAppSplash = showSplash ? "true" : "false";
     if (showSplash) {
       try { sessionStorage.setItem(${JSON.stringify(APP_SPLASH_SESSION_KEY)}, "1"); } catch {}
     }
+    root.dataset.appSplashStartedAt = String(Date.now());
   })();
 `;
 

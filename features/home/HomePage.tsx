@@ -5,7 +5,7 @@ import {
   Languages, Mail, Map, MapPin, MessageCircle, Sparkles, Volume2,
 } from "lucide-react";
 
-import { dictionaries, homePath, type Dictionary, type Locale } from "@/lib/i18n";
+import { dictionaries, homePath, localizePath, type Dictionary, type Locale } from "@/lib/i18n";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { lifeStepHomePreview, type LifeStepHomePreview } from "@/messages/lifestep";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
   const copy = dictionary.homePage;
   const preview = lifeStepHomePreview[locale];
   const canonicalPath = homePath("/", locale);
-  const appHref = "/app";
+  const appHref = localizePath("/", locale);
   const tagline = copy.title.match(/^(.*?)\s+[-—]\s+(.*)$/)?.[2] ?? copy.footer;
   const websiteJsonLd = { "@context": "https://schema.org", "@type": "WebSite", name: SITE_NAME, alternateName: LIFE_STEP_SLOGAN, description: copy.intro, url: `${SITE_URL}${canonicalPath === "/" ? "" : canonicalPath}`, inLanguage: locale };
   const appJsonLd = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: SITE_NAME, applicationCategory: "EducationalApplication", operatingSystem: "Web Browser", description: copy.intro, url: `${SITE_URL}${appHref}` };
@@ -84,7 +84,7 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
       <footer className={`${container} flex min-h-28 flex-col items-center justify-center gap-5 border-t border-border py-7 text-center text-muted-foreground sm:flex-row sm:justify-between sm:text-left`}>
         <div className="inline-flex items-center gap-2.5"><span className="grid size-10 place-items-center overflow-hidden rounded-[var(--radius-lg)] bg-[#d3001c]"><Image src="/logo.svg" alt="" width={40} height={40} /></span><div className="grid gap-0.5 text-left"><strong className="text-sm text-[#d3001c] dark:text-white">LifeStep</strong><span className="text-[0.65rem]">{tagline}</span></div></div>
         <div className="grid justify-items-center gap-2 text-xs sm:justify-items-end">
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-bold sm:justify-end"><Link className="hover:text-primary" href="/app/about?panel=app">{dictionary.profile.menu.aboutApp}</Link><Link className="hover:text-primary" href="/app/about?panel=privacy">{copy.privacyNav}</Link><Link className="hover:text-primary" href="/app/about?panel=terms">{copy.termsNav}</Link><Link className="hover:text-primary" href="/app/about?panel=feedback">{dictionary.profile.menu.feedback}</Link></div>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-bold sm:justify-end"><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=app`}>{dictionary.profile.menu.aboutApp}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=privacy`}>{copy.privacyNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=terms`}>{copy.termsNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=feedback`}>{dictionary.profile.menu.feedback}</Link></div>
           <div className="flex items-center gap-1.5 text-[0.65rem]"><a className="home-social-link" href="https://x.com/EffortGo2024" target="_blank" rel="noreferrer" aria-label="X"><XMark className="size-4" /></a><a className="home-social-link" href="https://www.xiaohongshu.com/user/profile/5fa36065000000000101ffa5" target="_blank" rel="noreferrer" aria-label="小红书"><RedbookMark className="size-4" /></a><a className="home-social-link" href="mailto:lifestep@effortgo.xyz" aria-label="Email"><Mail className="size-4" aria-hidden="true" /></a><span className="ml-1 inline-flex items-center">© 2026 EffortGo <Dot className="size-4" aria-hidden="true" /> {process.env.APP_VERSION}</span></div>
         </div>
       </footer>

@@ -181,6 +181,10 @@
     "voice": {
       "title": "音声設定",
       "voice": { "title": "音声" },
+      "self": { "title": "あなたの声", "subtitle": "右側のセリフを再生します" },
+      "partner": { "title": "会話相手", "subtitle": "左側のセリフを再生します" },
+      "female": "女性",
+      "male": "男性",
       "rate": { "title": "速度" },
       "pitch": { "title": "ピッチ" },
       "volume": { "title": "音量" }
@@ -188,7 +192,7 @@
   },
   "webPushPage": {
     "latestMessagesOnly": "最新のメッセージのみ表示しています",
-    "title": "通知センター",
+    "title": "通知",
     "empty": "まだメッセージを受信していません",
     "delete": "メッセージを削除",
     "clearAll": "メッセージを削除",

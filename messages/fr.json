@@ -181,6 +181,10 @@
     "voice": {
       "title": "Voix",
       "voice": { "title": "Voix" },
+      "self": { "title": "Votre voix", "subtitle": "Lit les répliques à droite" },
+      "partner": { "title": "Partenaire de conversation", "subtitle": "Lit les répliques à gauche" },
+      "female": "Féminine",
+      "male": "Masculine",
       "rate": { "title": "Vitesse" },
       "pitch": { "title": "Hauteur" },
       "volume": { "title": "Volume" }
@@ -188,7 +192,7 @@
   },
   "webPushPage": {
     "latestMessagesOnly": "Seuls les messages les plus récents sont affichés",
-    "title": "Centre de notifications",
+    "title": "Notifications",
     "empty": "Vous n’avez encore reçu aucun message",
     "delete": "Supprimer le message",
     "clearAll": "Effacer les messages",

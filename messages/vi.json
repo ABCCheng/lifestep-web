@@ -181,6 +181,10 @@
     "voice": {
       "title": "Cài đặt giọng nói",
       "voice": { "title": "Giọng nói" },
+      "self": { "title": "Giọng của bạn", "subtitle": "Phát các câu thoại bên phải" },
+      "partner": { "title": "Người đối thoại", "subtitle": "Phát các câu thoại bên trái" },
+      "female": "Nữ",
+      "male": "Nam",
       "rate": { "title": "Tốc độ" },
       "pitch": { "title": "Cao độ" },
       "volume": { "title": "Âm lượng" }
@@ -188,7 +192,7 @@
   },
   "webPushPage": {
     "latestMessagesOnly": "Chỉ hiển thị tin nhắn mới nhất",
-    "title": "Trung tâm thông báo",
+    "title": "Thông báo",
     "empty": "Bạn chưa nhận được tin nhắn nào",
     "delete": "Xóa tin nhắn",
     "clearAll": "Xóa tin nhắn",

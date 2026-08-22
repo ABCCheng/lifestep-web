@@ -8,8 +8,8 @@ import { savePreferredLocale } from "@/lib/stores/locale";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
 import { cn } from "@/lib/utils";
 
-const menuSurface = "absolute right-0 top-[calc(100%+0.5rem)] z-80 grid w-48 gap-0.5 overflow-hidden rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-[0_18px_46px_rgba(28,28,30,0.16)] backdrop-blur-xl";
-const menuItem = "flex items-center justify-between gap-2.5 rounded-xl px-3.5 py-3 text-sm font-medium text-muted-foreground no-underline transition-colors hover:bg-primary/10 hover:text-foreground [&_svg]:size-4 [&_svg]:text-primary";
+const menuSurface = "home-themed-menu absolute right-0 top-[calc(100%+0.5rem)] z-80 grid w-48 gap-0.5 overflow-hidden rounded-2xl border p-1.5 text-popover-foreground backdrop-blur-xl";
+const menuItem = "home-themed-menu-item flex items-center justify-between gap-2.5 rounded-xl px-3.5 py-3 text-sm font-medium text-muted-foreground no-underline transition-colors hover:text-foreground [&_svg]:size-4 [&_svg]:text-primary";
 
 export function HomeLanguageMenu({ locale }: { locale: Locale }) {
   const ref = useRef<HTMLDivElement | null>(null);

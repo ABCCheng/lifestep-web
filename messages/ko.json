@@ -181,6 +181,10 @@
     "voice": {
       "title": "음성 설정",
       "voice": { "title": "음성" },
+      "self": { "title": "내 음성", "subtitle": "오른쪽 대사를 재생합니다" },
+      "partner": { "title": "대화 상대", "subtitle": "왼쪽 대사를 재생합니다" },
+      "female": "여성",
+      "male": "남성",
       "rate": { "title": "속도" },
       "pitch": { "title": "음높이" },
       "volume": { "title": "볼륨" }
@@ -188,7 +192,7 @@
   },
   "webPushPage": {
     "latestMessagesOnly": "최신 메시지만 표시합니다",
-    "title": "알림 센터",
+    "title": "알림",
     "empty": "아직 받은 메시지가 없습니다",
     "delete": "메시지 삭제",
     "clearAll": "메시지 삭제",

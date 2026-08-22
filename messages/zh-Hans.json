@@ -181,6 +181,10 @@
     "voice": {
       "title": "语音设置",
       "voice": { "title": "声音" },
+      "self": { "title": "你的语音", "subtitle": "播放右侧的己方台词" },
+      "partner": { "title": "对话方语音", "subtitle": "播放左侧的对话方台词" },
+      "female": "女声",
+      "male": "男声",
       "rate": { "title": "语速" },
       "pitch": { "title": "音高" },
       "volume": { "title": "音量" }

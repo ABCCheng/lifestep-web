@@ -19,3 +19,17 @@ export function rememberAppNavigationPath(path: string) {
   if (stack.at(-1) === path) return;
   writeSessionStorage(NAVIGATION_STACK_KEY, JSON.stringify([...stack, path].slice(-50)));
 }
+
+export function getPreviousAppNavigationPath() {
+  return readStack().at(-2) ?? null;
+}
+
+export function replaceCurrentAppNavigationPath(path: string) {
+  const stack = readStack();
+  if (!stack.length) {
+    writeSessionStorage(NAVIGATION_STACK_KEY, JSON.stringify([path]));
+    return;
+  }
+  stack[stack.length - 1] = path;
+  writeSessionStorage(NAVIGATION_STACK_KEY, JSON.stringify(stack));
+}

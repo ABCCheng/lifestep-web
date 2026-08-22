@@ -3,5 +3,5 @@ export const appZIndex = {
   navigation: "z-30",
   modal: "z-100",
   toast: "z-150",
-  splash: "z-200",
+  splash: "z-300",
 } as const;

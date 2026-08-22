@@ -1,5 +1,6 @@
-import { WebPushPage } from "@/features/web-push/WebPushPage";
+import { Suspense } from "react";
+import { LegacyAppRouteRedirect } from "@/components/app/LegacyAppRouteRedirect";
 
-export default function MessagesPage() {
-  return <WebPushPage />;
+export default function LegacyMessagesPage() {
+  return <Suspense fallback={null}><LegacyAppRouteRedirect path="/messages" /></Suspense>;
 }

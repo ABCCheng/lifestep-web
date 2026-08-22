@@ -1,22 +1,50 @@
-const SPLASH_ID = "app-splash";
-const REQUIRED_PARTS = ["viewport", "content"] as const;
-const readyParts = new Set<(typeof REQUIRED_PARTS)[number]>();
+const splashElementId = "app-splash";
+const splashStartedAtDataKey = "appSplashStartedAt";
+const splashMinimumMs = 2500;
+const splashFadeMs = 260;
+let splashDismissTimer = 0;
 
-export function markAppSplashReady(part: (typeof REQUIRED_PARTS)[number]) {
+type AppSplashReadyPart = "viewport" | "content";
+
+const requiredSplashReadyParts: AppSplashReadyPart[] = ["viewport", "content"];
+const splashReadyParts = new Set<AppSplashReadyPart>();
+
+export function markAppSplashReady(part: AppSplashReadyPart) {
   if (typeof document === "undefined") return;
-  readyParts.add(part);
-  if (REQUIRED_PARTS.every((item) => readyParts.has(item))) dismissAppSplash();
+
+  splashReadyParts.add(part);
+  if (requiredSplashReadyParts.every((requiredPart) => splashReadyParts.has(requiredPart))) {
+    document.documentElement.dataset.appSplashReady = "true";
+    dismissAppSplash();
+  }
 }
 
 export function dismissAppSplash() {
   if (typeof document === "undefined") return;
+
+  const splash = document.getElementById(splashElementId);
+  if (!splash || splash.dataset.exiting === "true" || splashDismissTimer) return;
+
   const root = document.documentElement;
-  const splash = document.getElementById(SPLASH_ID);
-  if (!splash || root.dataset.showAppSplash !== "true" || splash.dataset.exiting === "true") {
-    if (splash && root.dataset.showAppSplash !== "true") splash.remove();
+  if (
+    root.dataset.skipAppSplash === "true" ||
+    root.dataset.showAppSplash !== "true"
+  ) {
+    splash.remove();
     return;
   }
-  if (!REQUIRED_PARTS.every((item) => readyParts.has(item))) return;
-  splash.dataset.exiting = "true";
-  window.setTimeout(() => splash.remove(), 280);
+  if (root.dataset.appSplashReady !== "true") return;
+
+  const startedAt = Number(root.dataset[splashStartedAtDataKey]);
+  const elapsed = Number.isFinite(startedAt) ? Date.now() - startedAt : 0;
+  const remaining = Math.max(0, splashMinimumMs - elapsed);
+
+  splashDismissTimer = window.setTimeout(() => {
+    splashDismissTimer = 0;
+    const currentSplash = document.getElementById(splashElementId);
+    if (!currentSplash) return;
+
+    currentSplash.dataset.exiting = "true";
+    window.setTimeout(() => currentSplash.remove(), splashFadeMs);
+  }, remaining);
 }
