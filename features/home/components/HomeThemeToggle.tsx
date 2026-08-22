@@ -5,5 +5,5 @@ import { useThemeContext } from "@/components/providers/theme-provider";
 
 export function HomeThemeToggle({ label }: { label: string }) {
   const { isDark, setThemeMode } = useThemeContext();
-  return <button className="home-round-control home-theme-control" aria-label={`${label}: ${isDark ? "light" : "dark"}`} onClick={() => setThemeMode(isDark ? "light" : "dark")}>{isDark ? <Sun /> : <Moon />}</button>;
+  return <button type="button" className="home-header-control home-header-theme inline-flex size-10 items-center justify-center rounded-full border border-border bg-card/70 text-foreground transition hover:border-primary/40 hover:text-primary" aria-label={`${label}: ${isDark ? "light" : "dark"}`} onClick={() => setThemeMode(isDark ? "light" : "dark")}>{isDark ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}</button>;
 }

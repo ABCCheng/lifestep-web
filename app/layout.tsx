@@ -13,6 +13,7 @@ import "./globals.css";
 const INITIAL_PREFERENCES_SCRIPT = `
   (() => {
     const root = document.documentElement;
+    const themeColors = ${JSON.stringify(APP_THEME_COLORS)};
     const homeLocales = ${JSON.stringify(locales)};
     const path = location.pathname.replace(/\\\/+$/, "") || "/";
     root.classList.toggle("home-surface", path === "/" || homeLocales.some((locale) => path === "/" + locale));
@@ -25,10 +26,18 @@ const INITIAL_PREFERENCES_SCRIPT = `
     const dark = theme === "dark" || (theme === "system" && systemDark);
     root.classList.toggle("dark", dark);
     root.style.colorScheme = dark ? "dark" : "light";
+    const activeThemeColor = dark ? themeColors.dark : themeColors.light;
+    root.style.setProperty("--app-safe-top-color", activeThemeColor);
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.removeAttribute("media");
+      meta.setAttribute("content", activeThemeColor);
+    });
     const standalone = window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone === true;
     const appPath = path === "/app" || path.startsWith("/app/");
     root.classList.toggle("app-standalone", standalone);
     root.classList.toggle("app-shell-active", appPath);
+    const mobileWeb = window.matchMedia?.("(max-width: 767px)").matches && !standalone;
+    if (mobileWeb) root.style.backgroundColor = activeThemeColor;
     let splashShown = false;
     try { splashShown = sessionStorage.getItem(${JSON.stringify(APP_SPLASH_SESSION_KEY)}) === "1"; } catch {}
     const showSplash = standalone && appPath && !splashShown;
