@@ -15,15 +15,17 @@ export function Brand({ compact = false, href = "/" }: { compact?: boolean; href
   }, []);
 
   const content = <>
-      <span className="brand-logo"><img src="/logo.svg" alt="" width={40} height={40} /></span>
+      <span className="grid size-10 shrink-0 place-items-center overflow-hidden bg-transparent"><img className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} /></span>
       {!compact ? <span className="brand-label">LifeStep</span> : null}
     </>;
 
-  if (standalone) return <span className="brand home-header-brand" aria-label="LifeStep">{content}</span>;
+  const className = "inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-xl font-bold tracking-[-0.04em] text-primary dark:text-white";
+
+  if (standalone) return <span className={className} aria-label="LifeStep">{content}</span>;
 
   function preventStandaloneNavigation(event: MouseEvent<HTMLAnchorElement>) {
     if (window.matchMedia("(display-mode: standalone)").matches || document.documentElement.classList.contains("app-standalone")) event.preventDefault();
   }
 
-  return <Link href={href} className="brand home-header-brand" aria-label="LifeStep home" onClick={preventStandaloneNavigation}>{content}</Link>;
+  return <Link href={href} className={className} aria-label="LifeStep home" onClick={preventStandaloneNavigation}>{content}</Link>;
 }

@@ -10,13 +10,27 @@ function systemIsDark() {
   return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function applyTheme(isDark: boolean) {
+function isMobileWebBrowser() {
+  const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
+  const standalone = window.matchMedia("(display-mode: standalone)").matches || navigatorWithStandalone.standalone === true;
+  return window.matchMedia("(max-width: 767px)").matches && !standalone;
+}
+
+function applyTheme(mode: ThemeMode, isDark: boolean) {
   const root = document.documentElement;
   const color = isDark ? APP_THEME_COLORS.dark : APP_THEME_COLORS.light;
+  root.dataset.themeMode = mode;
   root.classList.toggle("dark", isDark);
   root.style.colorScheme = isDark ? "dark" : "light";
   root.style.setProperty("--app-safe-top-color", color);
-  document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => meta.setAttribute("content", color));
+  document.getElementById("app-theme-color")?.setAttribute("content", color);
+  if (isMobileWebBrowser()) {
+    root.style.backgroundColor = color;
+    document.body.style.backgroundColor = color;
+  } else {
+    root.style.removeProperty("background-color");
+    document.body.style.removeProperty("background-color");
+  }
 }
 
 function snapshot() {
@@ -30,9 +44,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [storedMode, darkValue] = value.split(":");
   const themeMode: ThemeMode = storedMode === "light" || storedMode === "dark" ? storedMode : "system";
   const isDark = darkValue === "1";
-  useEffect(() => applyTheme(isDark), [isDark]);
+  useEffect(() => applyTheme(themeMode, isDark), [themeMode, isDark]);
   const setThemeMode = useCallback((mode: ThemeMode) => {
-    applyTheme(mode === "system" ? systemIsDark() : mode === "dark");
+    applyTheme(mode, mode === "system" ? systemIsDark() : mode === "dark");
     saveThemeMode(mode);
   }, []);
   const context = useMemo(() => ({ themeMode, setThemeMode, isDark }), [themeMode, setThemeMode, isDark]);

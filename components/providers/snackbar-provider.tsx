@@ -17,5 +17,5 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
     };
     return () => { showHandler = null; window.clearTimeout(timer); };
   }, []);
-  return <>{children}<AppToastViewport className={message ? "visible" : ""}>{message ? <AppToast>{message}</AppToast> : null}</AppToastViewport></>;
+  return <>{children}<AppToastViewport data-visible={Boolean(message)}>{message ? <AppToast>{message}</AppToast> : null}</AppToastViewport></>;
 }

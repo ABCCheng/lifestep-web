@@ -5,10 +5,17 @@ import { FileText, HelpCircle, Info, Languages, MessageSquareText, Palette, Sett
 import { useRef, useState, type RefObject } from "react";
 import { Brand } from "@/components/Brand";
 import { useApp } from "@/components/providers/app-provider";
-import { Button } from "@/components/ui/button";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
 import { WebPushLinkButton } from "@/features/web-push/WebPushLinkButton";
 import { homePath, localizePath } from "@/lib/i18n";
+import {
+  appHeaderActionClass,
+  appHeaderClass,
+  appHeaderInnerClass,
+  appHeaderSpacerClass,
+  appMenuItemClass,
+  appMenuSurfaceClass,
+} from "@/components/shell/app-header-styles";
 
 export function DesktopAppHeader() {
   const { copy, locale } = useApp();
@@ -20,10 +27,10 @@ export function DesktopAppHeader() {
   useDismissibleMenu(settingsOpen, settingsRef, setSettingsOpen);
   return (
     <>
-      <header className="journey-header app-top-chrome desktop-app-header">
-        <div className="app-header-inner">
+      <header className={appHeaderClass}>
+        <div className={appHeaderInnerClass}>
           <Brand href={homePath("/", locale)} />
-          <nav className="flex min-w-max items-center justify-end gap-2 lg:gap-3" aria-label="App utilities">
+          <nav className="flex min-w-max items-center justify-end gap-4 lg:gap-5" aria-label="App utilities">
             <HeaderMenu containerRef={aboutRef} icon={<HelpCircle />} label={copy.about} open={aboutOpen} onToggle={() => { setAboutOpen(!aboutOpen); setSettingsOpen(false); }}>
               <MenuLink href={`${localizePath("/about", locale)}?panel=app`} icon={<Info />} label={copy.aboutUs} onNavigate={() => setAboutOpen(false)} />
               <MenuLink href={`${localizePath("/about", locale)}?panel=privacy`} icon={<ShieldCheck />} label={copy.privacyPolicy} onNavigate={() => setAboutOpen(false)} />
@@ -39,15 +46,15 @@ export function DesktopAppHeader() {
           </nav>
         </div>
       </header>
-      <div className="app-mobile-header-spacer" aria-hidden="true" />
+      <div className={appHeaderSpacerClass} aria-hidden="true" />
     </>
   );
 }
 
 function HeaderMenu({ containerRef, icon, label, open, onToggle, children }: { containerRef: RefObject<HTMLDivElement | null>; icon: React.ReactNode; label: string; open: boolean; onToggle: () => void; children: React.ReactNode }) {
-  return <div className="relative" ref={containerRef}><Button type="button" size="icon" variant="destructive" className="app-header-action-button cursor-pointer text-primary" aria-label={label} aria-expanded={open} onClick={onToggle}>{icon}</Button>{open ? <div className="app-menu">{children}</div> : null}</div>;
+  return <div className="relative flex h-10 items-center" ref={containerRef}><button type="button" className={appHeaderActionClass} aria-label={label} aria-expanded={open} onClick={onToggle}>{icon}</button>{open ? <div className={appMenuSurfaceClass}>{children}</div> : null}</div>;
 }
 
 function MenuLink({ href, icon, label, onNavigate }: { href: string; icon: React.ReactNode; label: string; onNavigate: () => void }) {
-  return <Link href={href} onClick={onNavigate}>{icon}<span>{label}</span></Link>;
+  return <Link className={appMenuItemClass} href={href} onClick={onNavigate}>{icon}<span>{label}</span></Link>;
 }

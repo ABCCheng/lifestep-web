@@ -21,7 +21,7 @@ import { HomeThemeToggle } from "./components/HomeThemeToggle";
 type HomeContent = Dictionary["homePage"];
 
 const container = "mx-auto w-full max-w-[1200px] px-4 lg:px-6";
-const navLinkClass = "flex min-h-10 items-center whitespace-nowrap py-1 transition hover:text-primary";
+const navLinkClass = "flex min-h-10 items-center whitespace-nowrap py-1 text-base font-bold text-muted-foreground transition hover:text-primary";
 const LIFE_STEP_SLOGAN = "Step into real life";
 
 export function HomePage({ locale, redirect = false }: { locale: Locale; redirect?: boolean }) {
@@ -44,13 +44,13 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
       <HomeThemeChrome>
         <header className="app-top-chrome sticky top-0 z-40 bg-transparent pb-2 pt-(--app-safe-header-top) md:py-[1.35rem]">
           <nav className={`${container} flex h-10 items-center justify-between gap-3 lg:gap-4`} aria-label="Main navigation">
-            <Link href={canonicalPath} className="home-header-brand inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-xl font-bold tracking-[-0.04em] text-[#d3001c] dark:text-white" aria-label="LifeStep home">
-              <span className="grid size-10 place-items-center overflow-hidden rounded-[var(--radius-lg)] bg-[#d3001c]"><Image src="/logo.svg" alt="" width={40} height={40} priority /></span><span>LifeStep</span>
+            <Link href={canonicalPath} className="inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-xl font-bold tracking-[-0.04em] text-[#d3001c] dark:text-white" aria-label="LifeStep home">
+              <span className="grid size-10 shrink-0 place-items-center overflow-hidden"><Image className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} priority /></span><span>LifeStep</span>
             </Link>
-            <div className="ml-8 mr-auto hidden min-w-0 items-center gap-5 text-base font-bold text-muted-foreground xl:flex"><a className={`home-header-link ${navLinkClass}`} href="#overview">{copy.featuresKicker}</a><a className={`home-header-link ${navLinkClass}`} href="#faq">{copy.faqNav}</a></div>
+            <div className="ml-8 mr-auto hidden min-w-0 items-center gap-5 xl:flex"><a className={navLinkClass} href="#overview">{copy.featuresKicker}</a><a className={navLinkClass} href="#faq">{copy.faqNav}</a></div>
             <div className="flex shrink-0 items-center gap-2">
               <HomeLanguageMenu locale={locale} /><HomeThemeToggle label={copy.themeLabel} />
-              <Button asChild className="home-open-app-button hidden h-10 rounded-full px-4 xl:inline-flex"><Link href={appHref}>{copy.launchApp}<ArrowUpRight className="size-4" aria-hidden="true" /></Link></Button>
+              <Button asChild className="hidden h-10 rounded-full px-4 text-sm font-medium text-white! xl:inline-flex"><Link href={appHref}>{copy.launchApp}<ArrowUpRight className="size-4" aria-hidden="true" /></Link></Button>
               <HomeNavMenu overviewLabel={copy.featuresKicker} faqLabel={copy.faqNav} launchLabel={copy.launchApp} appHref={appHref} />
             </div>
           </nav>
@@ -62,7 +62,7 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
           <HeroTitle title={copy.title} />
           <p className="mx-auto mt-6 max-w-lg text-left text-base leading-7 text-muted-foreground sm:text-lg lg:mx-0">{copy.intro}</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-5 lg:justify-start">
-            <Link className="home-primary-cta inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-extrabold text-white shadow-xl shadow-primary/25 transition hover:-translate-y-0.5" href={appHref}>{copy.getStarted}<ArrowUpRight className="size-4" aria-hidden="true" /></Link>
+            <Link className="inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-extrabold text-white! shadow-xl shadow-primary/25 transition hover:-translate-y-0.5 hover:bg-primary/85" href={appHref}>{copy.getStarted}<ArrowUpRight className="size-4" aria-hidden="true" /></Link>
             <a className="inline-flex items-center gap-1.5 text-sm font-extrabold text-foreground transition hover:text-primary" href="#overview">{copy.explore}<ArrowDownRight className="size-4" aria-hidden="true" /></a>
           </div>
         </div>
@@ -82,10 +82,10 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
       </section>
 
       <footer className={`${container} flex min-h-28 flex-col items-center justify-center gap-5 border-t border-border py-7 text-center text-muted-foreground sm:flex-row sm:justify-between sm:text-left`}>
-        <div className="inline-flex items-center gap-2.5"><span className="grid size-10 place-items-center overflow-hidden rounded-[var(--radius-lg)] bg-[#d3001c]"><Image src="/logo.svg" alt="" width={40} height={40} /></span><div className="grid gap-0.5 text-left"><strong className="text-sm text-[#d3001c] dark:text-white">LifeStep</strong><span className="text-[0.65rem]">{tagline}</span></div></div>
+        <div className="inline-flex items-center gap-2.5"><span className="grid size-10 shrink-0 place-items-center overflow-hidden"><Image className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} /></span><div className="grid gap-0.5 text-left"><strong className="text-sm text-[#d3001c] dark:text-white">LifeStep</strong><span className="text-[0.65rem]">{tagline}</span></div></div>
         <div className="grid justify-items-center gap-2 text-xs sm:justify-items-end">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-bold sm:justify-end"><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=app`}>{dictionary.profile.menu.aboutApp}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=privacy`}>{copy.privacyNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=terms`}>{copy.termsNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=feedback`}>{dictionary.profile.menu.feedback}</Link></div>
-          <div className="flex items-center gap-1.5 text-[0.65rem]"><a className="home-social-link" href="https://x.com/EffortGo2024" target="_blank" rel="noreferrer" aria-label="X"><XMark className="size-4" /></a><a className="home-social-link" href="https://www.xiaohongshu.com/user/profile/5fa36065000000000101ffa5" target="_blank" rel="noreferrer" aria-label="小红书"><RedbookMark className="size-4" /></a><a className="home-social-link" href="mailto:lifestep@effortgo.xyz" aria-label="Email"><Mail className="size-4" aria-hidden="true" /></a><span className="ml-1 inline-flex items-center">© 2026 EffortGo <Dot className="size-4" aria-hidden="true" /> {process.env.APP_VERSION}</span></div>
+          <div className="flex items-center gap-1.5 text-[0.65rem]"><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://x.com/EffortGo2024" target="_blank" rel="noreferrer" aria-label="X"><XMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://www.xiaohongshu.com/user/profile/5fa36065000000000101ffa5" target="_blank" rel="noreferrer" aria-label="小红书"><RedbookMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="mailto:lifestep@effortgo.xyz" aria-label="Email"><Mail className="size-4" aria-hidden="true" /></a><span className="ml-1 inline-flex items-center">© 2026 EffortGo <Dot className="size-4" aria-hidden="true" /> {process.env.APP_VERSION}</span></div>
         </div>
       </footer>
     </main>
@@ -109,7 +109,7 @@ function JourneySignalPanel({ copy, preview }: { copy: HomeContent; preview: Lif
     <div className="absolute bottom-[12%] right-[5%] z-20 w-[72%] rounded-2xl border border-border bg-card/95 p-4 text-card-foreground shadow-2xl backdrop-blur-xl sm:bottom-[14%] sm:right-[7%] sm:w-[68%]">
       <div className="flex items-center gap-2 text-[0.6rem] font-bold uppercase tracking-[0.08em] text-muted-foreground"><MessageCircle className="size-3.5 text-sky-500" />{preview.conversation}<span className="ml-auto text-lime-600">{preview.practiceMode}</span></div>
       <div className="mt-3 rounded-2xl rounded-tl-sm bg-muted px-3.5 py-3 text-sm font-semibold">{preview.phrase}<span className="mt-1 block text-xs font-normal text-muted-foreground">{preview.translation}</span></div>
-      <button type="button" className="home-preview-play absolute -bottom-3 -right-3 grid size-10 place-items-center rounded-full bg-primary text-white shadow-lg" aria-label={preview.playPhrase}><Volume2 className="size-4" /></button>
+      <button type="button" className="absolute -bottom-3 -right-3 grid size-10 place-items-center rounded-full bg-primary text-white! shadow-lg" aria-label={preview.playPhrase}><Volume2 className="size-4" /></button>
     </div>
     <div className="absolute right-[7%] top-[7%] z-20 flex items-center gap-2 rounded-xl border border-border bg-card/90 px-3 py-2 text-card-foreground shadow-xl backdrop-blur-xl"><BellRing className="size-4 text-primary" /><strong className="text-xs">{preview.nextStep}</strong></div>
     <div className="absolute bottom-[5%] left-[5%] z-10 inline-flex items-center gap-2 rounded-full border border-border bg-card/85 px-3 py-2 text-[0.59rem] font-bold text-card-foreground backdrop-blur-xl"><Languages className="size-3.5 text-sky-500" /><span>EN</span><span>中文</span><span>FR</span></div>

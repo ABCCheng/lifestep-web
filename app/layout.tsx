@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { AppSplashScreen } from "@/components/shell/AppSplashScreen";
 import { ViewportHeightSync } from "@/components/shell/ViewportHeightSync";
 import { SnackbarProvider } from "@/components/providers/snackbar-provider";
@@ -22,16 +21,14 @@ const INITIAL_PREFERENCES_SCRIPT = `
       const stored = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
       if (stored === "light" || stored === "dark" || stored === "system") theme = stored;
     } catch {}
+    root.dataset.themeMode = theme;
     const systemDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
     const dark = theme === "dark" || (theme === "system" && systemDark);
     root.classList.toggle("dark", dark);
     root.style.colorScheme = dark ? "dark" : "light";
     const activeThemeColor = dark ? themeColors.dark : themeColors.light;
     root.style.setProperty("--app-safe-top-color", activeThemeColor);
-    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
-      meta.removeAttribute("media");
-      meta.setAttribute("content", activeThemeColor);
-    });
+    document.getElementById("app-theme-color")?.setAttribute("content", activeThemeColor);
     const standalone = window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone === true;
     const appPath = path === "/app" || path.startsWith("/app/");
     root.classList.toggle("app-standalone", standalone);
@@ -91,10 +88,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: APP_THEME_COLORS.light },
-    { media: "(prefers-color-scheme: dark)", color: APP_THEME_COLORS.dark },
-  ],
   colorScheme: "light dark",
 };
 
@@ -104,9 +97,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
+    <html lang="en" className="h-full" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <meta id="app-theme-color" name="theme-color" content={APP_THEME_COLORS.light} />
+        <script
+          id="initial-app-preferences"
+          dangerouslySetInnerHTML={{ __html: INITIAL_PREFERENCES_SCRIPT }}
+        />
+      </head>
       <body>
-        <Script id="initial-app-preferences" strategy="beforeInteractive">{INITIAL_PREFERENCES_SCRIPT}</Script>
         <ViewportHeightSync />
         <AppSplashScreen />
         <SnackbarProvider><ThemeProvider>{children}</ThemeProvider></SnackbarProvider>

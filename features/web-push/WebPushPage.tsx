@@ -27,6 +27,7 @@ import {
 } from "@/lib/stores/web-push-messages";
 import { cn } from "@/lib/utils";
 import { appZIndex } from "@/lib/z-index";
+import { pageLoaderClass, subPageClass } from "@/components/app/app-ui-styles";
 import {
   cacheWebPushConfig,
   decodeWebPushPublicKey,
@@ -321,7 +322,7 @@ export function WebPushPage() {
     return (
       <main className="app-page">
         <AppBackHeader title={copy.title} eyebrow="LifeStep" />
-        <div className="page-loader"><LoaderCircle /><span>Loading…</span></div>
+        <div className={pageLoaderClass}><LoaderCircle /><span>Loading…</span></div>
       </main>
     );
   }
@@ -336,11 +337,11 @@ export function WebPushPage() {
   }
 
   return (
-    <main className="app-page sub-page">
+    <main className={subPageClass}>
       <AppBackHeader
         title={copy.title}
         eyebrow="LifeStep"
-        actions={<div className="web-push-mobile-actions">{renderMessageActions(true)}</div>}
+        actions={<div className="ml-auto hidden items-center gap-3 max-md:flex">{renderMessageActions(true)}</div>}
       />
       <article className="min-h-[calc(var(--app-viewport-height)-var(--app-safe-tab-bottom))] w-full px-4 pb-4 md:min-h-0 md:mx-auto md:w-[min(100%,40rem)]">
         <header className="relative hidden items-center gap-2.5 py-4 md:flex [&>svg]:size-8 [&>svg]:text-primary">
@@ -410,7 +411,7 @@ export function WebPushPage() {
         )}
       </article>
 
-      {saving ? <div className="web-push-saving"><LoaderCircle className="spin" /></div> : null}
+      {saving ? <div className="fixed inset-0 z-120 grid place-items-center bg-black/20 backdrop-blur-[2px] [&_svg]:size-[38px] [&_svg]:animate-spin [&_svg]:text-white"><LoaderCircle /></div> : null}
       {confirm ? (
         <ConfirmModal
           title={confirm === "unsubscribe" ? copy.unsubscribeConfirmTitle : confirm === "clear" ? copy.clearAll : copy.markAllRead}
@@ -437,10 +438,10 @@ function CenteredMessage({ children }: { children: ReactNode }) {
 function ConfirmModal({ title, description, yes, no, destructive, onYes, onNo }: { title: string; description: string; yes: string; no: string; destructive: boolean; onYes: () => void; onNo: () => void }) {
   return (
     <Modal onClose={onNo} labelledBy="web-push-confirm">
-      <div className="web-push-confirm">
-        <h2 id="web-push-confirm">{title}</h2>
-        <p>{description}</p>
-        <div>
+      <div>
+        <h2 className="m-0 text-2xl" id="web-push-confirm">{title}</h2>
+        <p className="leading-relaxed text-muted-foreground">{description}</p>
+        <div className="mt-[22px] flex justify-end gap-2.5">
           <Button type="button" variant="outline" onClick={onNo}>{no}</Button>
           <Button type="button" variant={destructive ? "destructive" : "default"} onClick={onYes}>{yes}</Button>
         </div>

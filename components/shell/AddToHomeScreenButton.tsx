@@ -2,6 +2,7 @@
 
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import { appHeaderActionClass } from "./app-header-styles";
 
 type InstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -29,7 +30,7 @@ export function AddToHomeScreenButton() {
   }, []);
   if (installed || !prompt) return null;
   return (
-    <button className="icon-button install-button" aria-label="Install LifeStep" onClick={async () => {
+    <button className={appHeaderActionClass} aria-label="Install LifeStep" onClick={async () => {
       await prompt.prompt();
       await prompt.userChoice;
       setPrompt(null);

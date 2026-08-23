@@ -2,12 +2,25 @@ const splashElementId = "app-splash";
 const splashStartedAtDataKey = "appSplashStartedAt";
 const splashMinimumMs = 2500;
 const splashFadeMs = 260;
+const splashDismissEvent = "lifestep:app-splash-dismiss";
 let splashDismissTimer = 0;
 
 type AppSplashReadyPart = "viewport" | "content";
 
 const requiredSplashReadyParts: AppSplashReadyPart[] = ["viewport", "content"];
 const splashReadyParts = new Set<AppSplashReadyPart>();
+
+function finishAppSplashDismissal() {
+  const root = document.documentElement;
+  root.dataset.showAppSplash = "false";
+  root.dataset.appSplashDismissed = "true";
+  window.dispatchEvent(new Event(splashDismissEvent));
+}
+
+export function subscribeAppSplashDismiss(listener: () => void) {
+  window.addEventListener(splashDismissEvent, listener);
+  return () => window.removeEventListener(splashDismissEvent, listener);
+}
 
 export function markAppSplashReady(part: AppSplashReadyPart) {
   if (typeof document === "undefined") return;
@@ -30,7 +43,7 @@ export function dismissAppSplash() {
     root.dataset.skipAppSplash === "true" ||
     root.dataset.showAppSplash !== "true"
   ) {
-    splash.remove();
+    finishAppSplashDismissal();
     return;
   }
   if (root.dataset.appSplashReady !== "true") return;
@@ -45,6 +58,6 @@ export function dismissAppSplash() {
     if (!currentSplash) return;
 
     currentSplash.dataset.exiting = "true";
-    window.setTimeout(() => currentSplash.remove(), splashFadeMs);
+    window.setTimeout(finishAppSplashDismissal, splashFadeMs);
   }, remaining);
 }
