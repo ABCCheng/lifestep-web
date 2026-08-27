@@ -10,22 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🔄 检出代码
+      - name: 🔄 Check out repository
         uses: actions/checkout@v4
 
-      - name: ☕️ 设置 Node.js 环境
+      - name: ☕️ Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24.14.1'
           cache: 'yarn'
 
-      - name: 📦 安装依赖并构建项目
+      - name: 📦 Install dependencies and build
         env:
           NEXT_PUBLIC_API_ORIGIN: ${{ vars.NEXT_PUBLIC_API_ORIGIN }}
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
         run: yarn install --frozen-lockfile && yarn build:prod
 
-      - name: 🐳 安装 Docker
+      - name: 🐳 Install Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
@@ -34,10 +34,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-      - name: 📦 构建 Docker 镜像
+      - name: 📦 Build Docker image
         run: docker build -t lifestep-web:latest -f Dockerfile .
 
-      - name: 📤 传输镜像并重启 Docker
+      - name: 📤 Transfer image and restart Docker
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_SERVER_IP: ${{ secrets.SSH_SERVER_IP }}
