@@ -291,136 +291,187 @@
     "networkErrorServer": "Service is unavailable, please try again later"
   },
   "homePage": {
-    "title": "LifeStep - Canadian Top News for Newcomers",
-    "seoTitle": "LifeStep - Canadian Top News for Newcomers",
-    "seoDescription": "Local Canadian news, immigration updates, and regional stories for newcomers. Read in multiple languages and build English through real news from Toronto, Vancouver, Montreal, and beyond.",
-    "intro": "Follow local news in Canada, immigration updates, and practical regional information while naturally improving your English through real-world reading.",
-    "getStarted": "Get started",
-    "pushLabel": "Push alert",
-    "explore": "See what you can do",
+    "title": "LifeStep - Practice Real-Life English",
+    "seoTitle": "LifeStep - Practice Real-Life English",
+    "seoDescription": "Interactive English conversations that prepare Canadian newcomers for real-life situations.",
+    "intro": "Build confidence for everyday life in Canada through guided English conversations based on situations newcomers actually face.",
+    "getStarted": "Take your first step",
+    "explore": "Explore product features",
     "themeLabel": "Theme",
-    "signalLabel": "Local briefing",
-    "liveLabel": "Daily briefing",
-    "topStory": "Top story",
+    "featuresKicker": "Product features",
+    "faqNav": "FAQ",
+    "privacyNav": "Privacy Policy",
+    "termsNav": "Terms of Use",
+    "launchApp": "Open LifeStep",
+    "footer": "Real-life English for your new life in Canada.",
+    "changelogNav": "Change Log",
+    "changelogEarlierReleases": "Earlier releases",
+    "discoverMoreNav": "Discover More",
     "metrics": [
       {
         "value": "10",
         "label": "Languages"
       },
       {
-        "value": "7",
-        "label": "Regions"
+        "value": "12",
+        "label": "Life stages"
       },
       {
-        "value": "8+",
-        "label": "Resources"
+        "value": "90+",
+        "label": "Real-life scenarios"
       },
       {
-        "value": "24/7",
-        "label": "Fresh Signals"
+        "value": "4",
+        "label": "Learning steps"
       }
     ],
-    "faqNav": "FAQ",
-    "privacyNav": "Privacy Policy",
-    "termsNav": "Terms of Use",
-    "featuresKicker": "Product Overview",
     "features": [
       {
-        "eyebrow": "01 / Flash",
-        "title": "Start with what matters now",
-        "body": "A fast briefing for top stories, practical updates, and local alerts — ready when your day starts.",
+        "eyebrow": "01 / Journey",
+        "title": "Follow real life, step by step",
+        "body": "A visual journey turns important newcomer moments into a clear path you can explore at your pace.",
         "tags": [
-          "Live briefings",
-          "Transit alerts",
-          "Breaking news"
+          "Study",
+          "Work",
+          "Family"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "02 / Explore",
-        "title": "One feed, many trusted sources",
-        "body": "Explore local news in Canada across immigration, education, health, entertainment, and headlines from trusted sources.",
+        "eyebrow": "02 / Learn",
+        "title": "Know what to expect",
+        "body": "Build context and vocabulary before a real conversation begins.",
         "tags": [
-          "CBC News",
-          "Global News",
-          "Toronto Sun",
-          "…"
+          "Knowledge",
+          "Vocabulary"
         ],
         "accent": "blue"
       },
       {
-        "eyebrow": "03 / Region",
-        "title": "News that knows where you are",
-        "body": "Choose a Canadian region — from Toronto and Vancouver to Montreal and beyond — to make every briefing more local.",
+        "eyebrow": "03 / Conversation",
+        "title": "Listen, repeat, and respond",
+        "body": "Hear natural voices and practise a complete dialogue or move through it one line at a time.",
         "tags": [
-          "Toronto",
-          "Vancouver",
-          "Montreal",
-          "Calgary",
-          "…"
+          "Natural voices",
+          "Bilingual dialogue"
         ],
         "accent": "lime"
       },
       {
-        "eyebrow": "04 / Language",
-        "title": "Read across languages",
-        "body": "Read Canadian news in multiple languages and use real-world stories to strengthen your English.",
+        "eyebrow": "04 / Review",
+        "title": "Make the language yours",
+        "body": "Review key phrases, check your confidence, and complete each real-life scenario.",
         "tags": [
-          "EN",
-          "中文",
-          "FR",
-          "…"
+          "Key phrases",
+          "Progress"
+        ],
+        "accent": "orange"
+      },
+      {
+        "eyebrow": "05 / Personal",
+        "title": "A path shaped around you",
+        "body": "Choose study, work, or family and focus on the situations most useful to your life.",
+        "tags": [
+          "Your pace",
+          "Your journey"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "05 / Push",
-        "title": "Let important stories find you",
-        "body": "Turn on notifications for breaking news and keep the signal close, even when LifeStep is not open.",
+        "eyebrow": "06 / Push",
+        "title": "Keep your next step close",
+        "body": "Optional notifications and a message center help you return to the right moment.",
         "tags": [
-          "Real-time push",
-          "Notification center"
+          "Web Push",
+          "Message center"
         ],
         "accent": "blue"
-      },
-      {
-        "eyebrow": "06 / Personal",
-        "title": "Make it yours",
-        "body": "Save stories, search by keyword, and tune the app to fit your day.",
-        "tags": [
-          "Favorites",
-          "Themes"
-        ],
-        "accent": "lime"
       }
     ],
-    "launchApp": "Launch the app",
     "faq": [
       {
-        "question": "Where can newcomers find local news in Canada?",
-        "answer": "LifeStep brings together Canadian local news, immigration updates, practical information, and regional stories in one focused feed."
+        "question": "Who is LifeStep for?",
+        "answer": "LifeStep is designed for newcomers preparing for everyday life, study, work, and family situations in Canada."
       },
       {
-        "question": "Can I change my language and region?",
-        "answer": "Yes. The app supports multiple interface languages and Canadian regions, and you can change both from Settings."
+        "question": "Can I change the language and theme?",
+        "answer": "Yes. LifeStep supports ten interface languages plus light, dark, and system themes."
       },
       {
-        "question": "Can I receive breaking news?",
-        "answer": "Yes. Enable browser notifications from the app to receive timely updates and manage them in Notification Center."
+        "question": "How does conversation practice work?",
+        "answer": "Read the complete bilingual dialogue or practise one line at a time with natural synthesized voices."
       },
       {
-        "question": "Where does the news come from?",
-        "answer": "LifeStep brings together trusted Canadian news sources covering local life, immigration, and regional updates. Each story identifies its source and lets you continue to the original report."
+        "question": "What situations can I practise?",
+        "answer": "Explore arrival, housing, transportation, healthcare, banking, education, work, and community scenarios."
       },
       {
-        "question": "Can I save and search for stories?",
-        "answer": "Yes. Save stories you want to revisit and use search to find more news by keyword."
+        "question": "Can I continue where I left off?",
+        "answer": "Yes. LifeStep records your scenario progress so you can return to the next step."
       },
       {
-        "question": "How do I add LifeStep to my home screen?",
-        "answer": "Add LifeStep to your home screen for one-tap access and an app-like experience. Open the app and select Add to Home Screen. If no install prompt appears, open your browser’s Share or menu, choose View More, then Add to Home Screen, and confirm Add."
+        "question": "Can I use LifeStep on my phone?",
+        "answer": "Yes. The responsive web app works on desktop and mobile and can be added to your home screen."
       }
+    ]
+  },
+  "homePreview": {
+    "journey": "Journey",
+    "steps": [
+      "Arrive",
+      "Find a home",
+      "Finances"
     ],
-    "footer": "Multilingual Canadian news for newcomers."
+    "current": "You are here",
+    "conversation": "Conversation",
+    "practiceMode": "Practice mode",
+    "nextStep": "Next step ready",
+    "phrase": "Could you repeat that?",
+    "translation": "Ask the other person to say it again.",
+    "playPhrase": "Play phrase"
+  },
+  "app": {
+    "back": "Back",
+    "about": "About",
+    "settings": "Settings",
+    "messages": "Messages",
+    "journey": "Your journey",
+    "aboutUs": "About us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "feedback": "Feedback",
+    "theme": "Theme",
+    "language": "Language",
+    "voice": "Voice",
+    "explore": "Explore",
+    "start": "Start exploring",
+    "resume": "Continue exploring",
+    "restart": "Explore again",
+    "progress": "Progress",
+    "completed": "Completed",
+    "inProgress": "In progress",
+    "notStarted": "Not started",
+    "loading": "Preparing your next step…",
+    "offline": "Showing a practice preview while the service reconnects."
+  },
+  "lifeStepAbout": {
+    "sections": [
+      [
+        "1. Our mission",
+        "LifeStep helps Canadian newcomers prepare for real-life situations through interactive English conversations."
+      ],
+      [
+        "2. How it works",
+        "Follow a personalized journey through arrival, settlement, study, work, family, and community life, one practical scenario at a time."
+      ],
+      [
+        "3. Practice for real life",
+        "Build context and vocabulary, listen to natural dialogue, practise line by line, and review useful phrases before using them in real life."
+      ],
+      [
+        "4. Contact and feedback",
+        "If you have a question or suggestion, send us a message through the feedback page. We review every submission."
+      ]
+    ]
   }
 }

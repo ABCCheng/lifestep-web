@@ -12,8 +12,13 @@ const longCacheAssets = [
   "/og.png",
 ];
 
+const allowedDevOrigins = process.env.ALLOWED_DEV_ORIGINS
+  ?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.2.207", "192.168.2.203"],
+  ...(allowedDevOrigins?.length ? { allowedDevOrigins } : {}),
   output: "standalone",
   env: {
     APP_VERSION: version,

@@ -291,136 +291,187 @@
     "networkErrorServer": "Dịch vụ hiện không khả dụng, vui lòng thử lại sau"
   },
   "homePage": {
-    "title": "LifeStep - Tin tức hàng đầu Canada dành cho người mới nhập cư",
-    "seoTitle": "LifeStep - Tin tức hàng đầu Canada dành cho người mới nhập cư",
-    "seoDescription": "Tin địa phương Canada, cập nhật về nhập cư và thông tin khu vực dành cho người mới đến. Đọc bằng nhiều ngôn ngữ và cải thiện tiếng Anh qua tin tức thực tế.",
-    "intro": "Theo dõi tin địa phương Canada, cập nhật về nhập cư và thông tin khu vực, đồng thời cải thiện tiếng Anh một cách tự nhiên qua tin tức thực tế.",
-    "getStarted": "Bắt đầu",
-    "pushLabel": "Thông báo đẩy",
+    "title": "LifeStep - Luyện tiếng Anh đời thực",
+    "seoTitle": "LifeStep - Luyện tiếng Anh đời thực",
+    "seoDescription": "Hội thoại tiếng Anh tương tác giúp người mới đến chuẩn bị cho cuộc sống tại Canada.",
+    "intro": "Tự tin hơn trong cuộc sống hằng ngày tại Canada qua các hội thoại có hướng dẫn dựa trên tình huống thực tế của người mới đến.",
+    "getStarted": "Bước đầu tiên",
     "explore": "Khám phá tính năng",
-    "themeLabel": "Chủ đề",
-    "signalLabel": "Tín hiệu địa phương của bạn",
-    "liveLabel": "Bản tin trực tiếp",
-    "topStory": "Tin nổi bật",
+    "themeLabel": "Giao diện",
+    "featuresKicker": "Tính năng sản phẩm",
+    "faqNav": "Câu hỏi",
+    "privacyNav": "Quyền riêng tư",
+    "termsNav": "Điều khoản",
+    "launchApp": "Mở LifeStep",
+    "footer": "Tiếng Anh đời thực cho cuộc sống mới tại Canada.",
+    "changelogNav": "Nhật ký thay đổi",
+    "changelogEarlierReleases": "Các phiên bản trước",
+    "discoverMoreNav": "Khám phá thêm",
     "metrics": [
       {
         "value": "10",
         "label": "Ngôn ngữ"
       },
       {
-        "value": "7",
-        "label": "Khu vực"
+        "value": "12",
+        "label": "Giai đoạn cuộc sống"
       },
       {
-        "value": "8+",
-        "label": "Nguồn tin"
+        "value": "90+",
+        "label": "Tình huống thực tế"
       },
       {
-        "value": "24/7",
-        "label": "Cập nhật mới"
+        "value": "4",
+        "label": "Bước học"
       }
     ],
-    "faqNav": "FAQ",
-    "privacyNav": "Chính sách quyền riêng tư",
-    "termsNav": "Điều khoản sử dụng",
-    "featuresKicker": "Tổng quan sản phẩm",
     "features": [
       {
-        "eyebrow": "01 / Bản tin nhanh",
-        "title": "Bắt đầu với những điều quan trọng nhất",
-        "body": "Bản tóm tắt nhanh về tin nổi bật, cập nhật hữu ích và cảnh báo địa phương, sẵn sàng khi ngày mới bắt đầu.",
+        "eyebrow": "01 / Hành trình",
+        "title": "Theo đời thực, từng bước",
+        "body": "Bản đồ trực quan biến các tình huống quan trọng thành lộ trình rõ ràng.",
         "tags": [
-          "Bản tin trực tiếp",
-          "Cảnh báo giao thông",
-          "Tin nổi bật"
+          "Học tập",
+          "Công việc",
+          "Gia đình"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "02 / Khám phá",
-        "title": "Một bảng tin, nhiều nguồn đáng tin cậy",
-        "body": "Khám phá tin địa phương Canada về nhập cư, giáo dục, sức khỏe, giải trí và tin chính từ các nguồn đáng tin cậy.",
+        "eyebrow": "02 / Học",
+        "title": "Biết trước điều sẽ xảy ra",
+        "body": "Học bối cảnh và từ vựng trước khi hội thoại.",
         "tags": [
-          "CBC News",
-          "Global News",
-          "Toronto Sun",
-          "…"
+          "Kiến thức",
+          "Từ vựng"
         ],
         "accent": "blue"
       },
       {
-        "eyebrow": "03 / Khu vực",
-        "title": "Tin tức phù hợp với nơi bạn sống",
-        "body": "Chọn khu vực Canada—từ Toronto, Vancouver đến Montreal và nhiều nơi khác—để mỗi bản tin gần với địa phương hơn.",
+        "eyebrow": "03 / Hội thoại",
+        "title": "Nghe, lặp lại và trả lời",
+        "body": "Luyện cả đoạn hoặc từng câu với giọng đọc tự nhiên.",
         "tags": [
-          "Toronto",
-          "Vancouver",
-          "Montreal",
-          "Calgary",
-          "…"
+          "Giọng tự nhiên",
+          "Song ngữ"
         ],
         "accent": "lime"
       },
       {
-        "eyebrow": "04 / Ngôn ngữ",
-        "title": "Đọc tin bằng nhiều ngôn ngữ",
-        "body": "Đọc tin Canada bằng nhiều ngôn ngữ và cải thiện tiếng Anh qua tin tức thực tế.",
+        "eyebrow": "04 / Ôn tập",
+        "title": "Biến ngôn ngữ thành của bạn",
+        "body": "Ôn cụm từ chính và hoàn thành tình huống.",
         "tags": [
-          "VI",
-          "EN",
-          "中文",
-          "…"
+          "Cụm từ",
+          "Tiến độ"
+        ],
+        "accent": "orange"
+      },
+      {
+        "eyebrow": "05 / Cá nhân",
+        "title": "Lộ trình dành cho bạn",
+        "body": "Chọn học tập, công việc hoặc gia đình.",
+        "tags": [
+          "Nhịp của bạn",
+          "Hành trình của bạn"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "05 / Thông báo",
-        "title": "Để những tin quan trọng tự tìm đến bạn",
-        "body": "Bật thông báo tin nóng để luôn cập nhật, ngay cả khi LifeStep không mở.",
+        "eyebrow": "06 / Thông báo",
+        "title": "Giữ bước tiếp theo bên mình",
+        "body": "Thông báo tùy chọn giúp bạn tiếp tục.",
         "tags": [
-          "Thông báo tức thì",
-          "Trung tâm thông báo"
+          "Web Push",
+          "Tin nhắn"
         ],
         "accent": "blue"
-      },
-      {
-        "eyebrow": "06 / Cá nhân hóa",
-        "title": "Cá nhân hóa theo cách của bạn",
-        "body": "Lưu tin, tìm kiếm bằng từ khóa và điều chỉnh ứng dụng theo ngày của bạn.",
-        "tags": [
-          "Yêu thích",
-          "Giao diện"
-        ],
-        "accent": "lime"
       }
     ],
-    "launchApp": "Mở ứng dụng",
     "faq": [
       {
-        "question": "Người mới đến Canada có thể tìm tin địa phương ở đâu?",
-        "answer": "LifeStep tập hợp tin địa phương Canada, cập nhật về nhập cư, thông tin thiết thực và câu chuyện khu vực trong một bảng tin."
+        "question": "LifeStep dành cho ai?",
+        "answer": "Dành cho người mới đến chuẩn bị cho đời sống, học tập, công việc và gia đình tại Canada."
       },
       {
-        "question": "Tôi có thể thay đổi ngôn ngữ và khu vực không?",
-        "answer": "Có. Ứng dụng hỗ trợ nhiều ngôn ngữ giao diện và khu vực tại Canada, bạn có thể thay đổi cả hai trong phần Cài đặt."
+        "question": "Có thể đổi ngôn ngữ và giao diện không?",
+        "answer": "Có. LifeStep hỗ trợ mười ngôn ngữ và giao diện sáng, tối hoặc theo hệ thống."
       },
       {
-        "question": "Tôi có thể nhận tin nóng không?",
-        "answer": "Có. Hãy bật thông báo trình duyệt trong ứng dụng để nhận cập nhật kịp thời và quản lý chúng trong Trung tâm thông báo."
+        "question": "Luyện hội thoại như thế nào?",
+        "answer": "Đọc toàn bộ hội thoại song ngữ hoặc luyện từng câu với giọng tổng hợp tự nhiên."
       },
       {
-        "question": "Tin tức đến từ đâu?",
-        "answer": "LifeStep tổng hợp các nguồn tin Canada đáng tin cậy về đời sống địa phương, nhập cư và cập nhật khu vực. Mỗi bài đều ghi rõ nguồn và cho phép bạn mở bài viết gốc."
+        "question": "Có thể luyện những tình huống nào?",
+        "answer": "Nhập cảnh, nhà ở, giao thông, y tế, ngân hàng, giáo dục, việc làm và cộng đồng."
       },
       {
-        "question": "Tôi có thể lưu và tìm kiếm tin tức không?",
-        "answer": "Có. Hãy lưu những bài bạn muốn đọc lại và dùng từ khóa để tìm thêm tin liên quan."
+        "question": "Có thể tiếp tục tiến độ cũ không?",
+        "answer": "Có. LifeStep lưu tiến độ để bạn tiếp tục từ bước tiếp theo."
       },
       {
-        "question": "Làm cách nào để thêm LifeStep vào màn hình chính?",
-        "answer": "Thêm LifeStep vào màn hình chính để mở nhanh như một ứng dụng thông thường. Mở ứng dụng và chọn Thêm vào màn hình chính. Nếu không thấy lời nhắc cài đặt, hãy mở Chia sẻ hoặc menu trình duyệt, chọn Xem thêm, rồi Thêm vào màn hình chính và xác nhận Thêm."
+        "question": "Có dùng được trên điện thoại không?",
+        "answer": "Có. Ứng dụng thích ứng với di động và có thể thêm vào màn hình chính."
       }
+    ]
+  },
+  "homePreview": {
+    "journey": "Hành trình",
+    "steps": [
+      "Đến Canada",
+      "Tìm nhà",
+      "Tài chính"
     ],
-    "footer": "Tin tức Canada đa ngôn ngữ cho người mới đến."
+    "current": "Bạn đang ở đây",
+    "conversation": "Hội thoại",
+    "practiceMode": "Chế độ luyện tập",
+    "nextStep": "Bước tiếp theo đã sẵn sàng",
+    "phrase": "Could you repeat that?",
+    "translation": "Bạn có thể nhắc lại không?",
+    "playPhrase": "Phát câu"
+  },
+  "app": {
+    "back": "Quay lại",
+    "about": "Giới thiệu",
+    "settings": "Cài đặt",
+    "messages": "Tin nhắn",
+    "journey": "Hành trình",
+    "aboutUs": "Về chúng tôi",
+    "privacyPolicy": "Chính sách quyền riêng tư",
+    "termsOfUse": "Điều khoản sử dụng",
+    "feedback": "Phản hồi",
+    "theme": "Giao diện",
+    "language": "Ngôn ngữ",
+    "voice": "Giọng nói",
+    "explore": "Khám phá",
+    "start": "Bắt đầu",
+    "resume": "Tiếp tục",
+    "restart": "Khám phá lại",
+    "progress": "Tiến độ",
+    "completed": "Đã hoàn thành",
+    "inProgress": "Đang thực hiện",
+    "notStarted": "Chưa bắt đầu",
+    "loading": "Đang chuẩn bị bước tiếp theo…",
+    "offline": "Hiển thị bản xem trước khi kết nối lại."
+  },
+  "lifeStepAbout": {
+    "sections": [
+      [
+        "1. Sứ mệnh của chúng tôi",
+        "LifeStep giúp người mới đến Canada chuẩn bị cho các tình huống thực tế thông qua những hội thoại tiếng Anh tương tác."
+      ],
+      [
+        "2. Cách hoạt động",
+        "Theo hành trình cá nhân hóa qua giai đoạn đến Canada, ổn định cuộc sống, học tập, làm việc, gia đình và cộng đồng, từng tình huống thực tế một."
+      ],
+      [
+        "3. Luyện tập cho đời thực",
+        "Tìm hiểu bối cảnh và từ vựng, nghe hội thoại tự nhiên, luyện từng câu và ôn lại các cách diễn đạt hữu ích trước khi sử dụng ngoài đời."
+      ],
+      [
+        "4. Liên hệ và phản hồi",
+        "Nếu bạn có câu hỏi hoặc đề xuất, hãy gửi tin nhắn qua trang phản hồi. Chúng tôi xem xét mọi ý kiến."
+      ]
+    ]
   }
 }

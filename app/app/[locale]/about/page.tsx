@@ -9,7 +9,6 @@ import { useApp } from "@/components/providers/app-provider";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { Button } from "@/components/ui/button";
 import { isValidEmail, normalizeEmail, submitFeedback } from "@/lib/api/common";
-import { lifeStepAbout } from "@/messages/lifestep";
 import { subPageClass } from "@/components/app/app-ui-styles";
 import { cn } from "@/lib/utils";
 
@@ -24,14 +23,14 @@ export default function AboutPage() {
 
 function AboutContent() {
   const params = useSearchParams();
-  const { dictionary, copy, locale } = useApp();
+  const { dictionary, copy } = useApp();
   const panel = (params.get("panel") || "app") as AboutPanel;
   if (panel === "feedback") return <FeedbackPanel />;
 
   const page = panel === "privacy" ? dictionary.privacyPolicy : panel === "terms" ? dictionary.termsPage : dictionary.aboutAppPage;
   const icon = panel === "privacy" ? <ShieldCheck /> : panel === "terms" ? <FileText /> : <Info />;
   const sections = panel === "app"
-    ? (lifeStepAbout[locale] || lifeStepAbout.en).sections
+    ? dictionary.lifeStepAbout.sections
     : [[page.s1Title, page.s1Body], [page.s2Title, page.s2Body], [page.s3Title, page.s3Body], [page.s4Title, page.s4Body]];
 
   return <main className={subPageClass}>

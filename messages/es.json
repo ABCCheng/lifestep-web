@@ -291,136 +291,187 @@
     "networkErrorServer": "Error del servicio, inténtalo más tarde"
   },
   "homePage": {
-    "title": "LifeStep - Noticias principales de Canadá para recién llegados",
-    "seoTitle": "LifeStep - Noticias principales de Canadá para recién llegados",
-    "seoDescription": "Noticias locales de Canadá, novedades sobre inmigración e historias regionales para recién llegados. Lee en varios idiomas y mejora tu inglés con noticias reales.",
-    "intro": "Sigue las noticias locales de Canadá, las novedades sobre inmigración y la información regional, mientras mejoras tu inglés de forma natural con lecturas reales.",
-    "getStarted": "Comenzar",
-    "pushLabel": "Alerta push",
+    "title": "LifeStep - Practica inglés para la vida real",
+    "seoTitle": "LifeStep - Practica inglés para la vida real",
+    "seoDescription": "Conversaciones interactivas en inglés para preparar a los recién llegados a la vida en Canadá.",
+    "intro": "Gana confianza para la vida diaria en Canadá con conversaciones guiadas basadas en situaciones reales de los recién llegados.",
+    "getStarted": "Da tu primer paso",
     "explore": "Explorar funciones",
     "themeLabel": "Tema",
-    "signalLabel": "Tu señal local",
-    "liveLabel": "Resumen en vivo",
-    "topStory": "Noticias principales",
+    "featuresKicker": "Funciones del producto",
+    "faqNav": "Preguntas",
+    "privacyNav": "Privacidad",
+    "termsNav": "Condiciones",
+    "launchApp": "Abrir LifeStep",
+    "footer": "Inglés para la vida real en tu nueva vida en Canadá.",
+    "changelogNav": "Registro de cambios",
+    "changelogEarlierReleases": "Versiones anteriores",
+    "discoverMoreNav": "Descubrir más",
     "metrics": [
       {
         "value": "10",
         "label": "Idiomas"
       },
       {
-        "value": "7",
-        "label": "Regiones"
+        "value": "12",
+        "label": "Etapas de vida"
       },
       {
-        "value": "8+",
-        "label": "Fuentes"
+        "value": "90+",
+        "label": "Situaciones reales"
       },
       {
-        "value": "24/7",
-        "label": "Actualizaciones"
+        "value": "4",
+        "label": "Pasos de aprendizaje"
       }
     ],
-    "faqNav": "FAQ",
-    "privacyNav": "Política de privacidad",
-    "termsNav": "Términos de uso",
-    "featuresKicker": "Descripción del producto",
     "features": [
       {
-        "eyebrow": "01 / Flash",
-        "title": "Empieza por lo más importante",
-        "body": "Un resumen rápido de las noticias principales, actualizaciones prácticas y alertas locales, listo cuando comienza tu día.",
+        "eyebrow": "01 / Recorrido",
+        "title": "Sigue la vida real, paso a paso",
+        "body": "Un mapa visual convierte momentos importantes en un camino claro.",
         "tags": [
-          "Boletines en vivo",
-          "Alertas de tránsito",
-          "Últimas noticias"
+          "Estudio",
+          "Trabajo",
+          "Familia"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "02 / Explorar",
-        "title": "Un solo feed, muchas fuentes confiables",
-        "body": "Explora las noticias locales de Canadá sobre inmigración, educación, salud, entretenimiento y titulares de fuentes confiables.",
+        "eyebrow": "02 / Aprende",
+        "title": "Sabe qué esperar",
+        "body": "Aprende el contexto y el vocabulario antes de conversar.",
         "tags": [
-          "CBC News",
-          "Global News",
-          "Toronto Sun",
-          "…"
+          "Conocimiento",
+          "Vocabulario"
         ],
         "accent": "blue"
       },
       {
-        "eyebrow": "03 / Región",
-        "title": "Noticias que saben dónde estás",
-        "body": "Elige una región de Canadá —de Toronto y Vancouver a Montreal y más allá— para que cada resumen sea más local.",
+        "eyebrow": "03 / Conversación",
+        "title": "Escucha, repite y responde",
+        "body": "Practica diálogos completos o frase por frase con voces naturales.",
         "tags": [
-          "Toronto",
-          "Vancouver",
-          "Montreal",
-          "Calgary",
-          "…"
+          "Voces naturales",
+          "Diálogo bilingüe"
         ],
         "accent": "lime"
       },
       {
-        "eyebrow": "04 / Idioma",
-        "title": "Lee en varios idiomas",
-        "body": "Lee noticias canadienses en varios idiomas y usa noticias reales para mejorar tu inglés.",
+        "eyebrow": "04 / Repaso",
+        "title": "Haz tuyo el idioma",
+        "body": "Repasa frases clave y completa cada escenario.",
         "tags": [
-          "ES",
-          "EN",
-          "中文",
-          "…"
+          "Frases clave",
+          "Progreso"
+        ],
+        "accent": "orange"
+      },
+      {
+        "eyebrow": "05 / Personal",
+        "title": "Un camino hecho para ti",
+        "body": "Elige estudio, trabajo o familia.",
+        "tags": [
+          "Tu ritmo",
+          "Tu recorrido"
         ],
         "accent": "red"
       },
       {
-        "eyebrow": "05 / Notificaciones",
-        "title": "Deja que las noticias importantes te encuentren",
-        "body": "Activa las notificaciones de última hora y mantente al tanto, incluso cuando LifeStep no esté abierto.",
+        "eyebrow": "06 / Avisos",
+        "title": "Mantén cerca el siguiente paso",
+        "body": "Las notificaciones opcionales te ayudan a continuar.",
         "tags": [
-          "Notificaciones en tiempo real",
-          "Centro de notificaciones"
+          "Web Push",
+          "Mensajes"
         ],
         "accent": "blue"
-      },
-      {
-        "eyebrow": "06 / Personal",
-        "title": "Hazlo tuyo",
-        "body": "Guarda noticias, busca por palabra clave y adapta la aplicación a tu día.",
-        "tags": [
-          "Favoritos",
-          "Temas"
-        ],
-        "accent": "lime"
       }
     ],
-    "launchApp": "Abrir la aplicación",
     "faq": [
       {
-        "question": "¿Dónde pueden encontrar noticias locales de Canadá los recién llegados?",
-        "answer": "LifeStep reúne noticias locales de Canadá, novedades sobre inmigración, información práctica e historias regionales en un mismo feed."
+        "question": "¿Para quién es LifeStep?",
+        "answer": "Para recién llegados que se preparan para la vida diaria, el estudio, el trabajo y la familia en Canadá."
       },
       {
-        "question": "¿Puedo cambiar el idioma y la región?",
-        "answer": "Sí. La aplicación admite varios idiomas de interfaz y regiones de Canadá, y puedes cambiar ambos desde Ajustes."
+        "question": "¿Puedo cambiar idioma y tema?",
+        "answer": "Sí. LifeStep ofrece diez idiomas y temas claro, oscuro y del sistema."
       },
       {
-        "question": "¿Puedo recibir noticias de última hora?",
-        "answer": "Sí. Activa las notificaciones del navegador desde la aplicación para recibir actualizaciones oportunas y gestionarlas en el Centro de notificaciones."
+        "question": "¿Cómo se practica la conversación?",
+        "answer": "Lee el diálogo bilingüe completo o practica frase por frase con voces naturales."
       },
       {
-        "question": "¿De dónde provienen las noticias?",
-        "answer": "LifeStep reúne fuentes de noticias canadienses confiables sobre la vida local, la inmigración y las novedades regionales. Cada noticia identifica su fuente y permite abrir el artículo original."
+        "question": "¿Qué situaciones puedo practicar?",
+        "answer": "Llegada, vivienda, transporte, salud, banca, educación, trabajo y comunidad."
       },
       {
-        "question": "¿Puedo guardar y buscar noticias?",
-        "answer": "Sí. Guarda las noticias que quieras volver a leer y usa la búsqueda para encontrar más contenido por palabra clave."
+        "question": "¿Puedo continuar mi progreso?",
+        "answer": "Sí. LifeStep guarda el progreso para que continúes desde el siguiente paso."
       },
       {
-        "question": "¿Cómo añado LifeStep a la pantalla de inicio?",
-        "answer": "Añade LifeStep a la pantalla de inicio para abrirlo rápidamente como una aplicación. Abre la aplicación y elige Añadir a la pantalla de inicio. Si no aparece la instalación, abre Compartir o el menú del navegador, elige Ver más, luego Añadir a la pantalla de inicio y confirma Añadir."
+        "question": "¿Funciona en el móvil?",
+        "answer": "Sí. La aplicación se adapta al móvil y puede añadirse a la pantalla de inicio."
       }
+    ]
+  },
+  "homePreview": {
+    "journey": "Recorrido",
+    "steps": [
+      "Llegada",
+      "Encontrar vivienda",
+      "Finanzas"
     ],
-    "footer": "Noticias canadienses multilingües para recién llegados."
+    "current": "Estás aquí",
+    "conversation": "Conversación",
+    "practiceMode": "Modo práctica",
+    "nextStep": "Siguiente paso listo",
+    "phrase": "Could you repeat that?",
+    "translation": "¿Podría repetirlo?",
+    "playPhrase": "Reproducir frase"
+  },
+  "app": {
+    "back": "Atrás",
+    "about": "Acerca de",
+    "settings": "Ajustes",
+    "messages": "Mensajes",
+    "journey": "Tu recorrido",
+    "aboutUs": "Sobre nosotros",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfUse": "Términos de uso",
+    "feedback": "Comentarios",
+    "theme": "Tema",
+    "language": "Idioma",
+    "voice": "Voz",
+    "explore": "Explorar",
+    "start": "Empezar",
+    "resume": "Continuar",
+    "restart": "Explorar de nuevo",
+    "progress": "Progreso",
+    "completed": "Completado",
+    "inProgress": "En progreso",
+    "notStarted": "Sin empezar",
+    "loading": "Preparando tu próximo paso…",
+    "offline": "Mostrando una vista previa mientras se reconecta."
+  },
+  "lifeStepAbout": {
+    "sections": [
+      [
+        "1. Nuestra misión",
+        "LifeStep ayuda a los recién llegados a Canadá a prepararse para situaciones reales mediante conversaciones interactivas en inglés."
+      ],
+      [
+        "2. Cómo funciona",
+        "Sigue un recorrido personalizado por la llegada, la adaptación, los estudios, el trabajo, la familia y la vida comunitaria, una situación práctica a la vez."
+      ],
+      [
+        "3. Practica para la vida real",
+        "Aprende el contexto y el vocabulario, escucha diálogos naturales, practica línea por línea y repasa expresiones útiles antes de usarlas en la vida diaria."
+      ],
+      [
+        "4. Contacto y comentarios",
+        "Si tienes alguna pregunta o sugerencia, envíanos un mensaje desde la página de comentarios. Revisamos cada envío."
+      ]
+    ]
   }
 }

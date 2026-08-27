@@ -8,7 +8,7 @@ function language() {
 }
 
 function baseUrl() {
-  const configured = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const configured = process.env.NEXT_PUBLIC_API_ORIGIN?.trim();
   if (configured) return configured.replace(/\/$/, "");
   return typeof window === "undefined" ? "" : window.location.origin;
 }
