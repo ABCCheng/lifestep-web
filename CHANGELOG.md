@@ -13,6 +13,7 @@ This changelog is maintained in English.
 - Added open-source documentation, an MIT license, and a home-page changelog.
 - Added home-page navigation for the changelog and the EffortGo product website.
 - Added the project GitHub link to the home-page footer.
+- Added offline PWA app-shell and Next.js asset caching, plus cached fallback data for learning routes.
 
 ### Changed
 

@@ -1,6 +1,7 @@
 import type { ApiResponse, JourneyStageProgress, JourneyType, LifeScenario, LifeStage, ScenarioDetail } from "./types";
 
 let deviceReady: Promise<void> | null = null;
+const OFFLINE_API_CACHE_NAME = "lifestep-api-v1";
 
 function language() {
   if (typeof window === "undefined") return "en";
@@ -23,6 +24,39 @@ function headers(json = false) {
   return value;
 }
 
+function apiCacheKey(path: string, body: unknown) {
+  const input = `${language()}:${path}:${JSON.stringify(body)}`;
+  let hash = 2166136261;
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return new Request(`${typeof window === "undefined" ? "https://lifestep.invalid" : window.location.origin}/__lifestep-api-cache__/${(hash >>> 0).toString(16)}`);
+}
+
+async function readCachedApi<T>(path: string, body: unknown): Promise<T | undefined> {
+  if (typeof window === "undefined" || !("caches" in window)) return undefined;
+  try {
+    const response = await (await caches.open(OFFLINE_API_CACHE_NAME)).match(apiCacheKey(path, body));
+    if (!response) return undefined;
+    return (await response.json()) as T;
+  } catch {
+    return undefined;
+  }
+}
+
+async function writeCachedApi(path: string, body: unknown, data: unknown) {
+  if (typeof window === "undefined" || !("caches" in window)) return;
+  try {
+    await (await caches.open(OFFLINE_API_CACHE_NAME)).put(
+      apiCacheKey(path, body),
+      new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json" } }),
+    );
+  } catch {
+    // Offline caching is an enhancement; private browsing can disable Cache Storage.
+  }
+}
+
 export async function ensureDeviceReady(force = false) {
   if (force) deviceReady = null;
   if (deviceReady) return deviceReady;
@@ -37,16 +71,25 @@ export async function ensureDeviceReady(force = false) {
   return deviceReady;
 }
 
-async function post<T>(path: string, body: unknown, retry = true): Promise<T> {
-  await ensureDeviceReady();
-  const response = await fetch(`${baseUrl()}${path}`, { method: "POST", credentials: "include", headers: headers(true), body: JSON.stringify(body) });
-  if (response.headers.get("X-Device-Required") === "1" && retry) {
-    await ensureDeviceReady(true);
-    return post<T>(path, body, false);
+async function post<T>(path: string, body: unknown, retry = true, cacheable = false): Promise<T> {
+  try {
+    await ensureDeviceReady();
+    const response = await fetch(`${baseUrl()}${path}`, { method: "POST", credentials: "include", headers: headers(true), body: JSON.stringify(body) });
+    if (response.headers.get("X-Device-Required") === "1" && retry) {
+      await ensureDeviceReady(true);
+      return post<T>(path, body, false, cacheable);
+    }
+    const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
+    if (!response.ok || payload?.code !== 200) throw new Error(payload?.message || "Request failed");
+    if (cacheable) void writeCachedApi(path, body, payload.data);
+    return payload.data;
+  } catch (error) {
+    if (cacheable) {
+      const cached = await readCachedApi<T>(path, body);
+      if (cached !== undefined) return cached;
+    }
+    throw error;
   }
-  const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
-  if (!response.ok || payload?.code !== 200) throw new Error(payload?.message || "Request failed");
-  return payload.data;
 }
 
 export async function getApiResponse<T>(path: string, params?: Record<string, string>) {
@@ -68,9 +111,9 @@ export async function postApiResponse<T>(path: string, body: unknown) {
 }
 
 export const lifeStepApi = {
-  journeyProgress: (journeyType: JourneyType) => post<JourneyStageProgress[]>("/api/lifestep/journey-stage-progress", { journeyType }),
-  scenarios: (journeyType: JourneyType, lifeStage: LifeStage) => post<LifeScenario[]>("/api/lifestep/life-scenario/list", { journeyType, lifeStage }),
-  scenarioDetail: (scenarioId: number) => post<ScenarioDetail>("/api/lifestep/life-scenario/detail", { scenarioId }),
+  journeyProgress: (journeyType: JourneyType) => post<JourneyStageProgress[]>("/api/lifestep/journey-stage-progress", { journeyType }, true, true),
+  scenarios: (journeyType: JourneyType, lifeStage: LifeStage) => post<LifeScenario[]>("/api/lifestep/life-scenario/list", { journeyType, lifeStage }, true, true),
+  scenarioDetail: (scenarioId: number) => post<ScenarioDetail>("/api/lifestep/life-scenario/detail", { scenarioId }, true, true),
   startScenario: (scenarioId: number) => post<void>("/api/lifestep/life-scenario/start", { scenarioId }),
   completeScenario: (scenarioId: number) => post<void>("/api/lifestep/life-scenario/complete", { scenarioId }),
 };

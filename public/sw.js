@@ -1,10 +1,12 @@
 const CACHE_PREFIX = "lifestep-pwa-";
-const CACHE_NAME = `${CACHE_PREFIX}v3`;
+const CACHE_NAME = `${CACHE_PREFIX}v4`;
+const DOCUMENT_CACHE_NAME = `${CACHE_PREFIX}documents-v4`;
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__lifestep-push-preferences__";
 const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
 const PUSH_MESSAGES_URL = "/__lifestep-push-messages__";
 const MAX_PUSH_MESSAGES = 20;
+const DEFAULT_LOCALE = "en";
 const DEFAULT_PUSH_PREFERENCES = { languageCode: "en", region: "Toronto" };
 const SUPPORTED_LANGUAGES = ["en", "fr", "zh-Hans", "zh-Hant", "pa", "es", "ja", "ko", "ru", "vi"];
 const SUPPORTED_REGIONS = ["Toronto", "Vancouver", "Montreal", "Calgary", "Winnipeg", "Saskatoon", "Halifax"];
@@ -23,6 +25,7 @@ self.addEventListener("activate", (event) => {
               (key) =>
                 key.startsWith(CACHE_PREFIX) &&
                 key !== CACHE_NAME &&
+                key !== DOCUMENT_CACHE_NAME &&
                 key !== PUSH_PREFERENCES_CACHE_NAME &&
                 key !== PUSH_MESSAGES_CACHE_NAME
             )
@@ -34,6 +37,11 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("message", (event) => {
+  if (event.data?.type === "lifestep:precache-app-shell") {
+    event.waitUntil(precacheAppShell(event.data.locale));
+    return;
+  }
+
   if (event.data?.type === "lifestep:clear-push-notifications") {
     event.waitUntil(clearPushNotifications());
     return;
@@ -322,26 +330,136 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/_next/")) return;
-  if (url.searchParams.has("_rsc") || request.headers.has("RSC") || request.headers.has("Next-Router-State-Tree")) return;
+  if (url.pathname.startsWith("/api/")) return;
 
-  // Never cache or fall back to a page document. A cached Next.js document can
-  // reference build assets that no longer exist after a deployment.
-  if (request.mode === "navigate") return;
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(cacheStaticAsset(request));
+    return;
+  }
+
+  if (url.searchParams.has("_rsc") || request.headers.has("RSC") || request.headers.has("Next-Router-State-Tree")) {
+    event.respondWith(networkFirst(request, CACHE_NAME));
+    return;
+  }
+
+  if (request.mode === "navigate") {
+    if (url.pathname !== "/app" && !url.pathname.startsWith("/app/")) return;
+    event.respondWith(networkFirstNavigation(request));
+    return;
+  }
 
   if (!["image", "font", "manifest"].includes(request.destination)) return;
-
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request).then((response) => {
-        if (response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith(cacheStaticAsset(request));
 });
+
+async function cacheStaticAsset(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+
+  try {
+    const response = await fetch(request);
+    if (response.ok) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function networkFirst(request, cacheName) {
+  try {
+    const response = await fetch(request);
+    if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+    if (response.ok) {
+      const cache = await caches.open(cacheName);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    return new Response("Offline", { status: 503, statusText: "Offline" });
+  }
+}
+
+async function networkFirstNavigation(request) {
+  try {
+    const response = await fetch(request);
+    if (!response.ok) throw new Error(`Navigation failed: ${response.status}`);
+    if (response.ok) {
+      const cache = await caches.open(DOCUMENT_CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cache = await caches.open(DOCUMENT_CACHE_NAME);
+    const url = new URL(request.url);
+    const cached = await cache.match(request) || await cache.match(stripSearch(request.url));
+    if (cached) return cached;
+
+    const locale = getLocaleFromPath(url.pathname);
+    const fallback = await cache.match(`/app/${locale}`) || await cache.match(`/app/${DEFAULT_LOCALE}`) || await cache.match("/app");
+    if (fallback) return fallback;
+
+    return new Response(offlineDocument(), {
+      status: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    });
+  }
+}
+
+function stripSearch(url) {
+  const value = new URL(url);
+  value.search = "";
+  return value.href;
+}
+
+function getLocaleFromPath(pathname) {
+  const match = pathname.match(/^\/app\/([^/]+)/);
+  return match && SUPPORTED_LANGUAGES.includes(match[1]) ? match[1] : DEFAULT_LOCALE;
+}
+
+function offlineDocument() {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LifeStep offline</title></head><body><main style="font-family:system-ui,sans-serif;max-width:34rem;margin:20vh auto;padding:2rem"><h1>LifeStep</h1><p>You are offline. Open LifeStep once while connected to prepare this app for offline use.</p></main></body></html>`;
+}
+
+async function precacheAppShell(locale) {
+  const safeLocale = SUPPORTED_LANGUAGES.includes(locale) ? locale : DEFAULT_LOCALE;
+  const routes = [
+    "/app",
+    `/app/${safeLocale}`,
+    `/app/${safeLocale}/stage`,
+    `/app/${safeLocale}/scenario`,
+  ];
+  const cache = await caches.open(DOCUMENT_CACHE_NAME);
+  const assetUrls = new Set();
+
+  await Promise.all(routes.map(async (route) => {
+    try {
+      const response = await fetch(route, { cache: "no-store", headers: { Accept: "text/html" } });
+      if (!response.ok) return;
+      const copy = response.clone();
+      await cache.put(new Request(new URL(route, self.location.origin).href), copy);
+      const html = await response.text();
+      const assetPattern = /(?:src|href)=["']([^"']+)["']/g;
+      for (const match of html.matchAll(assetPattern)) {
+        const value = match[1];
+        if (value.startsWith("/_next/static/")) assetUrls.add(new URL(value, self.location.origin).href);
+      }
+    } catch {
+      // The current page remains usable even if a secondary shell route fails.
+    }
+  }));
+
+  await Promise.all([...assetUrls].map(async (assetUrl) => {
+    try {
+      const request = new Request(assetUrl);
+      const response = await fetch(request, { cache: "no-store" });
+      if (response.ok) await (await caches.open(CACHE_NAME)).put(request, response);
+    } catch {
+      // Individual assets can be retried on the next online visit.
+    }
+  }));
+}

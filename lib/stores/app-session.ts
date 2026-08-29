@@ -1,7 +1,6 @@
 import { readSessionStorage, writeSessionStorage } from "./storage";
 
 const NAVIGATION_STACK_KEY = "LIFESTEP_APP_NAVIGATION_STACK";
-export const APP_SPLASH_SESSION_KEY = "LIFESTEP_PWA_SPLASH_SHOWN";
 
 function readStack() {
   const raw = readSessionStorage(NAVIGATION_STACK_KEY);

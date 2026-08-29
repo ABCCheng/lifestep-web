@@ -13,6 +13,7 @@ LifeStep is a multilingual web app that helps newcomers to Canada build confiden
 - Text-to-speech playback with configurable voice settings
 - Browser push notifications and an in-app notification center
 - Installable PWA with responsive desktop and mobile layouts
+- Offline app-shell loading with cached learning content
 - Light and dark themes
 
 ## Tech stack
@@ -24,6 +25,12 @@ LifeStep is a multilingual web app that helps newcomers to Canada build confiden
 - Service Worker, Web Push, browser storage, and text-to-speech APIs
 
 This repository contains the web client. Journey progress, scenario content, feedback, and push subscription APIs are provided by a separate backend service.
+
+### Offline behavior
+
+The app registers a Service Worker at the site root so the `/app` launch URL is controlled even though it has no trailing slash. On the first connected visit—and once after each deployment—it warms the localized app shell, Next.js static assets, and the main learning routes. Subsequent launches can load the cached app while offline. Journey progress, scenario lists, and scenario details are cached after a successful API response; if the API is unavailable, the app uses the most recent cached response or bundled preview content.
+
+Feedback, push subscription changes, and start/complete mutations still require a connection and are never reported as successfully synced while offline.
 
 ## Getting started
 

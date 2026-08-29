@@ -4,7 +4,6 @@ import { ViewportHeightSync } from "@/components/shell/ViewportHeightSync";
 import { SnackbarProvider } from "@/components/providers/snackbar-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { APP_SPLASH_SESSION_KEY } from "@/lib/stores/app-session";
 import { APP_THEME_COLORS, THEME_STORAGE_KEY } from "@/lib/stores/theme";
 import { locales } from "@/lib/i18n";
 import "./globals.css";
@@ -39,14 +38,9 @@ const INITIAL_PREFERENCES_SCRIPT = `
     }
     const mobileWeb = window.matchMedia?.("(max-width: 767px)").matches && !standalone;
     if (mobileWeb) root.style.backgroundColor = activeThemeColor;
-    let splashShown = false;
-    try { splashShown = sessionStorage.getItem(${JSON.stringify(APP_SPLASH_SESSION_KEY)}) === "1"; } catch {}
-    const showSplash = mobileStandalone && appPath && !splashShown;
+    const appHomePath = path === "/app" || homeLocales.some((locale) => path === "/app/" + locale);
+    const showSplash = mobileStandalone && appHomePath;
     root.dataset.showAppSplash = showSplash ? "true" : "false";
-    if (showSplash) {
-      try { sessionStorage.setItem(${JSON.stringify(APP_SPLASH_SESSION_KEY)}, "1"); } catch {}
-    }
-    root.dataset.appSplashStartedAt = String(Date.now());
   })();
 `;
 

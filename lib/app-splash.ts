@@ -47,6 +47,7 @@ export function dismissAppSplash() {
     return;
   }
   if (root.dataset.appSplashReady !== "true") return;
+  if (!root.dataset[splashStartedAtDataKey]) return;
 
   const startedAt = Number(root.dataset[splashStartedAtDataKey]);
   const elapsed = Number.isFinite(startedAt) ? Date.now() - startedAt : 0;

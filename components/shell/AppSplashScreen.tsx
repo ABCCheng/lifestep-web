@@ -11,12 +11,30 @@ export function AppSplashScreen() {
 
   useEffect(() => {
     const unsubscribe = subscribeAppSplashDismiss(() => setVisible(false));
+    let firstFrame = 0;
+    let secondFrame = 0;
+
     if (document.documentElement.dataset.appSplashDismissed === "true") {
       setVisible(false);
       return unsubscribe;
     }
-    dismissAppSplash();
-    return unsubscribe;
+
+    if (document.documentElement.dataset.showAppSplash === "true") {
+      // Start the minimum-duration clock after the splash has had a chance to
+      // paint, not while the head script or React tree is still initializing.
+      firstFrame = window.requestAnimationFrame(() => {
+        secondFrame = window.requestAnimationFrame(() => {
+          document.documentElement.dataset.appSplashStartedAt = String(Date.now());
+          dismissAppSplash();
+        });
+      });
+    }
+    if (document.documentElement.dataset.showAppSplash !== "true") dismissAppSplash();
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      unsubscribe();
+    };
   }, []);
 
   if (!visible) return null;

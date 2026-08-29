@@ -326,6 +326,12 @@ a { text-decoration: none; }
     display: flex;
   }
 
+  /* Keep the page mounted for layout stability, but never paint it beneath
+     the startup screen while the mobile PWA is booting. */
+  html[data-show-app-splash="true"] .app-shell-root {
+    visibility: hidden;
+  }
+
 }
 
 
