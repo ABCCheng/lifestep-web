@@ -68,6 +68,7 @@
   --app-viewport-height: 100dvh;
   --app-fill-height: calc(var(--app-safe-top) + var(--app-viewport-height) + var(--app-safe-bottom));
   --app-desktop-header-height: 5.2rem;
+  --app-header-offset: var(--app-desktop-header-height);
   --app-device-bg: var(--background);
   --app-safe-top-color: var(--app-device-bg);
   --app-safe-top-overlay: linear-gradient(transparent, transparent);
@@ -182,6 +183,8 @@ a { text-decoration: none; }
 
 
 @media (max-width: 767px) {
+  :root { --app-header-offset: calc(var(--app-safe-header-top) + 48px); }
+
   .app-top-chrome.app-mobile-chrome { overflow: hidden; }
 
 
@@ -285,41 +288,28 @@ a { text-decoration: none; }
   background: var(--app-default-global-bg) !important;
 }
 
-
-.dark .app-splash-screen {
-  background: var(--app-default-global-bg) !important;
-}
-
-
 .app-splash-logo {
   position: relative;
   overflow: hidden;
-  isolation: isolate;
+  background: url("/logo.svg") center / contain no-repeat;
+  -webkit-mask: url("/logo.svg") center / contain no-repeat;
+  mask: url("/logo.svg") center / contain no-repeat;
 }
-
 
 .app-splash-logo::after {
   position: absolute;
   top: -35%;
   bottom: -35%;
-  left: -65%;
-  width: 34%;
+  left: -35%;
+  z-index: 1;
+  width: 9%;
   content: "";
-  background: linear-gradient(
-    105deg,
-    transparent 0%,
-    rgb(255 255 255 / 0.08) 30%,
-    rgb(255 255 255 / 0.9) 50%,
-    rgb(255 255 255 / 0.08) 70%,
-    transparent 100%
-  );
+  background: rgb(255 255 255 / 0.9);
+  opacity: 0;
   transform: skewX(-18deg);
-  -webkit-mask: url("/logo.svg") center / contain no-repeat;
-  mask: url("/logo.svg") center / contain no-repeat;
   animation: app-splash-logo-shine 2.4s ease-in-out 0.25s infinite;
   pointer-events: none;
 }
-
 
 @media (max-width: 767px) {
   html[data-show-app-splash="true"] .app-splash-screen {
@@ -331,9 +321,7 @@ a { text-decoration: none; }
   html[data-show-app-splash="true"] .app-shell-root {
     visibility: hidden;
   }
-
 }
-
 
 .app-splash-screen-content {
   position: absolute;
@@ -346,7 +334,6 @@ a { text-decoration: none; }
   transition: transform 260ms ease, opacity 260ms ease;
 }
 
-
 html.app-standalone .app-splash-screen[data-exiting="true"] {
   pointer-events: none;
 }
@@ -357,34 +344,40 @@ html.app-standalone .app-splash-screen[data-exiting="true"] .app-splash-screen-c
   opacity: 0;
 }
 
-
 html[data-skip-app-splash="true"] .app-splash-screen {
   display: none !important;
 }
 
-
 @keyframes app-splash-logo-shine {
   0%,
   18% {
-    transform: translateX(0) skewX(-18deg);
+    left: -35%;
+    opacity: 0;
   }
 
+  24% {
+    opacity: 0.9;
+  }
 
-  62%,
+  62% {
+    left: 130%;
+    opacity: 0.9;
+  }
+
+  63%,
   100% {
-    transform: translateX(470%) skewX(-18deg);
+    left: 130%;
+    opacity: 0;
   }
-
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   .app-splash-logo::after {
     animation: none;
     opacity: 0;
   }
-
 }
+
 
 @media (min-width: 1024px) {
   .app-shell-width { width: min(1152px, calc(100% - 48px)); }

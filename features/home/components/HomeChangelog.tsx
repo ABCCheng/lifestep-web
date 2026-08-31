@@ -1,7 +1,7 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import type { ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 type ChangelogContentBlock =
   | { type: "category"; text: string }

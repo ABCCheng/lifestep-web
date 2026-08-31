@@ -9,13 +9,13 @@ import { useApp } from "@/components/providers/app-provider";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { Button } from "@/components/ui/button";
 import { isValidEmail, normalizeEmail, submitFeedback } from "@/lib/api/common";
-import { subPageClass } from "@/components/app/app-ui-styles";
 import { cn } from "@/lib/utils";
 
 type AboutPanel = "privacy" | "terms" | "app" | "feedback";
 type FeedbackType = "bug" | "suggestion" | "other";
 
 const FEEDBACK_MAX_LENGTH = 1000;
+const subPageClass = "app-page pb-10";
 
 export default function AboutPage() {
   return <Suspense fallback={null}><AboutContent /></Suspense>;
@@ -35,7 +35,7 @@ function AboutContent() {
 
   return <main className={subPageClass}>
     <BackHeader title={page.title} eyebrow={copy.about} />
-    <article className="app-narrow-width py-[42px] max-[680px]:py-7">
+    <article className="app-narrow-width py-[42px] max-[680px]:pb-7 max-[680px]:pt-2">
       <AppSectionTitle icon={icon} title={page.title} />
       <div className="grid gap-4">
         {sections.map(([title, body]) => <section className="border-0 p-0" key={title}><h2 className="m-0 text-lg font-semibold leading-7">{title}</h2><p className="mb-0 mt-2 text-base leading-6 text-muted-foreground">{body}</p></section>)}
@@ -46,7 +46,7 @@ function AboutContent() {
 }
 
 function FeedbackPanel() {
-  const { dictionary, copy } = useApp();
+  const { dictionary, lifeStep, copy } = useApp();
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [type, setType] = useState<FeedbackType>("suggestion");
@@ -84,13 +84,13 @@ function FeedbackPanel() {
   const title = dictionary.feedbackPage.title;
   return <main className={subPageClass}>
     <BackHeader title={title} eyebrow={copy.about} />
-    <article className="app-narrow-width py-[42px] max-[680px]:py-7">
+    <article className="app-narrow-width py-[42px] max-[680px]:pb-7 max-[680px]:pt-2">
       <AppSectionTitle icon={<MessageSquareText />} title={title} />
       <form noValidate className="grid gap-3" onSubmit={submit}>
         <div>
           <div className="relative">
             <input className="h-11 w-full rounded-[var(--radius)] border border-input bg-card py-0 pl-3 pr-11 text-foreground outline-none transition focus:border-ring focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--ring)_22%,transparent)] aria-invalid:border-destructive" value={email} disabled={submitting} type="email" autoComplete="email username" inputMode="email" aria-invalid={Boolean(emailError)} placeholder={dictionary.feedbackPage.emailOptional} onChange={(event) => { setEmail(event.target.value); setEmailError(validateEmail(event.target.value)); }} />
-            {email && !submitting ? <button className="absolute right-1 top-1.5 grid size-8 cursor-pointer place-items-center rounded-[var(--radius)] bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground [&_svg]:size-4" type="button" aria-label="Clear" onClick={() => { setEmail(""); setEmailError(undefined); }}><X /></button> : null}
+            {email && !submitting ? <button className="absolute right-1 top-1.5 grid size-8 cursor-pointer place-items-center rounded-[var(--radius)] bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground [&_svg]:size-4" type="button" aria-label={lifeStep.common.clear} onClick={() => { setEmail(""); setEmailError(undefined); }}><X /></button> : null}
           </div>
           <p className="m-0 min-h-5 pt-1 text-xs text-destructive">{emailError}</p>
         </div>

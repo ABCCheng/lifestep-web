@@ -66,33 +66,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         const target = new URL(event.data.url, location.origin);
         if (event.data.messageId) void markWebPushMessageRead(event.data.messageId);
         const destination = `${target.pathname}${target.search}${target.hash}`;
-        if (!navigator.onLine || isStandaloneApp()) window.location.assign(destination);
-        else router.push(destination);
+        router.push(destination);
       }
     };
     serviceWorker?.addEventListener("message", onMessage);
     return () => { active = false; serviceWorker?.removeEventListener("message", onMessage); };
   }, [locale, router]);
-
-  useEffect(() => {
-    const navigateOffline = (event: MouseEvent) => {
-      if ((!isStandaloneApp() && navigator.onLine) || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const anchor = target.closest<HTMLAnchorElement>("a[href]");
-      if (!anchor || anchor.target && anchor.target !== "_self") return;
-
-      const url = new URL(anchor.href, location.href);
-      if (url.origin !== location.origin || (url.pathname !== "/app" && !url.pathname.startsWith("/app/"))) return;
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      window.location.assign(`${url.pathname}${url.search}${url.hash}`);
-    };
-
-    document.addEventListener("click", navigateOffline, true);
-    return () => document.removeEventListener("click", navigateOffline, true);
-  }, []);
 
   useEffect(() => {
     const query = searchParams.toString();

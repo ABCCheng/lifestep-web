@@ -1,6 +1,6 @@
 const CACHE_PREFIX = "lifestep-pwa-";
-const CACHE_NAME = `${CACHE_PREFIX}v4`;
-const DOCUMENT_CACHE_NAME = `${CACHE_PREFIX}documents-v4`;
+const CACHE_NAME = `${CACHE_PREFIX}v5`;
+const DOCUMENT_CACHE_NAME = `${CACHE_PREFIX}documents-v5`;
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__lifestep-push-preferences__";
 const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
@@ -432,6 +432,8 @@ async function precacheAppShell(locale) {
     `/app/${safeLocale}`,
     `/app/${safeLocale}/stage`,
     `/app/${safeLocale}/scenario`,
+    `/app/${safeLocale}/vocabulary`,
+    `/app/${safeLocale}/sentences`,
   ];
   const cache = await caches.open(DOCUMENT_CACHE_NAME);
   const assetUrls = new Set();
