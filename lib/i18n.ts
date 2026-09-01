@@ -8,7 +8,6 @@ import ru from "@/messages/ru.json";
 import vi from "@/messages/vi.json";
 import zhHans from "@/messages/zh-Hans.json";
 import zhHant from "@/messages/zh-Hant.json";
-import { lifeStepAppCopy, lifeStepHome, type LifeStepAppCopy, type LifeStepHomeContent } from "@/messages/lifestep";
 
 const localeDefinitions = [
   { code: "en", name: "English", dictionary: en },
@@ -24,15 +23,11 @@ const localeDefinitions = [
 ] as const;
 
 export type Locale = (typeof localeDefinitions)[number]["code"];
-export type Dictionary = typeof en & { homePage: LifeStepHomeContent; app: LifeStepAppCopy };
+export type Dictionary = typeof en;
 export const defaultLocale: Locale = "en";
 export const locales = localeDefinitions.map(({ code }) => code) as Locale[];
 export const localeNames = Object.fromEntries(localeDefinitions.map(({ code, name }) => [code, name])) as Record<Locale, string>;
-export const dictionaries = Object.fromEntries(localeDefinitions.map(({ code, dictionary }) => [code, {
-  ...dictionary,
-  homePage: lifeStepHome[code],
-  app: lifeStepAppCopy[code],
-}])) as Record<Locale, Dictionary>;
+export const dictionaries = Object.fromEntries(localeDefinitions.map(({ code, dictionary }) => [code, dictionary])) as unknown as Record<Locale, Dictionary>;
 
 export function isLocale(value: string): value is Locale {
   return locales.includes(value as Locale);

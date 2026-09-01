@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { AppProvider } from "@/components/providers/app-provider";
+import { LifeStepDataProvider } from "@/components/providers/lifestep-data-provider";
 import { LocaleProvider } from "@/components/providers/locale-provider";
 import { AppShell } from "@/components/shell/AppShell";
 import { isLocale, locales } from "@/lib/i18n";
@@ -15,7 +16,7 @@ export default async function LifeStepAppLayout({ children, params }: { children
   if (!isLocale(locale)) notFound();
   return (
     <Suspense fallback={null}>
-      <LocaleProvider><AppProvider><AppShell>{children}</AppShell></AppProvider></LocaleProvider>
+      <LocaleProvider><AppProvider><LifeStepDataProvider><AppShell>{children}</AppShell></LifeStepDataProvider></AppProvider></LocaleProvider>
     </Suspense>
   );
 }

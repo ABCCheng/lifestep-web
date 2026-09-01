@@ -1,9 +1,14 @@
+"use client";
+
 import { LoaderCircle } from "lucide-react";
 import type { ReactNode } from "react";
-import { pageLoaderClass } from "./app-ui-styles";
+import { useApp } from "@/components/providers/app-provider";
 
-export function AppLoadingState({ label = "Loading…" }: { label?: ReactNode }) {
-  return <div className={pageLoaderClass} role="status"><LoaderCircle /><span>{label}</span></div>;
+const pageLoaderClass = "flex min-h-60 items-center justify-center gap-2.5 text-muted-foreground [&_svg]:animate-spin";
+
+export function AppLoadingState({ label }: { label?: ReactNode }) {
+  const { copy } = useApp();
+  return <div className={pageLoaderClass} role="status"><LoaderCircle /><span>{label ?? copy.loading}</span></div>;
 }
 
 export function AppEmptyState({ title, description }: { title: ReactNode; description?: ReactNode }) {

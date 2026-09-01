@@ -20,6 +20,18 @@ function isStandaloneApp() {
   return window.matchMedia("(display-mode: standalone)").matches || navigatorWithStandalone.standalone === true;
 }
 
+async function removeLegacyAppScopedServiceWorkers() {
+  if (typeof navigator.serviceWorker.getRegistrations !== "function") return;
+
+  const legacyScope = `${location.origin}/app/`;
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  await Promise.all(
+    registrations
+      .filter((registration) => registration.scope === legacyScope)
+      .map((registration) => registration.unregister()),
+  );
+}
+
 const pwaEdgeGestureClass = "app-pwa-top-route";
 const pwaEdgeGestureWidth = 24;
 
@@ -33,12 +45,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!canRegisterServiceWorker()) return;
     let active = true;
-    void navigator.serviceWorker.register("/sw.js", { scope: "/app/", updateViaCache: "none" }).then(async (registration) => {
-      if (!active) return;
-      registration.active?.postMessage({ type: "lifestep:push-preferences", languageCode: locale, region: "Toronto" });
-      const result = await syncCurrentWebPushSubscription();
-      if (result.status === "sync-error") console.warn("[web-push] subscription sync failed");
-    }).catch((error) => console.warn("Service worker registration failed", error));
+    void removeLegacyAppScopedServiceWorkers()
+      .catch(() => undefined)
+      .then(() => navigator.serviceWorker.register("/sw.js", { scope: "/", updateViaCache: "none" }))
+      .then(async () => {
+        if (!active) return;
+        const readyRegistration = await navigator.serviceWorker.ready;
+        readyRegistration.active?.postMessage({ type: "lifestep:precache-app-shell", locale });
+        readyRegistration.active?.postMessage({ type: "lifestep:push-preferences", languageCode: locale, region: "Toronto" });
+        const result = await syncCurrentWebPushSubscription();
+        if (result.status === "sync-error") console.warn("[web-push] subscription sync failed");
+      }).catch((error) => console.warn("Service worker registration failed", error));
 
     const serviceWorker = getServiceWorkerContainer();
     const onMessage = (event: MessageEvent) => {
@@ -48,7 +65,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       if (event.data?.type === "lifestep:notification-navigation" && typeof event.data.url === "string") {
         const target = new URL(event.data.url, location.origin);
         if (event.data.messageId) void markWebPushMessageRead(event.data.messageId);
-        router.push(`${target.pathname}${target.search}${target.hash}`);
+        const destination = `${target.pathname}${target.search}${target.hash}`;
+        router.push(destination);
       }
     };
     serviceWorker?.addEventListener("message", onMessage);

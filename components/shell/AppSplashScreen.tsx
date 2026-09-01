@@ -11,12 +11,33 @@ export function AppSplashScreen() {
 
   useEffect(() => {
     const unsubscribe = subscribeAppSplashDismiss(() => setVisible(false));
-    if (document.documentElement.dataset.appSplashDismissed === "true") {
+    const root = document.documentElement;
+    const shouldShowSplash = root.dataset.showAppSplash === "true";
+    let firstFrame = 0;
+    let secondFrame = 0;
+
+    if (root.dataset.appSplashDismissed === "true") {
       setVisible(false);
       return unsubscribe;
     }
-    dismissAppSplash();
-    return unsubscribe;
+
+    if (!shouldShowSplash) {
+      dismissAppSplash();
+      return unsubscribe;
+    }
+
+    // Start the handoff clock after the splash has had a chance to paint.
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        root.dataset.appSplashStartedAt = String(Date.now());
+        dismissAppSplash();
+      });
+    });
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      unsubscribe();
+    };
   }, []);
 
   if (!visible) return null;
@@ -32,12 +53,6 @@ export function AppSplashScreen() {
         <span
           aria-hidden="true"
           className="app-splash-logo block h-24 w-24 md:h-28 md:w-28"
-          style={{
-            backgroundImage: "url('/logo.svg')",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
-          }}
         />
         <p className="text-2xl font-bold text-[#d3001c]">Step into real life</p>
       </div>

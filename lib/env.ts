@@ -1,10 +1,13 @@
-export const ENV = {
-  development: { BASE_URL: "http://127.0.0.1:9001" },
-  test: { BASE_URL: "http://127.0.0.1:9001" },
-  production: { BASE_URL: "https://io.effortgo.xyz" },
-} as const;
+export type AppEnv = "development" | "test" | "production";
 
-export type AppEnv = keyof typeof ENV;
+function resolveBuildConfig(name: string, value: string | undefined, fallback = "") {
+  const resolved = value?.trim() ?? "";
+  if (resolved) return resolved.replace(/\/+$/, "");
+  if (process.env.NEXT_PUBLIC_ENV === "production") {
+    throw new Error(`${name} must be configured for a production build.`);
+  }
+  return fallback;
+}
 
 function resolveAppEnv(): AppEnv {
   const explicit = process.env.NEXT_PUBLIC_ENV;
@@ -15,4 +18,8 @@ function resolveAppEnv(): AppEnv {
 }
 
 export const APP_ENV = resolveAppEnv();
-export const API_ORIGIN = process.env.API_BASE_URL || ENV[APP_ENV].BASE_URL;
+export const API_ORIGIN = resolveBuildConfig(
+  "NEXT_PUBLIC_API_ORIGIN",
+  process.env.NEXT_PUBLIC_API_ORIGIN,
+  "http://127.0.0.1:9001",
+);

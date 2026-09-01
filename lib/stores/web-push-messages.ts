@@ -17,7 +17,7 @@ function normalize(value: unknown): WebPushMessage | null {
 }
 async function read() { if (!canCache()) return []; try { const response = await (await caches.open(WEB_PUSH_MESSAGES_CACHE_NAME)).match(messageUrl()); const payload = response ? await response.json() : []; return Array.isArray(payload) ? payload.map(normalize).filter((item): item is WebPushMessage => Boolean(item)) : []; } catch { return []; } }
 async function write(messages: WebPushMessage[]) { const next = messages.slice(0, 20); if (canCache()) await (await caches.open(WEB_PUSH_MESSAGES_CACHE_NAME)).put(messageUrl(), new Response(JSON.stringify(next), { headers: { "Content-Type": "application/json" } })); cached = next; loaded = true; listeners.forEach((listener) => listener()); void updateBadge(); return next; }
-async function updateBadge() { try { const registration = await getServiceWorkerContainer()?.ready; registration?.active?.postMessage({ type: "lifestep:update-app-badge" }); } catch {} }
+async function updateBadge() { try { const registration = await getServiceWorkerContainer()?.ready; registration?.active?.postMessage({ type: "lifestep:update-app-badge" }); } catch { /* Badge updates are optional. */ } }
 export async function getWebPushMessages() { cached = await read(); loaded = true; listeners.forEach((listener) => listener()); void updateBadge(); return cached; }
 export function getCachedWebPushMessages() { return cached; }
 export function hasCachedWebPushMessages() { return loaded; }

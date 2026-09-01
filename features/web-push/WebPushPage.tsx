@@ -2,6 +2,7 @@
 
 import { Bell, BrushCleaning, Circle, CircleCheck, ListCheck, LoaderCircle, Trash2 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 import { AppBackHeader } from "@/components/app";
 import { Modal } from "@/components/Modal";
@@ -27,7 +28,6 @@ import {
 } from "@/lib/stores/web-push-messages";
 import { cn } from "@/lib/utils";
 import { appZIndex } from "@/lib/z-index";
-import { pageLoaderClass, subPageClass } from "@/components/app/app-ui-styles";
 import {
   cacheWebPushConfig,
   decodeWebPushPublicKey,
@@ -43,8 +43,11 @@ import {
 
 const messageRevealClassName =
   "isolate [backface-visibility:hidden] motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-1 motion-safe:duration-300 motion-reduce:animate-none";
+const pageLoaderClass = "flex min-h-60 items-center justify-center gap-2.5 text-muted-foreground [&_svg]:animate-spin";
+const subPageClass = "app-page pb-10";
 
 export function WebPushPage() {
+  const router = useRouter();
   const { dictionary } = useApp();
   const copy = dictionary.webPushPage;
   const [config, setConfig] = useState<WebPushConfig | null>(() => getCachedWebPushConfig());
@@ -269,7 +272,8 @@ export function WebPushPage() {
 
     if (!message.url) return;
     const url = new URL(message.url, location.origin);
-    location.assign(url.origin === location.origin ? `${url.pathname}${url.search}${url.hash}` : url.href);
+    if (url.origin === location.origin) router.push(`${url.pathname}${url.search}${url.hash}`);
+    else location.assign(url.href);
   }
 
   async function removeMessage(messageId: string) {
@@ -353,7 +357,7 @@ export function WebPushPage() {
         </header>
 
         {messages.length ? (
-          <div className="space-y-3 pt-4 md:pt-0">
+          <div className="space-y-3 pt-4 max-md:pt-2 md:pt-0">
             <div className="space-y-3">
               {messages.map((message, index) => (
                 <div

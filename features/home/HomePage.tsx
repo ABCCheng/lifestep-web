@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowDownRight, ArrowUpRight, BadgeCheck, BellRing, BookOpen, Dot,
@@ -7,9 +6,9 @@ import {
 
 import { dictionaries, homePath, localizePath, type Dictionary, type Locale } from "@/lib/i18n";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import { lifeStepHomePreview, type LifeStepHomePreview } from "@/messages/lifestep";
 import { Button } from "@/components/ui/button";
 import { HomeFaq } from "./components/HomeFaq";
+import { HomeChangelog } from "./components/HomeChangelog";
 import { HomeLanguageMenu } from "./components/HomeLanguageMenu";
 import { HomeLocaleRedirect } from "./components/HomeLocaleRedirect";
 import { HomeNavMenu } from "./components/HomeNavMenu";
@@ -21,13 +20,14 @@ import { HomeThemeToggle } from "./components/HomeThemeToggle";
 type HomeContent = Dictionary["homePage"];
 
 const container = "mx-auto w-full max-w-[1200px] px-4 lg:px-6";
-const navLinkClass = "flex min-h-10 items-center whitespace-nowrap py-1 text-base font-bold text-muted-foreground transition hover:text-primary";
+const navLinkClass = "flex min-h-10 items-center whitespace-nowrap py-1 transition hover:text-primary";
 const LIFE_STEP_SLOGAN = "Step into real life";
+const discoverMoreHref = "https://www.effortgo.xyz";
 
 export function HomePage({ locale, redirect = false }: { locale: Locale; redirect?: boolean }) {
   const dictionary = dictionaries[locale];
   const copy = dictionary.homePage;
-  const preview = lifeStepHomePreview[locale];
+  const preview = dictionary.homePreview;
   const canonicalPath = homePath("/", locale);
   const appHref = localizePath("/", locale);
   const tagline = copy.title.match(/^(.*?)\s+[-—]\s+(.*)$/)?.[2] ?? copy.footer;
@@ -45,13 +45,18 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
         <header className="app-top-chrome sticky top-0 z-40 bg-transparent pb-2 pt-(--app-safe-header-top) md:py-[1.35rem]">
           <nav className={`${container} flex h-10 items-center justify-between gap-3 lg:gap-4`} aria-label="Main navigation">
             <Link href={canonicalPath} className="inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-xl font-bold tracking-[-0.04em] text-[#d3001c] dark:text-white" aria-label="LifeStep home">
-              <span className="grid size-10 shrink-0 place-items-center overflow-hidden"><Image className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} priority /></span><span>LifeStep</span>
+              <span className="grid size-10 shrink-0 place-items-center overflow-hidden"><img className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} /></span><span>LifeStep</span>
             </Link>
-            <div className="ml-8 mr-auto hidden min-w-0 items-center gap-5 xl:flex"><a className={navLinkClass} href="#overview">{copy.featuresKicker}</a><a className={navLinkClass} href="#faq">{copy.faqNav}</a></div>
+            <div className="ml-8 mr-auto hidden min-w-0 items-center gap-5 text-base font-bold text-muted-foreground xl:flex">
+              <a className={navLinkClass} href="#overview">{copy.featuresKicker}</a>
+              <a className={navLinkClass} href="#faq">{copy.faqNav}</a>
+              <a className={navLinkClass} href="#changelog">{copy.changelogNav}</a>
+              <a className={navLinkClass} href={discoverMoreHref} target="_blank" rel="noreferrer">{copy.discoverMoreNav}</a>
+            </div>
             <div className="flex shrink-0 items-center gap-2">
               <HomeLanguageMenu locale={locale} /><HomeThemeToggle label={copy.themeLabel} />
               <Button asChild className="hidden h-10 rounded-full px-4 text-sm font-medium text-white! xl:inline-flex"><Link href={appHref}>{copy.launchApp}<ArrowUpRight className="size-4" aria-hidden="true" /></Link></Button>
-              <HomeNavMenu overviewLabel={copy.featuresKicker} faqLabel={copy.faqNav} launchLabel={copy.launchApp} appHref={appHref} />
+              <HomeNavMenu overviewLabel={copy.featuresKicker} faqLabel={copy.faqNav} changelogLabel={copy.changelogNav} discoverMoreLabel={copy.discoverMoreNav} discoverMoreHref={discoverMoreHref} launchLabel={copy.launchApp} appHref={appHref} />
             </div>
           </nav>
         </header>
@@ -81,11 +86,16 @@ export function HomePage({ locale, redirect = false }: { locale: Locale; redirec
         <HomeFaq items={copy.faq} />
       </section>
 
+      <section className={`${container} pb-20 sm:pb-28`}>
+        <h2 className="mb-8 scroll-mt-[calc(var(--app-safe-header-top)+4rem)] text-3xl font-extrabold leading-tight tracking-[-0.05em] sm:mb-10 sm:text-4xl md:scroll-mt-24" id="changelog">{copy.changelogNav}</h2>
+        <HomeChangelog earlierReleasesLabel={copy.changelogEarlierReleases} />
+      </section>
+
       <footer className={`${container} flex min-h-28 flex-col items-center justify-center gap-5 border-t border-border py-7 text-center text-muted-foreground sm:flex-row sm:justify-between sm:text-left`}>
-        <div className="inline-flex items-center gap-2.5"><span className="grid size-10 shrink-0 place-items-center overflow-hidden"><Image className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} /></span><div className="grid gap-0.5 text-left"><strong className="text-sm text-[#d3001c] dark:text-white">LifeStep</strong><span className="text-[0.65rem]">{tagline}</span></div></div>
+        <div className="inline-flex items-center gap-2.5"><span className="grid size-10 shrink-0 place-items-center overflow-hidden"><img className="size-10 object-contain" src="/logo.svg" alt="" width={40} height={40} /></span><div className="grid gap-0.5 text-left"><strong className="text-sm text-[#d3001c] dark:text-white">LifeStep</strong><span className="text-[0.65rem]">{tagline}</span></div></div>
         <div className="grid justify-items-center gap-2 text-xs sm:justify-items-end">
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-bold sm:justify-end"><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=app`}>{dictionary.profile.menu.aboutApp}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=privacy`}>{copy.privacyNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=terms`}>{copy.termsNav}</Link><Link className="hover:text-primary" href={`${localizePath("/about", locale)}?panel=feedback`}>{dictionary.profile.menu.feedback}</Link></div>
-          <div className="flex items-center gap-1.5 text-[0.65rem]"><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://x.com/EffortGo2024" target="_blank" rel="noreferrer" aria-label="X"><XMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://www.xiaohongshu.com/user/profile/5fa36065000000000101ffa5" target="_blank" rel="noreferrer" aria-label="小红书"><RedbookMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="mailto:lifestep@effortgo.xyz" aria-label="Email"><Mail className="size-4" aria-hidden="true" /></a><span className="ml-1 inline-flex items-center">© 2026 EffortGo <Dot className="size-4" aria-hidden="true" /> {process.env.APP_VERSION}</span></div>
+          <div className="flex items-center gap-1.5 text-[0.65rem]"><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://github.com/ABCCheng/lifestep-web" target="_blank" rel="noreferrer" aria-label="GitHub"><GitHubMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://x.com/EffortGo2024" target="_blank" rel="noreferrer" aria-label="X"><XMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="https://www.xiaohongshu.com/user/profile/5fa36065000000000101ffa5" target="_blank" rel="noreferrer" aria-label="小红书"><RedbookMark className="size-4" /></a><a className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition hover:-translate-y-px hover:bg-primary/10 hover:text-primary" href="mailto:lifestep@effortgo.xyz" aria-label="Email"><Mail className="size-4" aria-hidden="true" /></a><span className="ml-1 inline-flex items-center">© 2026 EffortGo <Dot className="size-4" aria-hidden="true" /> {process.env.APP_VERSION}</span></div>
         </div>
       </footer>
     </main>
@@ -97,7 +107,7 @@ function HeroTitle({ title }: { title: string }) {
   return <h1 className="mx-auto max-w-full text-[clamp(2.35rem,4.3vw,4.2rem)] font-extrabold leading-none tracking-[-0.065em] lg:mx-0">{descriptor}</h1>;
 }
 
-function JourneySignalPanel({ copy, preview }: { copy: HomeContent; preview: LifeStepHomePreview }) {
+function JourneySignalPanel({ copy, preview }: { copy: HomeContent; preview: Dictionary["homePreview"] }) {
   const steps: Array<[string, string, boolean]> = [["✓", preview.steps[0], true], ["2", preview.steps[1], true], ["3", preview.steps[2], false]];
   return <div data-home-reveal data-home-reveal-delay="120" className="relative min-h-[23rem] w-full min-w-0 overflow-hidden rounded-[2rem] border border-border bg-gradient-to-br from-background via-card to-muted shadow-2xl shadow-foreground/10 dark:from-[#151d2c] dark:via-[#0f1622] dark:to-[#080c14] sm:min-h-[31rem] lg:min-h-[27rem] lg:w-[98%] lg:justify-self-end" aria-label={copy.features[0].title}>
     <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(color-mix(in_srgb,var(--foreground)_8%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--foreground)_8%,transparent)_1px,transparent_1px)] [background-size:2.5rem_2.5rem] [mask-image:radial-gradient(circle_at_center,black,transparent_76%)]" />
@@ -109,7 +119,7 @@ function JourneySignalPanel({ copy, preview }: { copy: HomeContent; preview: Lif
     <div className="absolute bottom-[12%] right-[5%] z-20 w-[72%] rounded-2xl border border-border bg-card/95 p-4 text-card-foreground shadow-2xl backdrop-blur-xl sm:bottom-[14%] sm:right-[7%] sm:w-[68%]">
       <div className="flex items-center gap-2 text-[0.6rem] font-bold uppercase tracking-[0.08em] text-muted-foreground"><MessageCircle className="size-3.5 text-sky-500" />{preview.conversation}<span className="ml-auto text-lime-600">{preview.practiceMode}</span></div>
       <div className="mt-3 rounded-2xl rounded-tl-sm bg-muted px-3.5 py-3 text-sm font-semibold">{preview.phrase}<span className="mt-1 block text-xs font-normal text-muted-foreground">{preview.translation}</span></div>
-      <button type="button" className="absolute -bottom-3 -right-3 grid size-10 place-items-center rounded-full bg-primary text-white! shadow-lg" aria-label={preview.playPhrase}><Volume2 className="size-4" /></button>
+      <button type="button" className="absolute -bottom-3 -right-3 grid size-10 cursor-pointer place-items-center rounded-full bg-destructive/10 text-primary shadow-lg transition-colors hover:bg-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30" aria-label={preview.playPhrase}><Volume2 className="size-4" /></button>
     </div>
     <div className="absolute right-[7%] top-[7%] z-20 flex items-center gap-2 rounded-xl border border-border bg-card/90 px-3 py-2 text-card-foreground shadow-xl backdrop-blur-xl"><BellRing className="size-4 text-primary" /><strong className="text-xs">{preview.nextStep}</strong></div>
     <div className="absolute bottom-[5%] left-[5%] z-10 inline-flex items-center gap-2 rounded-full border border-border bg-card/85 px-3 py-2 text-[0.59rem] font-bold text-card-foreground backdrop-blur-xl"><Languages className="size-3.5 text-sky-500" /><span>EN</span><span>中文</span><span>FR</span></div>
@@ -140,6 +150,10 @@ function FeatureCard({ feature, index }: { feature: HomeContent["features"][numb
 
 function XMark({ className }: { className?: string }) {
   return <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24"><path d="M18.9 2h3.3l-7.2 8.24L23.5 22h-6.64l-5.2-6.8L5.72 22H2.4l7.7-8.8L2 2h6.8l4.7 6.21L18.9 2Zm-1.16 17.93h1.83L7.81 3.96H5.85l11.89 15.97Z" /></svg>;
+}
+
+function GitHubMark({ className }: { className?: string }) {
+  return <svg aria-hidden="true" className={className} fill="currentColor" viewBox="0 0 24 24"><path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.77 2.72 1.26 3.38.96.1-.75.4-1.26.74-1.55-2.57-.29-5.27-1.28-5.27-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.16 1.18a10.97 10.97 0 0 1 5.75 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.71 5.38-5.29 5.67.42.36.79 1.06.79 2.14v3.17c0 .31.21.67.79.56A11.5 11.5 0 0 0 12 .7Z" /></svg>;
 }
 
 function RedbookMark({ className }: { className?: string }) {

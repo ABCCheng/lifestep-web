@@ -3,6 +3,7 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 import { useLocaleContext } from "./locale-provider";
 import { useThemeContext } from "./theme-provider";
+import { getLifeStepCopy, type ResolvedLifeStepCopy } from "@/lib/lifestep-copy";
 import { DEFAULT_TTS_SETTINGS, getTTSSettings, saveTTSSettings, type TTSVoice, type VoiceSettings, type VoiceSide } from "@/lib/stores/tts";
 
 type AppContextValue = ReturnType<typeof useLocaleContext> & {
@@ -10,6 +11,7 @@ type AppContextValue = ReturnType<typeof useLocaleContext> & {
   setTheme: ReturnType<typeof useThemeContext>["setThemeMode"];
   voices: VoiceSettings;
   setVoice: (side: VoiceSide, voice: TTSVoice) => void;
+  lifeStep: ResolvedLifeStepCopy;
 };
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -27,7 +29,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return next;
     });
   };
-  const value = useMemo(() => ({ ...locale, theme: theme.themeMode, setTheme: theme.setThemeMode, voices, setVoice }), [locale, theme.themeMode, theme.setThemeMode, voices]);
+  const lifeStep = useMemo(() => getLifeStepCopy(locale.locale), [locale.locale]);
+  const value = useMemo(() => ({ ...locale, theme: theme.themeMode, setTheme: theme.setThemeMode, voices, setVoice, lifeStep }), [locale, theme.themeMode, theme.setThemeMode, voices, lifeStep]);
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
 

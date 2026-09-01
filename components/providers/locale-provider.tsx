@@ -8,6 +8,11 @@ import { getPreferredLocale, savePreferredLocale } from "@/lib/stores/locale";
 type LocaleContextValue = { locale: Locale; setLocale: (locale: Locale) => void; dictionary: Dictionary; copy: Dictionary["app"] };
 const LocaleContext = createContext<LocaleContextValue>({ locale: defaultLocale, setLocale: () => undefined, dictionary: dictionaries[defaultLocale], copy: dictionaries[defaultLocale].app });
 
+function isStandaloneApp() {
+  const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
+  return window.matchMedia("(display-mode: standalone)").matches || navigatorWithStandalone.standalone === true;
+}
+
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -36,7 +41,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const nextPath = preferredLocalePath();
-    if (nextPath) router.replace(nextPath);
+    if (!nextPath) return;
+    if (isStandaloneApp() || !navigator.onLine) window.location.replace(nextPath);
+    else router.replace(nextPath);
   }, [preferredLocalePath, router]);
 
   const setLocale = useCallback((next: Locale) => {
@@ -44,7 +51,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     const query = searchParams.toString();
     const path = stripLocaleFromPathname(pathname);
     const nextPath = localizePath(path, next);
-    router.push(query ? `${nextPath}?${query}` : nextPath);
+    const destination = query ? `${nextPath}?${query}` : nextPath;
+    if (isStandaloneApp() || !navigator.onLine) window.location.assign(destination);
+    else router.push(destination);
   }, [pathname, router, searchParams]);
   const value = useMemo(() => ({ locale, setLocale, dictionary: dictionaries[locale], copy: dictionaries[locale].app }), [locale, setLocale]);
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
