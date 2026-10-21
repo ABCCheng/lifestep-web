@@ -13,7 +13,7 @@ const longCacheAssets = [
 ];
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.2.207", "192.168.2.203"],
+  allowedDevOrigins: ["192.168.2.207", "192.168.2.177"],
   output: "standalone",
   env: {
     APP_VERSION: version,

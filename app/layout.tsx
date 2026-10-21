@@ -31,6 +31,9 @@ const INITIAL_PREFERENCES_SCRIPT = `
     const standalone = window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone === true;
     const appPath = path === "/app" || path.startsWith("/app/");
     root.classList.toggle("app-standalone", standalone);
+    const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    root.classList.toggle("app-ios-standalone", ios && standalone);
     root.classList.toggle("app-shell-active", appPath);
     const mobileStandalone = window.matchMedia?.("(max-width: 767px)").matches && standalone;
     if (mobileStandalone && Number.isFinite(window.innerHeight) && window.innerHeight > 0) {
@@ -74,7 +77,6 @@ export const metadata: Metadata = {
       { url: "/logo-512.png", sizes: "512x512", type: "image/png" },
     ],
   },
-  appleWebApp: { capable: true, title: SITE_NAME, statusBarStyle: "black-translucent" },
   formatDetection: { telephone: false },
 };
 
@@ -93,6 +95,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        {/* Next's appleWebApp metadata inserts status-bar-style=default even
+            when statusBarStyle is omitted. Keep the install tags explicit so
+            this experiment truly has no status-bar-style meta. */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
         <meta id="app-theme-color" name="theme-color" content={APP_THEME_COLORS.light} />
         <script
           id="initial-app-preferences"
@@ -100,6 +107,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <div className="ios-status-color-surface" aria-hidden="true" />
         <ViewportHeightSync />
         <AppSplashScreen />
         <SnackbarProvider><ThemeProvider>{children}</ThemeProvider></SnackbarProvider>

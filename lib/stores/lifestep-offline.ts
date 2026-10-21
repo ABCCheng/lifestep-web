@@ -56,3 +56,26 @@ export const offlineKeys = {
   vocabularyProgress: "vocabulary-progress",
   sentenceProgress: "sentence-progress",
 };
+
+// Publish a language download and reset its progress in one transaction.
+// Resolve on transaction completion, since individual requests can succeed before an abort.
+export async function commitOfflineRecords(records: Record<string, unknown>, deletedKeys: string[]) {
+  const database = await openDatabase();
+  if (database) {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const transaction = database.transaction(STORE_NAME, "readwrite");
+        transaction.oncomplete = () => resolve();
+        transaction.onabort = () => reject(transaction.error || new Error("Offline data transaction aborted"));
+        transaction.onerror = () => reject(transaction.error || new Error("Offline data transaction failed"));
+        const store = transaction.objectStore(STORE_NAME);
+        Object.entries(records).forEach(([key, value]) => store.put(value, key));
+        deletedKeys.forEach((key) => store.delete(key));
+      });
+    } finally {
+      database.close();
+    }
+  }
+  Object.entries(records).forEach(([key, value]) => memoryRecords.set(key, value));
+  deletedKeys.forEach((key) => memoryRecords.delete(key));
+}

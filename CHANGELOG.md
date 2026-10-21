@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [Unreleased]
+
+### Changed
+
+- Use coordinated pale gray-green and deep green iOS header/status-bar colors while preserving the verified blur suppression and header geometry.
+
+- Test iOS scroll-edge suppression with no status-bar-style meta and a top-level fixed color sampling element, preserving header spacing; refresh app-shell caches.
+
+### Fixed
+
+- Remove the extra portrait header fallback padding in iOS standalone mode when the system already reserves the status bar; keep page and sticky navigation offsets aligned.
+
+- Reset learning state between scenarios and calculate the next scenario from the stage list.
+- Preserve completed scenario progress when revisiting for practice.
+- Download language content before atomically replacing cached data and clearing all learning progress, with explicit localized confirmation.
+- Add accessible modal focus management, keyboard dismissal, and locked-dialog behavior using Radix Dialog.
+
 ## [2.0.0] - 2026-08-31
 
 ### Added

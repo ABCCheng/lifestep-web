@@ -4,7 +4,7 @@ import { ArrowRight, Check, Circle, Clock3, LoaderCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AppBackHeader as BackHeader } from "@/components/app";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
 import { useApp } from "@/components/providers/app-provider";
 import { useLifeStepData } from "@/components/providers/lifestep-data-provider";
 import { mockScenarios, stageMeta } from "@/lib/content";
@@ -75,10 +75,7 @@ function StageContent() {
     if (!selected) return;
     setStarting(true);
     markScenarioStarted(journeyType, selected.id);
-    const index = scenarios.findIndex((item) => item.id === selected.id);
-    const next = scenarios[index + 1];
     const query = new URLSearchParams({ id: String(selected.id), stage, journey: journeyType, title: selected.title, langTitle: selected.langTitle });
-    if (next) { query.set("nextId", String(next.id)); query.set("nextTitle", next.title); query.set("nextLangTitle", next.langTitle); }
     router.push(`${localizePath("/scenario", locale)}?${query.toString()}`);
   }
 
@@ -107,9 +104,9 @@ function StageContent() {
       </section>
 
       {selected ? (
-        <Modal onClose={() => setSelected(null)} labelledBy="scenario-title">
+        <Modal onClose={() => setSelected(null)}>
           <div className="text-center">
-            <h2 className="mt-1.5 text-[2rem] tracking-[-0.05em]" id="scenario-title">{selected.title}</h2>
+            <ModalTitle className="mt-1.5 text-[2rem] tracking-[-0.05em]">{selected.title}</ModalTitle>
             {locale !== "en" ? <h3 className="mb-4 mt-1.5 text-base font-semibold text-muted-foreground">{selected.langTitle}</h3> : null}
             <p className="my-2.5 font-bold leading-6 text-foreground">{selected.description}</p>{locale !== "en" ? <p className={cn("mb-2.5 mt-1.5 text-sm leading-5", translatedClass)}>{selected.langDescription}</p> : null}
             <span className={cn(statusPillClass, selected.progressStatus === "IN_PROGRESS" && "bg-primary/10 text-primary", selected.progressStatus === "COMPLETED" && "bg-[#26734d]/10 text-[#26734d]")}>{statusLabel(selected.progressStatus, copy)}</span>

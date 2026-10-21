@@ -5,7 +5,9 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense, useRef, useState } from "react";
 import { AudioPlayButton } from "@/components/audio/AudioPlayButton";
 import { AppBackHeader as BackHeader, AppSectionTitle } from "@/components/app";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
+import { useLifeStepData } from "@/components/providers/lifestep-data-provider";
+import { localeChangeCopy } from "@/lib/locale-change-copy";
 import { useApp } from "@/components/providers/app-provider";
 import { localeNames, locales, localizePath, stripLocaleFromPathname, type Locale } from "@/lib/i18n";
 import { savePreferredLocale } from "@/lib/stores/locale";
@@ -43,7 +45,10 @@ function SettingsContent() {
   const params = useSearchParams();
   const router = useRouter();
   const panel = params.get("panel") || "theme";
-  const { locale, dictionary, copy, lifeStep, theme, setTheme, voices, setVoice } = useApp();
+  const { locale, dictionary, copy, theme, setTheme, voices, setVoice } = useApp();
+  const { ready, prepareLocaleChange } = useLifeStepData();
+  const [switchingLocale, setSwitchingLocale] = useState(false);
+  const localeSwitchPending = useRef(false);
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null);
   const title = panel === "language" ? dictionary.setting.language.title : panel === "voice" ? dictionary.setting.voice.title : dictionary.setting.theme.title;
   const icon = panel === "language" ? <Languages /> : panel === "voice" ? <Volume2 /> : <Palette />;
@@ -51,11 +56,18 @@ function SettingsContent() {
     if (nextLocale === locale) return;
     setPendingLocale(nextLocale);
   }
-  function confirmLocaleChange() {
-    if (!pendingLocale) return;
+  async function confirmLocaleChange() {
+    if (!pendingLocale || !ready || localeSwitchPending.current) return;
     const nextLocale = pendingLocale;
+    localeSwitchPending.current = true;
+    setSwitchingLocale(true);
+    const success = await prepareLocaleChange(nextLocale);
+    if (!success) {
+      localeSwitchPending.current = false;
+      setSwitchingLocale(false);
+      return;
+    }
     setPendingLocale(null);
-    localStorage.setItem("lifestep-reload-locale", nextLocale);
     savePreferredLocale(nextLocale);
     const previous = getPreviousAppNavigationPath() || localizePath("/", locale);
     const [previousPath, query = ""] = previous.split("?", 2);
@@ -69,7 +81,7 @@ function SettingsContent() {
     {panel === "theme" ? <div className="grid gap-[9px]">{(["system", "light", "dark"] as const).map((mode) => <button key={mode} aria-pressed={theme === mode} className={cn(optionButtonClass, themeOptionStateClass[mode])} onClick={() => setTheme(mode)}><span>{mode === "system" ? <Monitor /> : mode === "dark" ? <Moon /> : <Sun />}</span><strong>{mode === "system" ? dictionary.setting.theme.followSystem : mode === "light" ? dictionary.setting.theme.lightMode : dictionary.setting.theme.darkMode}</strong><Check className={cn("hidden", themeCheckStateClass[mode])} /></button>)}</div> : null}
     {panel === "language" ? <div className="grid gap-[9px]">{locales.map((item: Locale) => { const active = locale === item; return <button key={item} className={cn(optionButtonClass, active && "border-[color-mix(in_srgb,var(--primary)_40%,transparent)] text-primary")} onClick={() => changeLocale(item)}><span className="text-xs font-extrabold text-primary">{item.startsWith("zh") ? "中" : item.slice(0, 2).toUpperCase()}</span><strong>{localeNames[item]}</strong>{active ? <Check /> : null}</button>; })}</div> : null}
     {panel === "voice" ? <div className="grid gap-3.5"><VoiceSetting title={dictionary.setting.voice.self.title} subtitle={dictionary.setting.voice.self.subtitle} femaleLabel={dictionary.setting.voice.female} maleLabel={dictionary.setting.voice.male} playLabel={dictionary.newsDetail.playAudio} errorLabel={dictionary.newsDetail.audioFailed} value={voices.self} onChange={(value) => setVoice("self", value)} /><VoiceSetting title={dictionary.setting.voice.partner.title} subtitle={dictionary.setting.voice.partner.subtitle} femaleLabel={dictionary.setting.voice.female} maleLabel={dictionary.setting.voice.male} playLabel={dictionary.newsDetail.playAudio} errorLabel={dictionary.newsDetail.audioFailed} value={voices.partner} onChange={(value) => setVoice("partner", value)} /></div> : null}
-  </article>{pendingLocale ? <Modal onClose={() => setPendingLocale(null)} labelledBy="language-reload-title"><div className="text-center"><Languages className="mx-auto mb-4 size-10 text-primary" /><h2 className="m-0 text-[1.7rem]" id="language-reload-title">{lifeStep.journey.reloadTitle}</h2><p className="my-3 leading-6 text-muted-foreground">{lifeStep.journey.reloadBody}</p><button className={cn(primaryActionClass, "w-full")} onClick={confirmLocaleChange}>{lifeStep.journey.confirmReload}</button></div></Modal> : null}</main>;
+  </article>{pendingLocale ? <Modal locked={switchingLocale} onClose={() => setPendingLocale(null)}><div className="text-center"><Languages className="mx-auto mb-4 size-10 text-primary" /><ModalTitle className="m-0 text-[1.7rem]">{localeChangeCopy[locale].title}</ModalTitle><p className="my-3 leading-6 text-muted-foreground">{localeChangeCopy[locale].body}</p><button className={cn(primaryActionClass, "w-full")} disabled={switchingLocale || !ready} aria-busy={switchingLocale} onClick={confirmLocaleChange}>{switchingLocale ? copy.loading : dictionary.confirm.yes}</button></div></Modal> : null}</main>;
 }
 
 function VoiceSetting({ title, subtitle, femaleLabel, maleLabel, playLabel, errorLabel, value, onChange }: { title: string; subtitle: string; femaleLabel: string; maleLabel: string; playLabel: string; errorLabel: string; value: TTSVoice; onChange: (voice: TTSVoice) => void }) {

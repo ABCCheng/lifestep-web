@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
 import { AppBackHeader } from "@/components/app";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
 import { useApp } from "@/components/providers/app-provider";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { Button } from "@/components/ui/button";
@@ -441,9 +441,9 @@ function CenteredMessage({ children }: { children: ReactNode }) {
 
 function ConfirmModal({ title, description, yes, no, destructive, onYes, onNo }: { title: string; description: string; yes: string; no: string; destructive: boolean; onYes: () => void; onNo: () => void }) {
   return (
-    <Modal onClose={onNo} labelledBy="web-push-confirm">
+    <Modal onClose={onNo}>
       <div>
-        <h2 className="m-0 text-2xl" id="web-push-confirm">{title}</h2>
+        <ModalTitle className="m-0 text-2xl">{title}</ModalTitle>
         <p className="leading-relaxed text-muted-foreground">{description}</p>
         <div className="mt-[22px] flex justify-end gap-2.5">
           <Button type="button" variant="outline" onClick={onNo}>{no}</Button>

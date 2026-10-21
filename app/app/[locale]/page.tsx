@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, ArrowUpDown, BriefcaseBusiness, GraduationCap, HeartHandshake, LoaderCircle, MapPin, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { DesktopAppHeader } from "@/components/shell/DesktopAppHeader";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
 import { useApp } from "@/components/providers/app-provider";
 import { journeyOrders, stageMeta } from "@/lib/content";
 import { useLifeStepData } from "@/components/providers/lifestep-data-provider";
@@ -208,9 +208,9 @@ export default function JourneyPage() {
       </section>
 
       {needsChoice && hydrated ? (
-        <Modal onClose={() => journeyType && setNeedsChoice(false)} labelledBy="journey-question" locked={!journeyType}>
+        <Modal onClose={() => journeyType && setNeedsChoice(false)} locked={!journeyType}>
           <div className="text-center">
-            <h2 className="m-0 text-[2.15rem] tracking-[-0.055em] max-[680px]:text-[1.8rem]" id="journey-question">{lifeStep.journey.chooseTitle}</h2>
+            <ModalTitle className="m-0 text-[2.15rem] tracking-[-0.055em] max-[680px]:text-[1.8rem]">{lifeStep.journey.chooseTitle}</ModalTitle>
             <p className="mx-auto mb-6 mt-2.5 leading-6 text-muted-foreground">{lifeStep.journey.chooseBody}</p>
             <div className="grid gap-2.5">
               {choices.map((choice) => <button className={cn(journeyChoiceButtonClass, journeyType === choice.type && "border-2 border-primary bg-primary/5")} key={choice.type} onClick={() => requestJourneyChange(choice.type)}><span>{choice.icon}</span><div><strong>{choice.title}</strong><small>{choice.body}</small></div>{journeyType === choice.type ? <RefreshCw /> : <ArrowRight />}</button>)}
@@ -219,8 +219,8 @@ export default function JourneyPage() {
         </Modal>
       ) : null}
 
-      {confirmRefresh ? <Modal onClose={() => { if (!refreshing) { setConfirmRefresh(false); setPendingJourneyType(null); setNeedsChoice(true); } }} labelledBy="journey-action-title" locked={refreshing}>
-        <div className="text-center"><h2 className="m-0 text-[1.7rem]" id="journey-action-title">{pendingJourneyType === journeyType ? lifeStep.journey.reloadTitle : lifeStep.journey.switchTitle.replace("{{journey}}", choices.find((choice) => choice.type === pendingJourneyType)?.title || lifeStep.journey.title)}</h2><p className="my-3 leading-6 text-muted-foreground">{lifeStep.journey.reloadBody}</p><button className={cn(primaryActionClass, "w-full")} disabled={refreshing} onClick={confirmJourneyChange}>{refreshing ? <LoaderCircle className="animate-spin" /> : null}{pendingJourneyType === journeyType ? lifeStep.journey.confirmReload : lifeStep.journey.confirmSwitch}</button></div>
+      {confirmRefresh ? <Modal onClose={() => { if (!refreshing) { setConfirmRefresh(false); setPendingJourneyType(null); setNeedsChoice(true); } }} locked={refreshing}>
+        <div className="text-center"><ModalTitle className="m-0 text-[1.7rem]">{pendingJourneyType === journeyType ? lifeStep.journey.reloadTitle : lifeStep.journey.switchTitle.replace("{{journey}}", choices.find((choice) => choice.type === pendingJourneyType)?.title || lifeStep.journey.title)}</ModalTitle><p className="my-3 leading-6 text-muted-foreground">{lifeStep.journey.reloadBody}</p><button className={cn(primaryActionClass, "w-full")} disabled={refreshing} onClick={confirmJourneyChange}>{refreshing ? <LoaderCircle className="animate-spin" /> : null}{pendingJourneyType === journeyType ? lifeStep.journey.confirmReload : lifeStep.journey.confirmSwitch}</button></div>
       </Modal> : null}
 
     </main>

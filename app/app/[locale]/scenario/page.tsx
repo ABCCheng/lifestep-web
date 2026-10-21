@@ -5,12 +5,12 @@ import { ArrowLeft, ArrowRight, BookOpen, Check, CheckCircle2, ChevronLeft, Chev
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { AppBackHeader as BackHeader } from "@/components/app";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
 import { useApp } from "@/components/providers/app-provider";
 import { useLifeStepData } from "@/components/providers/lifestep-data-provider";
 import { localizePath } from "@/lib/i18n";
 import { mockScenarioDetail } from "@/lib/content";
-import type { JourneyData, ScenarioDetail } from "@/lib/types";
+import type { JourneyData, ScenarioDetail, LifeStage } from "@/lib/types";
 import { DEFAULT_TTS_SETTINGS, type TTSVoice } from "@/lib/stores/tts";
 import { playEdgeTTS } from "@/lib/tts/playback";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
@@ -51,7 +51,13 @@ const reviewPhraseClass =
   "mb-2 grid w-full cursor-pointer grid-cols-[34px_1fr_auto] items-center gap-2.5 rounded-[13px] border border-border bg-card p-3.5 text-left [&>span]:text-muted-foreground [&>svg]:text-primary";
 
 export default function ScenarioPage() {
-  return <Suspense fallback={<div className={pageLoaderClass}><LoaderCircle /></div>}><ScenarioContent /></Suspense>;
+  return <Suspense fallback={<div className={pageLoaderClass}><LoaderCircle /></div>}><ScenarioRoute /></Suspense>;
+}
+
+function ScenarioRoute() {
+  const params = useSearchParams();
+  const { locale } = useApp();
+  return <ScenarioContent key={`${locale}:${params.get("journey")}:${params.get("id")}`} />;
 }
 
 function ScenarioContent() {
@@ -64,7 +70,8 @@ function ScenarioContent() {
     { key: "review", title: lifeStep.scenario.review, icon: <ListChecks /> },
   ];
   const journeyType = (params.get("journey") || "STUDY") as "STUDY" | "WORK" | "FAMILY";
-  const { ensureJourneyData, getScenarioDetail, markScenarioCompleted } = useLifeStepData();
+  const { ensureJourneyData, getScenarioDetail, markScenarioStarted, markScenarioCompleted } = useLifeStepData();
+  const stage = (params.get("stage") || "ARRIVE") as LifeStage;
   const id = Number(params.get("id") || 1);
   const title = params.get("title") || "Immigration Inspection";
   const langTitle = params.get("langTitle") || "入境检查";
@@ -72,13 +79,16 @@ function ScenarioContent() {
   const [detail, setDetail] = useState<ScenarioDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState(false);
+  const [scenarios, setScenarios] = useState<NonNullable<JourneyData[LifeStage]>>([]);
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     let active = true;
     setLoading(true);
+    setPreview(false);
     ensureJourneyData(journeyType)
       .then((journeyData) => {
+        if (active) setScenarios(journeyData?.[stage] || []);
         const cachedDetail = getScenarioDetail(journeyType, id) || detailFromJourneyData(journeyData, id);
         if (cachedDetail) {
           if (active) setDetail(cachedDetail);
@@ -89,7 +99,7 @@ function ScenarioContent() {
       .catch(() => { if (active) { setDetail(mockScenarioDetail(id)); setPreview(true); } })
       .finally(() => active && setLoading(false));
     return () => { active = false; };
-  }, [ensureJourneyData, getScenarioDetail, id, journeyType]);
+  }, [ensureJourneyData, getScenarioDetail, id, journeyType, stage]);
 
   const currentIndex = steps.findIndex((step) => step.key === activeStep);
   function navigateStep(direction: number) {
@@ -102,8 +112,9 @@ function ScenarioContent() {
     setComplete(true);
   }
 
-  const nextId = params.get("nextId");
-  const nextQuery = nextId ? new URLSearchParams({ id: nextId, stage: params.get("stage") || "ARRIVE", journey: params.get("journey") || "STUDY", title: params.get("nextTitle") || lifeStep.scenario.nextScenario, langTitle: params.get("nextLangTitle") || "" }) : null;
+  const currentScenarioIndex = scenarios.findIndex((item) => item.id === id);
+  const nextScenario = currentScenarioIndex >= 0 ? scenarios[currentScenarioIndex + 1] : undefined;
+  const nextQuery = nextScenario ? new URLSearchParams({ id: String(nextScenario.id), stage, journey: journeyType, title: nextScenario.title, langTitle: nextScenario.langTitle }) : null;
 
   return (
     <main className={subPageClass}>
@@ -131,14 +142,14 @@ function ScenarioContent() {
 
 
       {complete ? (
-        <Modal onClose={() => setComplete(false)} labelledBy="complete-title">
+        <Modal onClose={() => setComplete(false)}>
           <div className="text-center">
             <div className="h-5 tracking-[16px] text-primary">✦ <span className="text-[#d69d2c]">●</span> ✦ <i className="text-[#26734d]">●</i> ✦</div>
             <span className="mx-auto mb-5 mt-1 grid size-[82px] place-items-center rounded-full bg-[#26734d]/10 text-[#26734d] [&_svg]:size-10"><CheckCircle2 /></span>
             <p className={appEyebrowClass}>{lifeStep.scenario.complete}</p>
-            <h2 className="mt-1.5 text-[2.7rem] tracking-[-0.065em] max-[680px]:text-[2.3rem]" id="complete-title">{lifeStep.scenario.youDidIt}</h2>
+            <ModalTitle className="mt-1.5 text-[2.7rem] tracking-[-0.065em] max-[680px]:text-[2.3rem]">{lifeStep.scenario.youDidIt}</ModalTitle>
             <p className="mx-auto mb-[22px] mt-3.5 leading-6 text-muted-foreground">{lifeStep.scenario.completionBody}</p>
-            {nextQuery ? <Link className={cn(primaryActionClass, "w-full")} href={`${localizePath("/scenario", locale)}?${nextQuery.toString()}`}>{lifeStep.scenario.continueNext} <ArrowRight /></Link> : <Link className={cn(primaryActionClass, "w-full")} href={`${localizePath("/stage", locale)}?stage=${params.get("stage") || "ARRIVE"}&journey=${params.get("journey") || "STUDY"}`}>{lifeStep.scenario.chooseNext} <ArrowRight /></Link>}
+            {nextQuery ? <Link className={cn(primaryActionClass, "w-full")} onClick={() => nextScenario && markScenarioStarted(journeyType, nextScenario.id)} href={`${localizePath("/scenario", locale)}?${nextQuery.toString()}`}>{lifeStep.scenario.continueNext} <ArrowRight /></Link> : <Link className={cn(primaryActionClass, "w-full")} href={`${localizePath("/stage", locale)}?stage=${params.get("stage") || "ARRIVE"}&journey=${params.get("journey") || "STUDY"}`}>{lifeStep.scenario.chooseNext} <ArrowRight /></Link>}
             <Link className={cn(textLinkClass, "mt-[18px] text-[0.8rem] text-muted-foreground")} href={localizePath("/", locale)}>{lifeStep.scenario.returnJourney}</Link>
           </div>
         </Modal>

@@ -44,11 +44,11 @@ function baseUrl() {
   return configured ? configured.replace(/\/$/, "") : "";
 }
 
-function headers(json = false) {
+function headers(json = false, locale = language()) {
   const value: Record<string, string> = {
     "X-App-Name": "lifestep",
     "X-Device-Name": typeof navigator === "undefined" ? "LifeStep Web" : navigator.userAgent || "LifeStep Web",
-    "X-Language": language(),
+    "X-Language": locale,
   };
   if (json) value["Content-Type"] = "application/json";
   return value;
@@ -122,11 +122,11 @@ async function post<T>(path: string, body: unknown, retry = true, cacheable = fa
   }
 }
 
-export async function getApiResponse<T>(path: string, params?: Record<string, string>) {
+export async function getApiResponse<T>(path: string, params?: Record<string, string>, locale?: string) {
   await ensureDeviceReady();
   const url = new URL(`${baseUrl()}${path}`, typeof window === "undefined" ? "http://localhost" : window.location.origin);
   Object.entries(params ?? {}).forEach(([key, value]) => url.searchParams.set(key, value));
-  const response = await fetch(url.toString(), { credentials: "include", headers: headers() });
+  const response = await fetch(url.toString(), { credentials: "include", headers: headers(false, locale) });
   const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
   if (!response.ok || !payload || payload.code !== 200) throw new ApiError(responseMessage(payload), response.status);
   return payload;
@@ -141,9 +141,9 @@ export async function postApiResponse<T>(path: string, body: unknown) {
 }
 
 export const lifeStepApi = {
-  journeyData: async (journeyType: JourneyType) => (await getApiResponse<JourneyData>("/api/lifestep/journey-data", { journeyType })).data,
-  vocabulary: async () => (await getApiResponse<ScenarioVocabularyInfo[]>("/api/lifestep/vocabulary")).data,
-  keyPhrases: async () => (await getApiResponse<string[]>("/api/lifestep/key-phrases")).data,
+  journeyData: async (journeyType: JourneyType, locale?: string) => (await getApiResponse<JourneyData>("/api/lifestep/journey-data", { journeyType }, locale)).data,
+  vocabulary: async (locale?: string) => (await getApiResponse<ScenarioVocabularyInfo[]>("/api/lifestep/vocabulary", undefined, locale)).data,
+  keyPhrases: async (locale?: string) => (await getApiResponse<string[]>("/api/lifestep/key-phrases", undefined, locale)).data,
   journeyProgress: (journeyType: JourneyType) => post<JourneyStageProgress[]>("/api/lifestep/journey-stage-progress", { journeyType }, true, true),
   scenarios: (journeyType: JourneyType, lifeStage: LifeStage) => post<LifeScenario[]>("/api/lifestep/life-scenario/list", { journeyType, lifeStage }, true, true),
   scenarioDetail: (scenarioId: number) => post<ScenarioDetail>("/api/lifestep/life-scenario/detail", { scenarioId }, true, true),

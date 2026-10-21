@@ -3,7 +3,7 @@
 import { Check, LoaderCircle, RefreshCw, Shuffle, SkipForward, Volume2, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { AppBackHeader as BackHeader } from "@/components/app";
-import { Modal } from "@/components/Modal";
+import { Modal, ModalTitle } from "@/components/Modal";
 import { useApp } from "@/components/providers/app-provider";
 import { useLifeStepData } from "@/components/providers/lifestep-data-provider";
 import { cn } from "@/lib/utils";
@@ -81,6 +81,6 @@ export default function VocabularyPage() {
       <div className="rounded-[26px] border border-border bg-card p-8 text-center shadow-sm max-[680px]:p-6"><span className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-primary/10 text-primary"><Volume2 /></span><p className="m-0 text-[2.1rem] font-bold tracking-[-0.04em] max-[680px]:text-[1.7rem]">{current.term}</p>{locale !== "en" ? <p className="mb-1 mt-2 text-lg text-primary">{current.langTerm}</p> : null}<p className="m-0 text-sm text-muted-foreground">{current.pronunciation}</p><button className="mx-auto mt-5 inline-flex cursor-pointer items-center gap-2 rounded-xl border-0 bg-secondary px-4 py-2 text-sm font-bold text-foreground" onClick={() => speak(current.term)}><Volume2 /> {lifeStep.practice.listen}</button></div>
       <div className="mt-4 grid grid-cols-3 gap-3"><button className={cn(secondaryActionClass, "justify-center px-2")} onClick={skip}><X /> {lifeStep.practice.notKnown}</button><button className={cn(secondaryActionClass, "justify-center px-2")} onClick={skipQuestion}><SkipForward /> {lifeStep.practice.skip}</button><button className={cn(primaryActionClass, "justify-center px-2")} onClick={practise}><Check /> {lifeStep.practice.known}</button></div>
     </section> : <div className={cn("app-content-width", connectionNoteClass)}>{lifeStep.practice.noWords}</div>}
-    {confirmRefresh ? <Modal onClose={() => !refreshing && setConfirmRefresh(false)} labelledBy="reload-vocabulary-title" locked={refreshing}><div className="text-center"><RefreshCw className="mx-auto mb-4 size-10 text-primary" /><h2 className="m-0 text-[1.7rem]" id="reload-vocabulary-title">{lifeStep.practice.reloadWordTitle}</h2><p className="my-3 leading-6 text-muted-foreground">{lifeStep.practice.reloadBody}</p><button className={cn(primaryActionClass, "w-full")} disabled={refreshing} onClick={reload}>{refreshing ? <LoaderCircle className="animate-spin" /> : null}{lifeStep.practice.confirmReload}</button></div></Modal> : null}
+    {confirmRefresh ? <Modal onClose={() => !refreshing && setConfirmRefresh(false)} locked={refreshing}><div className="text-center"><RefreshCw className="mx-auto mb-4 size-10 text-primary" /><ModalTitle className="m-0 text-[1.7rem]">{lifeStep.practice.reloadWordTitle}</ModalTitle><p className="my-3 leading-6 text-muted-foreground">{lifeStep.practice.reloadBody}</p><button className={cn(primaryActionClass, "w-full")} disabled={refreshing} onClick={reload}>{refreshing ? <LoaderCircle className="animate-spin" /> : null}{lifeStep.practice.confirmReload}</button></div></Modal> : null}
   </main>;
 }
