@@ -190,24 +190,6 @@
       "volume": { "title": "Âm lượng" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "Chỉ hiển thị tin nhắn mới nhất",
-    "title": "Thông báo",
-    "empty": "Bạn chưa nhận được tin nhắn nào",
-    "delete": "Xóa tin nhắn",
-    "clearAll": "Xóa tin nhắn",
-    "markAllRead": "Đánh dấu đã đọc",
-    "clearAllDescription": "Bạn có muốn xóa danh sách tin nhắn không?",
-    "markAllReadDescription": "Bạn có muốn đánh dấu tất cả tin nhắn là đã đọc không?",
-    "subscribedSuccess": "Đăng ký thành công",
-    "unsubscribed": "Đã hủy đăng ký",
-    "unsubscribeConfirmTitle": "Hủy đăng ký",
-    "unsubscribeConfirmDescription": "Sau khi hủy đăng ký, bạn sẽ không còn nhận được tin nhắn mới. Tiếp tục?",
-    "unsupported": "Không hỗ trợ thông báo đẩy",
-    "browserPermissionBlocked": "Bị trình duyệt chặn, hãy cho phép trước",
-    "systemPermissionBlocked": "Bị hệ thống chặn, hãy bật trước",
-    "failed": "Không thể lưu cài đặt"
-  },
   "privacyPolicy": {
     "title": "Chính sách quyền riêng tư",
     "s1Title": "1. Thông tin chúng tôi thu thập",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "Thử lại",
     "nextLoadFailed": "Không thể tải bài tiếp theo. Vui lòng thử lại sau",
     "noMoreContent": "Bạn đang ở bài viết cuối cùng"
-  },
-  "time": {
-    "justNow": "Vừa cập nhật",
-    "minuteAgo": "Một phút trước",
-    "minutesAgo": "{{value}} phút trước",
-    "hourAgo": "Một giờ trước",
-    "hoursAgo": "{{value}} giờ trước",
-    "dayAgo": "Một ngày trước",
-    "daysAgo": "{{value}} ngày trước",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "Phản hồi",
@@ -382,8 +354,7 @@
         "title": "Giữ bước tiếp theo bên mình",
         "body": "Thông báo tùy chọn giúp bạn tiếp tục.",
         "tags": [
-          "Web Push",
-          "Tin nhắn"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "Quay lại",
     "about": "Giới thiệu",
     "settings": "Cài đặt",
-    "messages": "Tin nhắn",
     "journey": "Hành trình",
     "aboutUs": "Về chúng tôi",
     "privacyPolicy": "Chính sách quyền riêng tư",

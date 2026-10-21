@@ -1,11 +1,8 @@
 const CACHE_PREFIX = "lifestep-pwa-";
-const CACHE_NAME = `${CACHE_PREFIX}v12`;
-const DOCUMENT_CACHE_NAME = `${CACHE_PREFIX}documents-v12`;
+const CACHE_NAME = `${CACHE_PREFIX}v19`;
+const DOCUMENT_CACHE_NAME = `${CACHE_PREFIX}documents-v19`;
 const PUSH_PREFERENCES_CACHE_NAME = `${CACHE_PREFIX}push-preferences-v1`;
 const PUSH_PREFERENCES_URL = "/__lifestep-push-preferences__";
-const PUSH_MESSAGES_CACHE_NAME = `${CACHE_PREFIX}push-messages-v1`;
-const PUSH_MESSAGES_URL = "/__lifestep-push-messages__";
-const MAX_PUSH_MESSAGES = 20;
 const DEFAULT_LOCALE = "en";
 const DEFAULT_PUSH_PREFERENCES = { languageCode: "en", region: "Toronto" };
 const SUPPORTED_LANGUAGES = ["en", "fr", "zh-Hans", "zh-Hant", "pa", "es", "ja", "ko", "ru", "vi"];
@@ -26,29 +23,23 @@ self.addEventListener("activate", (event) => {
                 key.startsWith(CACHE_PREFIX) &&
                 key !== CACHE_NAME &&
                 key !== DOCUMENT_CACHE_NAME &&
-                key !== PUSH_PREFERENCES_CACHE_NAME &&
-                key !== PUSH_MESSAGES_CACHE_NAME
+                key !== PUSH_PREFERENCES_CACHE_NAME
             )
             .map((key) => caches.delete(key))
         )
       )
-      .then(() => self.clients.claim())
+      .then(async () => {
+        if (typeof navigator.clearAppBadge === "function") {
+          try { await navigator.clearAppBadge(); } catch { /* Badging is optional. */ }
+        }
+        return self.clients.claim();
+      })
   );
 });
 
 self.addEventListener("message", (event) => {
   if (event.data?.type === "lifestep:precache-app-shell") {
     event.waitUntil(precacheAppShell(event.data.locale));
-    return;
-  }
-
-  if (event.data?.type === "lifestep:clear-push-notifications") {
-    event.waitUntil(clearPushNotifications());
-    return;
-  }
-
-  if (event.data?.type === "lifestep:update-app-badge") {
-    event.waitUntil(updateAppBadge());
     return;
   }
 
@@ -181,75 +172,15 @@ async function readPushPreferences() {
   }
 }
 
-async function readStoredPushMessages() {
-  try {
-    const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-    const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-    const response = await cache.match(url);
-    if (!response) return [];
-
-    const messages = await response.json();
-    return Array.isArray(messages) ? messages : [];
-  } catch {
-    return [];
+function getNotificationTargetUrl(value) {
+  const url = new URL(typeof value === "string" && value ? value : "/app", self.location.origin);
+  // Existing system notifications may still point to the removed inbox.
+  if (url.origin === self.location.origin && /^\/app\/(?:[^/]+\/)?messages\/?$/.test(url.pathname)) {
+    url.pathname = url.pathname.replace(/\/messages\/?$/, "");
+    url.search = "";
+    url.hash = "";
   }
-}
-
-async function writeStoredPushMessages(messages) {
-  const cache = await caches.open(PUSH_MESSAGES_CACHE_NAME);
-  const url = new URL(PUSH_MESSAGES_URL, self.location.origin).href;
-  await cache.put(
-    url,
-    new Response(JSON.stringify(messages.slice(0, MAX_PUSH_MESSAGES)), {
-      headers: { "Content-Type": "application/json" },
-    })
-  );
-}
-
-async function updateAppBadge() {
-  if (typeof navigator === "undefined" || typeof navigator.setAppBadge !== "function") return;
-
-  try {
-    const messages = await readStoredPushMessages();
-    const unreadCount = messages.filter((message) => !message?.read).length;
-    if (unreadCount > 0) {
-      await navigator.setAppBadge(unreadCount);
-    } else if (typeof navigator.clearAppBadge === "function") {
-      await navigator.clearAppBadge();
-    }
-  } catch {
-    // App badges are optional and unsupported on some browsers/platforms.
-  }
-}
-
-async function storeNewsPushMessage(message) {
-  const messages = await readStoredPushMessages();
-  const nextMessages = [
-    message,
-    ...messages.filter((item) => item?.id !== message.id),
-  ].slice(0, MAX_PUSH_MESSAGES);
-  await writeStoredPushMessages(nextMessages);
-  await updateAppBadge();
-
-  const clientList = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-  clientList.forEach((client) => {
-    client.postMessage({ type: "lifestep:push-message" });
-  });
-}
-
-async function markStoredPushMessageRead(id) {
-  if (!id) return;
-
-  const messages = await readStoredPushMessages();
-  await writeStoredPushMessages(messages.map((message) => (
-    message?.id === id ? { ...message, read: true } : message
-  )));
-  await updateAppBadge();
-}
-
-async function clearPushNotifications() {
-  const notifications = await self.registration.getNotifications();
-  notifications.forEach((notification) => notification.close());
+  return url.href;
 }
 
 async function showLifeStepNotification(payload) {
@@ -259,32 +190,14 @@ async function showLifeStepNotification(payload) {
   const localizedTitle = [titles[preferences.languageCode], titles.en, ...Object.values(titles)].find((value) => typeof value === "string" && value.trim())?.trim();
   const title = [payload?.title, data.title, localizedTitle, "LifeStep"].find((value) => typeof value === "string" && value.trim())?.trim();
   const body = [payload?.body, data.body, data.message, localizedTitle, "Your next step is ready."].find((value) => typeof value === "string" && value.trim())?.trim();
-  const referenceId = String(data.scenarioId ?? data.lifeScenarioId ?? data.newsId ?? data.id ?? "");
-  const url = typeof data.url === "string" && data.url ? data.url : "/app/messages";
-  const messageId = typeof payload.tag === "string" && payload.tag
-    ? payload.tag
-    : `${referenceId || "lifestep"}:${Date.now()}`;
-
-  try {
-    await storeNewsPushMessage({
-      id: messageId,
-      referenceId,
-      title,
-      body,
-      receivedAt: new Date().toISOString(),
-      read: false,
-      url,
-    });
-  } catch (error) {
-    console.warn("Push message persistence failed", error);
-  }
+  const url = getNotificationTargetUrl(data.url);
 
   await self.registration.showNotification(title, {
     body,
     icon: "/logo-192.png",
     badge: "/logo-192.png",
     tag: payload.tag,
-    data: { ...data, url, messageId },
+    data: { ...data, url },
   });
 }
 
@@ -292,9 +205,8 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
   const notificationData = event.notification.data || {};
-  const targetUrl = new URL(notificationData.url || "/app/messages", self.location.origin).href;
+  const targetUrl = getNotificationTargetUrl(notificationData.url);
   event.waitUntil((async () => {
-    await markStoredPushMessageRead(notificationData.messageId);
     const clientList = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     const matchingClient = clientList.find((client) => client.url === targetUrl);
     const existingClient = matchingClient || clientList.find((client) => {
@@ -311,7 +223,6 @@ self.addEventListener("notificationclick", (event) => {
           existingClient.postMessage({
             type: "lifestep:notification-navigation",
             url: targetUrl,
-            messageId: notificationData.messageId,
           });
         }
         if ("focus" in existingClient) return existingClient.focus();

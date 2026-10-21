@@ -190,24 +190,6 @@
       "volume": { "title": "Громкость" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "Показываются только последние сообщения",
-    "title": "Уведомления",
-    "empty": "Вы ещё не получали сообщений",
-    "delete": "Удалить сообщение",
-    "clearAll": "Удалить сообщения",
-    "markAllRead": "Отметить как прочитанные",
-    "clearAllDescription": "Очистить список сообщений?",
-    "markAllReadDescription": "Отметить все сообщения как прочитанные?",
-    "subscribedSuccess": "Подписка успешно оформлена",
-    "unsubscribed": "Подписка отменена",
-    "unsubscribeConfirmTitle": "Отменить подписку",
-    "unsubscribeConfirmDescription": "После отмены подписки вы больше не будете получать новые сообщения. Продолжить?",
-    "unsupported": "Push-уведомления не поддерживаются",
-    "browserPermissionBlocked": "Заблокировано браузером, сначала разрешите",
-    "systemPermissionBlocked": "Заблокировано системой, сначала включите",
-    "failed": "Не удалось сохранить настройки"
-  },
   "privacyPolicy": {
     "title": "Политика конфиденциальности",
     "s1Title": "1. Какие данные мы собираем",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "Повторить",
     "nextLoadFailed": "Не удалось загрузить следующую статью. Повторите попытку позже",
     "noMoreContent": "Это последняя статья"
-  },
-  "time": {
-    "justNow": "Только что",
-    "minuteAgo": "Минуту назад",
-    "minutesAgo": "{{value}} мин. назад",
-    "hourAgo": "Час назад",
-    "hoursAgo": "{{value}} ч. назад",
-    "dayAgo": "День назад",
-    "daysAgo": "{{value}} дн. назад",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "Обратная связь",
@@ -382,8 +354,7 @@
         "title": "Следующий шаг рядом",
         "body": "Необязательные уведомления помогают продолжить.",
         "tags": [
-          "Web Push",
-          "Сообщения"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "Назад",
     "about": "О приложении",
     "settings": "Настройки",
-    "messages": "Сообщения",
     "journey": "Ваш путь",
     "aboutUs": "О нас",
     "privacyPolicy": "Политика конфиденциальности",

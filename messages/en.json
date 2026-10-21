@@ -190,24 +190,6 @@
       "volume": { "title": "Volume" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "Only the latest messages are shown",
-    "title": "Notifications",
-    "empty": "You haven't received any messages yet",
-    "delete": "Delete message",
-    "clearAll": "Clear messages",
-    "markAllRead": "Mark as read",
-    "clearAllDescription": "Clear the message list?",
-    "markAllReadDescription": "Mark all messages as read?",
-    "subscribedSuccess": "Subscription successful",
-    "unsubscribed": "Subscription cancelled",
-    "unsubscribeConfirmTitle": "Cancel subscription",
-    "unsubscribeConfirmDescription": "After cancelling your subscription, you will no longer receive new messages. Continue?",
-    "unsupported": "Push notifications not supported",
-    "browserPermissionBlocked": "Blocked by browser, please allow first",
-    "systemPermissionBlocked": "Blocked by system, please enable first",
-    "failed": "Failed to save settings"
-  },
   "privacyPolicy": {
     "title": "Privacy Policy",
     "s1Title": "1. Information We Collect",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "Try again",
     "nextLoadFailed": "Couldn't load the next article. Please try again later",
     "noMoreContent": "You're at the last article"
-  },
-  "time": {
-    "justNow": "Just updated",
-    "minuteAgo": "A minute ago",
-    "minutesAgo": "{{value}} minutes ago",
-    "hourAgo": "An hour ago",
-    "hoursAgo": "{{value}} hours ago",
-    "dayAgo": "A day ago",
-    "daysAgo": "{{value}} days ago",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "Feedback",
@@ -380,10 +352,9 @@
       {
         "eyebrow": "06 / Push",
         "title": "Keep your next step close",
-        "body": "Optional notifications and a message center help you return to the right moment.",
+        "body": "Optional notifications help you return to your learning progress.",
         "tags": [
-          "Web Push",
-          "Message center"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "Back",
     "about": "About",
     "settings": "Settings",
-    "messages": "Messages",
     "journey": "Your journey",
     "aboutUs": "About us",
     "privacyPolicy": "Privacy Policy",

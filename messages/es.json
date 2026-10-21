@@ -190,24 +190,6 @@
       "volume": { "title": "Volumen" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "Solo se muestran los mensajes más récents",
-    "title": "Notificaciones",
-    "empty": "Aún no has recibido mensajes",
-    "delete": "Eliminar mensaje",
-    "clearAll": "Borrar mensajes",
-    "markAllRead": "Marcar como leído",
-    "clearAllDescription": "¿Borrar la lista de mensajes?",
-    "markAllReadDescription": "¿Marcar todos los mensajes como leídos?",
-    "subscribedSuccess": "Suscripción completada",
-    "unsubscribed": "Suscripción cancelada",
-    "unsubscribeConfirmTitle": "Cancelar suscripción",
-    "unsubscribeConfirmDescription": "Después de cancelar la suscripción, dejarás de recibir mensajes nuevos. ¿Continuar?",
-    "unsupported": "Notificaciones no compatibles",
-    "browserPermissionBlocked": "Bloqueado por el navegador, permite primero",
-    "systemPermissionBlocked": "Bloqueado por el sistema, activa primero",
-    "failed": "Error al guardar la configuración"
-  },
   "privacyPolicy": {
     "title": "Política de privacidad",
     "s1Title": "1. Información que recopilamos",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "Reintentar",
     "nextLoadFailed": "No se pudo cargar la siguiente noticia. Inténtalo más tarde",
     "noMoreContent": "Ya estás en la última noticia"
-  },
-  "time": {
-    "justNow": "Actualizado ahora",
-    "minuteAgo": "Hace un minuto",
-    "minutesAgo": "Hace {{value}} minutos",
-    "hourAgo": "Hace una hora",
-    "hoursAgo": "Hace {{value}} horas",
-    "dayAgo": "Hace un día",
-    "daysAgo": "Hace {{value}} días",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "Comentarios",
@@ -382,8 +354,7 @@
         "title": "Mantén cerca el siguiente paso",
         "body": "Las notificaciones opcionales te ayudan a continuar.",
         "tags": [
-          "Web Push",
-          "Mensajes"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "Atrás",
     "about": "Acerca de",
     "settings": "Ajustes",
-    "messages": "Mensajes",
     "journey": "Tu recorrido",
     "aboutUs": "Sobre nosotros",
     "privacyPolicy": "Política de privacidad",

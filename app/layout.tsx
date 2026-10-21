@@ -27,12 +27,15 @@ const INITIAL_PREFERENCES_SCRIPT = `
     root.style.colorScheme = dark ? "dark" : "light";
     const activeThemeColor = dark ? themeColors.dark : themeColors.light;
     root.style.setProperty("--app-safe-top-color", activeThemeColor);
-    document.getElementById("app-theme-color")?.setAttribute("content", activeThemeColor);
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.removeAttribute("media");
+      meta.setAttribute("content", activeThemeColor);
+    });
     const standalone = window.matchMedia?.("(display-mode: standalone)").matches || navigator.standalone === true;
     const appPath = path === "/app" || path.startsWith("/app/");
     root.classList.toggle("app-standalone", standalone);
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      ((navigator.platform === "MacIntel" || /Macintosh/.test(navigator.userAgent)) && navigator.maxTouchPoints > 1);
     root.classList.toggle("app-ios-standalone", ios && standalone);
     root.classList.toggle("app-shell-active", appPath);
     const mobileStandalone = window.matchMedia?.("(max-width: 767px)").matches && standalone;
@@ -84,6 +87,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: APP_THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: APP_THEME_COLORS.dark },
+  ],
   colorScheme: "light dark",
 };
 
@@ -97,10 +104,9 @@ export default function RootLayout({
       <head>
         {/* Next's appleWebApp metadata inserts status-bar-style=default even
             when statusBarStyle is omitted. Keep the install tags explicit so
-            this experiment truly has no status-bar-style meta. */}
+            no status-bar-style meta is generated. */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
-        <meta id="app-theme-color" name="theme-color" content={APP_THEME_COLORS.light} />
         <script
           id="initial-app-preferences"
           dangerouslySetInnerHTML={{ __html: INITIAL_PREFERENCES_SCRIPT }}

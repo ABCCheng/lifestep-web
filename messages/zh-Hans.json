@@ -190,24 +190,6 @@
       "volume": { "title": "音量" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "仅展示最新消息",
-    "title": "消息中心",
-    "empty": "你还没有收到消息",
-    "delete": "删除消息",
-    "clearAll": "清空消息",
-    "markAllRead": "标记已读",
-    "clearAllDescription": "是否将消息列表清空？",
-    "markAllReadDescription": "是否将所有消息标记为已读？",
-    "subscribedSuccess": "订阅成功",
-    "unsubscribed": "已取消订阅",
-    "unsubscribeConfirmTitle": "取消订阅",
-    "unsubscribeConfirmDescription": "取消订阅后将不再接受新消息，是否继续？",
-    "unsupported": "当前设备不支持推送",
-    "browserPermissionBlocked": "已被浏览器阻止，请先允许",
-    "systemPermissionBlocked": "已被系统阻止，请先开启",
-    "failed": "设置保存失败"
-  },
   "privacyPolicy": {
     "title": "隐私政策",
     "s1Title": "1. 我们收集的信息",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "重新加载",
     "nextLoadFailed": "下一条新闻加载失败，请稍后重试",
     "noMoreContent": "已经是最后一条新闻"
-  },
-  "time": {
-    "justNow": "刚刚更新",
-    "minuteAgo": "1 分钟前",
-    "minutesAgo": "{{value}} 分钟前",
-    "hourAgo": "1 小时前",
-    "hoursAgo": "{{value}} 小时前",
-    "dayAgo": "1 天前",
-    "daysAgo": "{{value}} 天前",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "留言反馈",
@@ -380,10 +352,9 @@
       {
         "eyebrow": "06 / 通知",
         "title": "不错过下一步",
-        "body": "可选通知和消息中心帮助你随时回到当前进度。",
+        "body": "可选通知帮助你随时回到学习进度。",
         "tags": [
-          "Web Push",
-          "消息中心"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "返回",
     "about": "关于",
     "settings": "设置",
-    "messages": "消息中心",
     "journey": "你的旅程",
     "aboutUs": "关于我们",
     "privacyPolicy": "隐私政策",

@@ -190,24 +190,6 @@
       "volume": { "title": "ਵਾਲਿਊਮ" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "ਸਿਰਫ਼ ਨਵੀਨਤਮ ਸੁਨੇਹੇ ਦਿਖਾਏ ਜਾਂਦੇ ਹਨ",
-    "title": "ਸੂਚਨਾਵਾਂ",
-    "empty": "You haven't received any messages yet",
-    "delete": "Delete message",
-    "clearAll": "Clear messages",
-    "markAllRead": "Mark as read",
-    "clearAllDescription": "Clear the message list?",
-    "markAllReadDescription": "Mark all messages as read?",
-    "subscribedSuccess": "Subscription successful",
-    "unsubscribed": "Subscription cancelled",
-    "unsubscribeConfirmTitle": "Cancel subscription",
-    "unsubscribeConfirmDescription": "After cancelling your subscription, you will no longer receive new messages. Continue?",
-    "unsupported": "Push notifications not supported",
-    "browserPermissionBlocked": "Blocked by browser, please allow first",
-    "systemPermissionBlocked": "Blocked by system, please enable first",
-    "failed": "Failed to save settings"
-  },
   "privacyPolicy": {
     "title": "ਪਰਾਈਵੇਸੀ ਨੀਤੀ",
     "s1Title": "1. ਅਸੀਂ ਕੀ ਡਾਟਾ ਇਕੱਠਾ ਕਰਦੇ ਹਾਂ",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
     "nextLoadFailed": "ਅਗਲੀ ਖ਼ਬਰ ਲੋਡ ਨਹੀਂ ਹੋ ਸਕੀ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
     "noMoreContent": "ਇਹ ਆਖਰੀ ਖ਼ਬਰ ਹੈ"
-  },
-  "time": {
-    "justNow": "ਹੁਣ ਹੀ ਅੱਪਡੇਟ",
-    "minuteAgo": "1 ਮਿੰਟ ਪਹਿਲਾਂ",
-    "minutesAgo": "{{value}} ਮਿੰਟ ਪਹਿਲਾਂ",
-    "hourAgo": "1 ਘੰਟਾ ਪਹਿਲਾਂ",
-    "hoursAgo": "{{value}} ਘੰਟੇ ਪਹਿਲਾਂ",
-    "dayAgo": "1 ਦਿਨ ਪਹਿਲਾਂ",
-    "daysAgo": "{{value}} ਦਿਨ ਪਹਿਲਾਂ",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "ਫੀਡਬੈਕ",
@@ -382,8 +354,7 @@
         "title": "ਅਗਲਾ ਕਦਮ ਨੇੜੇ ਰੱਖੋ",
         "body": "ਚੋਣਵੀਂ ਸੂਚਨਾਵਾਂ ਅਭਿਆਸ ਜਾਰੀ ਰੱਖਦੀਆਂ ਹਨ।",
         "tags": [
-          "Web Push",
-          "ਸੁਨੇਹੇ"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "ਵਾਪਸ",
     "about": "ਜਾਣਕਾਰੀ",
     "settings": "ਸੈਟਿੰਗਾਂ",
-    "messages": "ਸੁਨੇਹੇ",
     "journey": "ਤੁਹਾਡੀ ਯਾਤਰਾ",
     "aboutUs": "ਸਾਡੇ ਬਾਰੇ",
     "privacyPolicy": "ਪਰਾਈਵੇਸੀ ਨੀਤੀ",

@@ -176,7 +176,7 @@ a { text-decoration: none; }
 .app-narrow-width { width: min(640px, calc(100% - 32px)); margin-inline: auto; }
 
 
-/* Test WebKit's color-extension path without a status-bar-style meta.
+/* Keep WebKit's color-extension path active without a status-bar-style meta.
    This top-level fixed sampling target paints no pixels (empty text clip)
    and contributes no layout space. Header padding and offsets stay intact.
    https://zenn.dev/uakihir0/articles/260920-ios27-pwa-blur */
@@ -196,14 +196,29 @@ html.app-ios-standalone:not(.home-surface) .ios-status-color-surface {
   z-index: 2147483647;
 }
 @media (max-width: 767px) {
-  html.app-ios-standalone .app-top-chrome {
+  html.app-ios-standalone:not(.home-surface) {
+    --app-splash-bg:
+      linear-gradient(to bottom, var(--app-ios-header-bg), transparent 32px),
+      var(--app-default-global-bg);
+  }
+
+  html.app-ios-standalone:not(.home-surface) .app-top-chrome {
     background-color: var(--app-ios-header-bg);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
 
-  html.app-ios-standalone .app-top-chrome::before {
-    background: var(--app-ios-header-bg);
+  html.app-ios-standalone:not(.home-surface) .app-top-chrome::before {
+    /* Blend within the header, using the body's viewport-sized background.
+       The separate status-color surface keeps WebKit's sampled color solid. */
+    bottom: 0;
+    height: 100%;
+    background: var(--app-global-bg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 100vw var(--app-fill-height);
+    -webkit-mask-image: linear-gradient(to bottom, transparent max(0px, calc(100% - 32px)), #000 100%);
+    mask-image: linear-gradient(to bottom, transparent max(0px, calc(100% - 32px)), #000 100%);
   }
 }
 
@@ -328,7 +343,7 @@ html.app-ios-standalone:not(.home-surface) .ios-status-color-surface {
 /* Render the branded handoff only when the initial app script enables it. */
 .app-splash-screen {
   display: none;
-  background: var(--app-default-global-bg) !important;
+  background: var(--app-splash-bg, var(--app-default-global-bg)) !important;
 }
 
 .app-splash-logo {
@@ -367,14 +382,14 @@ html.app-ios-standalone:not(.home-surface) .ios-status-color-surface {
 }
 
 .app-splash-screen-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
+  position: relative;
+  flex: none;
   justify-content: center;
   transition: transform 260ms ease, opacity 260ms ease;
+}
+
+.app-splash-screen-content > p {
+  margin: 0;
 }
 
 html.app-standalone .app-splash-screen[data-exiting="true"] {

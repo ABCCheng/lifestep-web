@@ -190,24 +190,6 @@
       "volume": { "title": "볼륨" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "최신 메시지만 표시합니다",
-    "title": "알림",
-    "empty": "아직 받은 메시지가 없습니다",
-    "delete": "메시지 삭제",
-    "clearAll": "메시지 삭제",
-    "markAllRead": "읽음으로 표시",
-    "clearAllDescription": "메시지 목록을 삭제하시겠습니까?",
-    "markAllReadDescription": "모든 메시지를 읽음으로 표시하시겠습니까?",
-    "subscribedSuccess": "구독했습니다",
-    "unsubscribed": "구독을 취소했습니다",
-    "unsubscribeConfirmTitle": "구독 취소",
-    "unsubscribeConfirmDescription": "구독을 취소하면 새 메시지를 더 이상 받지 않습니다. 계속하시겠습니까?",
-    "unsupported": "푸시 알림을 지원하지 않습니다",
-    "browserPermissionBlocked": "브라우저에서 차단됨. 먼저 허용하세요",
-    "systemPermissionBlocked": "시스템에서 차단됨. 먼저 켜세요",
-    "failed": "설정을 저장하지 못했습니다"
-  },
   "privacyPolicy": {
     "title": "개인정보 처리방침",
     "s1Title": "1. 수집하는 정보",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "다시 시도",
     "nextLoadFailed": "다음 기사를 불러올 수 없습니다. 나중에 다시 시도해 주세요",
     "noMoreContent": "마지막 기사입니다"
-  },
-  "time": {
-    "justNow": "방금 업데이트",
-    "minuteAgo": "1분 전",
-    "minutesAgo": "{{value}}분 전",
-    "hourAgo": "1시간 전",
-    "hoursAgo": "{{value}}시간 전",
-    "dayAgo": "1일 전",
-    "daysAgo": "{{value}}일 전",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "피드백",
@@ -382,8 +354,7 @@
         "title": "다음 단계를 가까이",
         "body": "선택 알림으로 학습을 이어갑니다.",
         "tags": [
-          "Web Push",
-          "메시지"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "뒤로",
     "about": "정보",
     "settings": "설정",
-    "messages": "메시지",
     "journey": "나의 여정",
     "aboutUs": "회사 소개",
     "privacyPolicy": "개인정보 처리방침",

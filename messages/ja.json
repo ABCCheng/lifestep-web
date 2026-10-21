@@ -190,24 +190,6 @@
       "volume": { "title": "音量" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "最新のメッセージのみ表示しています",
-    "title": "通知",
-    "empty": "まだメッセージを受信していません",
-    "delete": "メッセージを削除",
-    "clearAll": "メッセージを削除",
-    "markAllRead": "既読にする",
-    "clearAllDescription": "メッセージ一覧を削除しますか？",
-    "markAllReadDescription": "すべてのメッセージを既読にしますか？",
-    "subscribedSuccess": "購読しました",
-    "unsubscribed": "購読を解除しました",
-    "unsubscribeConfirmTitle": "購読を解除",
-    "unsubscribeConfirmDescription": "購読を解除すると、新しいメッセージを受信しなくなります。続行しますか？",
-    "unsupported": "プッシュ通知に対応していません",
-    "browserPermissionBlocked": "ブラウザでブロック中、先に許可してください",
-    "systemPermissionBlocked": "システムでブロック中、先に有効にしてください",
-    "failed": "設定を保存できませんでした"
-  },
   "privacyPolicy": {
     "title": "プライバシーポリシー",
     "s1Title": "1. 収集する情報",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "再試行",
     "nextLoadFailed": "次の記事を読み込めませんでした。後ほどもう一度お試しください",
     "noMoreContent": "最後の記事です"
-  },
-  "time": {
-    "justNow": "たった今更新",
-    "minuteAgo": "1分前",
-    "minutesAgo": "{{value}}分前",
-    "hourAgo": "1時間前",
-    "hoursAgo": "{{value}}時間前",
-    "dayAgo": "1日前",
-    "daysAgo": "{{value}}日前",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "フィードバック",
@@ -380,10 +352,9 @@
       {
         "eyebrow": "06 / 通知",
         "title": "次の一歩を忘れない",
-        "body": "通知とメッセージで学習に戻れます。",
+        "body": "任意の通知で学習の続きに戻れます。",
         "tags": [
-          "Web Push",
-          "メッセージ"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "戻る",
     "about": "概要",
     "settings": "設定",
-    "messages": "メッセージ",
     "journey": "あなたの旅",
     "aboutUs": "私たちについて",
     "privacyPolicy": "プライバシーポリシー",

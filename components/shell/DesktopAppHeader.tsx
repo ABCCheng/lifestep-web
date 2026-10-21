@@ -6,7 +6,6 @@ import { useRef, useState, type RefObject } from "react";
 import { Brand } from "@/components/Brand";
 import { useApp } from "@/components/providers/app-provider";
 import { useDismissibleMenu } from "@/lib/use-dismissible-menu";
-import { WebPushLinkButton } from "@/features/web-push/WebPushLinkButton";
 import { homePath, localizePath } from "@/lib/i18n";
 
 const appHeaderClass = "app-top-chrome sticky top-0 z-30 bg-transparent py-[1.35rem] max-md:fixed max-md:inset-x-0 max-md:top-0 max-md:w-full max-md:pb-2 max-md:pt-(--app-safe-header-top)";
@@ -41,7 +40,6 @@ export function DesktopAppHeader() {
               <MenuLink href={`${localizePath("/settings", locale)}?panel=language`} icon={<Languages />} label={copy.language} onNavigate={() => setSettingsOpen(false)} />
               <MenuLink href={`${localizePath("/settings", locale)}?panel=voice`} icon={<Volume2 />} label={copy.voice} onNavigate={() => setSettingsOpen(false)} />
             </HeaderMenu>
-            <WebPushLinkButton href={localizePath("/messages", locale)} label={copy.messages} />
           </nav>
         </div>
       </header>

@@ -23,7 +23,10 @@ function applyTheme(mode: ThemeMode, isDark: boolean) {
   root.classList.toggle("dark", isDark);
   root.style.colorScheme = isDark ? "dark" : "light";
   root.style.setProperty("--app-safe-top-color", color);
-  document.getElementById("app-theme-color")?.setAttribute("content", color);
+  document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+    meta.removeAttribute("media");
+    meta.setAttribute("content", color);
+  });
   if (isMobileWebBrowser()) {
     root.style.backgroundColor = color;
     document.body.style.backgroundColor = color;

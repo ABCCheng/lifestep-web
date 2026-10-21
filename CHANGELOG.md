@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [3.0.1] - 2026-10-21
+
+### Removed
+
+- Remove the message center, its navigation entry, local message history, and related translations.
+
+### Fixed
+
+- Improve iOS PWA header and splash backgrounds, and center splash content.
+
 ## [3.0.0] - 2026-10-21
 
 ### Changed

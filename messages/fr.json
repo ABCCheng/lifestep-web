@@ -190,24 +190,6 @@
       "volume": { "title": "Volume" }
     }
   },
-  "webPushPage": {
-    "latestMessagesOnly": "Seuls les messages les plus récents sont affichés",
-    "title": "Notifications",
-    "empty": "Vous n’avez encore reçu aucun message",
-    "delete": "Supprimer le message",
-    "clearAll": "Effacer les messages",
-    "markAllRead": "Marquer comme lu",
-    "clearAllDescription": "Effacer la liste des messages ?",
-    "markAllReadDescription": "Marquer tous les messages comme lus ?",
-    "subscribedSuccess": "Abonnement réussi",
-    "unsubscribed": "Abonnement annulé",
-    "unsubscribeConfirmTitle": "Annuler l’abonnement",
-    "unsubscribeConfirmDescription": "Après l’annulation, vous ne recevrez plus de nouveaux messages. Continuer ?",
-    "unsupported": "Notifications non prises en charge",
-    "browserPermissionBlocked": "Bloqué par le navigateur, autorisez d’abord",
-    "systemPermissionBlocked": "Bloqué par le système, activez d’abord",
-    "failed": "Échec de l’enregistrement"
-  },
   "privacyPolicy": {
     "title": "Politique de confidentialité",
     "s1Title": "1. Informations recueillies",
@@ -263,16 +245,6 @@
     "loadFailedRetry": "Réessayer",
     "nextLoadFailed": "Impossible de charger l’article suivant. Veuillez réessayer plus tard",
     "noMoreContent": "Vous avez atteint le dernier article"
-  },
-  "time": {
-    "justNow": "À l’instant",
-    "minuteAgo": "Il y a une minute",
-    "minutesAgo": "Il y a {{value}} minutes",
-    "hourAgo": "Il y a une heure",
-    "hoursAgo": "Il y a {{value}} heures",
-    "dayAgo": "Il y a un jour",
-    "daysAgo": "Il y a {{value}} jours",
-    "absolute": "{{value}}"
   },
   "feedbackPage": {
     "title": "Commentaires",
@@ -382,8 +354,7 @@
         "title": "Gardez la prochaine étape à portée",
         "body": "Les notifications facultatives vous ramènent au bon moment.",
         "tags": [
-          "Web Push",
-          "Messages"
+          "Web Push"
         ],
         "accent": "blue"
       }
@@ -434,7 +405,6 @@
     "back": "Retour",
     "about": "À propos",
     "settings": "Réglages",
-    "messages": "Messages",
     "journey": "Votre parcours",
     "aboutUs": "À propos de nous",
     "privacyPolicy": "Politique de confidentialité",

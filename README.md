@@ -11,7 +11,7 @@ LifeStep is a multilingual web app that helps newcomers to Canada build confiden
 - Knowledge, vocabulary, conversation, and review activities
 - Multilingual interface support for ten languages
 - Text-to-speech playback with configurable voice settings
-- Browser push notifications and an in-app notification center
+- Browser push notifications
 - Installable PWA with responsive desktop and mobile layouts
 - Offline app-shell loading with cached learning content
 - Light and dark themes

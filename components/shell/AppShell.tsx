@@ -7,7 +7,6 @@ import { rememberAppNavigationPath } from "@/lib/stores/app-session";
 import { useApp } from "@/components/providers/app-provider";
 import { stripLocaleFromPathname } from "@/lib/i18n";
 import { subscribeWebPush } from "@/lib/api/web-push";
-import { markWebPushMessageRead } from "@/lib/stores/web-push-messages";
 import { getServiceWorkerContainer, syncCurrentWebPushSubscription } from "@/lib/web-push-client";
 
 function canRegisterServiceWorker() {
@@ -64,7 +63,6 @@ export function AppShell({ children }: { children: ReactNode }) {
       }
       if (event.data?.type === "lifestep:notification-navigation" && typeof event.data.url === "string") {
         const target = new URL(event.data.url, location.origin);
-        if (event.data.messageId) void markWebPushMessageRead(event.data.messageId);
         const destination = `${target.pathname}${target.search}${target.hash}`;
         router.push(destination);
       }
