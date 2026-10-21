@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { getApiErrorMessage, lifeStepApi } from "@/lib/api";
 import { journeyOrders } from "@/lib/content";
 import { useLocaleContext } from "./locale-provider";
-import { deleteOfflineRecord, offlineKeys, readOfflineRecord, writeOfflineRecord } from "@/lib/stores/lifestep-offline";
+import { commitOfflineRecords, deleteOfflineRecord, offlineKeys, readOfflineRecord, writeOfflineRecord } from "@/lib/stores/lifestep-offline";
 import { showGlobalSnackbar } from "@/components/providers/snackbar-provider";
 import { getStoredJourneyType } from "@/lib/stores/journey";
 import type { JourneyData, JourneyType, LifeScenario, LifeScenarioData, LifeStage, PracticeProgressMap, ProgressStatus, ScenarioDetail, ScenarioProgressMap, ScenarioVocabularyInfo } from "@/lib/types";
@@ -30,6 +30,7 @@ type LifeStepDataContextValue = {
   practiceReady: boolean;
   loading: boolean;
   ensureJourneyData: (journeyType: JourneyType, force?: boolean) => Promise<JourneyData | null>;
+  prepareLocaleChange: (locale: string) => Promise<boolean>;
   refreshJourneyData: (journeyType: JourneyType) => Promise<boolean>;
   getScenarios: (journeyType: JourneyType, stage: LifeStage) => LifeScenario[];
   getScenarioDetail: (journeyType: JourneyType, scenarioId: number) => ScenarioDetail | null;
@@ -156,18 +157,7 @@ export function LifeStepDataProvider({ children }: { children: ReactNode }) {
     }
   }, [locale, notifyApiError]);
 
-  const loadProgress = useCallback(async (reset = false) => {
-    if (reset) {
-      await Promise.all([
-        deleteOfflineRecord(offlineKeys.scenarioProgress),
-        deleteOfflineRecord(offlineKeys.vocabularyProgress),
-        deleteOfflineRecord(offlineKeys.sentenceProgress),
-      ]);
-      setScenarioProgress({});
-      setVocabularyProgress({});
-      setSentenceProgress({});
-      return;
-    }
+  const loadProgress = useCallback(async () => {
     const [scenario, words, sentences] = await Promise.all([
       readOfflineRecord<ScenarioProgressMap>(offlineKeys.scenarioProgress),
       readOfflineRecord<PracticeProgressMap>(offlineKeys.vocabularyProgress),
@@ -195,12 +185,10 @@ export function LifeStepDataProvider({ children }: { children: ReactNode }) {
     setJourneyReady(false);
     setPracticeReady(false);
     const initialJourney = getStoredJourneyType() || "STUDY";
-    const forceLocaleReload = typeof window !== "undefined" && localStorage.getItem("lifestep-reload-locale") === locale;
-    if (forceLocaleReload) localStorage.removeItem("lifestep-reload-locale");
-    const journeyLoad = Promise.all([ensureJourneyData(initialJourney, forceLocaleReload), loadProgress(forceLocaleReload)]).finally(() => {
+    const journeyLoad = Promise.all([ensureJourneyData(initialJourney), loadProgress()]).finally(() => {
       if (active) setJourneyReady(true);
     });
-    const practiceLoad = Promise.all([loadVocabulary(forceLocaleReload), loadKeyPhrases(forceLocaleReload)]).finally(() => {
+    const practiceLoad = Promise.all([loadVocabulary(), loadKeyPhrases()]).finally(() => {
       if (active) setPracticeReady(true);
     });
     void Promise.all([journeyLoad, practiceLoad]).finally(() => {
@@ -208,6 +196,29 @@ export function LifeStepDataProvider({ children }: { children: ReactNode }) {
     });
     return () => { active = false; };
   }, [ensureJourneyData, loadKeyPhrases, loadProgress, loadVocabulary, locale]);
+
+  const prepareLocaleChange = useCallback(async (nextLocale: string) => {
+    const journeyType = getStoredJourneyType() || "STUDY";
+    try {
+      const [data, words, phrases] = await Promise.all([
+        lifeStepApi.journeyData(journeyType, nextLocale),
+        lifeStepApi.vocabulary(nextLocale),
+        lifeStepApi.keyPhrases(nextLocale),
+      ]);
+      if (!isCompleteJourneyData(data) || !Array.isArray(words) || !Array.isArray(phrases) || !phrases.every((phrase) => typeof phrase === "string")) {
+        throw new Error("Invalid localized learning data");
+      }
+      await commitOfflineRecords({
+        [offlineKeys.journey]: { locale: nextLocale, journeyType, data },
+        [offlineKeys.vocabulary]: { locale: nextLocale, data: words },
+        [offlineKeys.keyPhrases]: { locale: nextLocale, data: phrases },
+      }, [offlineKeys.scenarioProgress, offlineKeys.vocabularyProgress, offlineKeys.sentenceProgress]);
+      return true;
+    } catch (error) {
+      notifyApiError(error);
+      return false;
+    }
+  }, [notifyApiError]);
 
   const refreshJourneyData = useCallback(async (journeyType: JourneyType) => {
     try {
@@ -246,6 +257,7 @@ export function LifeStepDataProvider({ children }: { children: ReactNode }) {
   const updateScenario = useCallback((journeyType: JourneyType, scenarioId: number, status: ProgressStatus) => {
     if (journeyTypeInMemory !== journeyType) return;
     setScenarioProgress((current) => {
+      if (status === "IN_PROGRESS" && current[String(scenarioId)] === "COMPLETED") return current;
       const next = { ...current, [String(scenarioId)]: status };
       void writeOfflineRecord(offlineKeys.scenarioProgress, next);
       return next;
@@ -333,11 +345,11 @@ export function LifeStepDataProvider({ children }: { children: ReactNode }) {
   }, [locale, notifyApiError]);
 
   const value = useMemo<LifeStepDataContextValue>(() => ({
-    ready, journeyReady, practiceReady, loading, ensureJourneyData, refreshJourneyData, getScenarios, getScenarioDetail, getStageProgress,
+    ready, journeyReady, practiceReady, loading, ensureJourneyData, prepareLocaleChange, refreshJourneyData, getScenarios, getScenarioDetail, getStageProgress,
     markScenarioStarted: (journeyType, scenarioId) => updateScenario(journeyType, scenarioId, "IN_PROGRESS"),
     markScenarioCompleted: (journeyType, scenarioId) => updateScenario(journeyType, scenarioId, "COMPLETED"),
     vocabulary, refreshVocabulary, vocabularyProgress, markVocabularyPractised, markVocabularyUnpractised, markVocabularySkipped, keyPhrases, refreshKeyPhrases, sentenceProgress, markSentencePractised, markSentenceUnpractised, markSentenceSkipped,
-  }), [ensureJourneyData, getScenarioDetail, getScenarios, getStageProgress, journeyReady, keyPhrases, loading, markSentencePractised, markSentenceSkipped, markSentenceUnpractised, markVocabularyPractised, markVocabularySkipped, markVocabularyUnpractised, practiceReady, ready, refreshKeyPhrases, refreshJourneyData, refreshVocabulary, sentenceProgress, updateScenario, vocabulary, vocabularyProgress]);
+  }), [prepareLocaleChange, ensureJourneyData, getScenarioDetail, getScenarios, getStageProgress, journeyReady, keyPhrases, loading, markSentencePractised, markSentenceSkipped, markSentenceUnpractised, markVocabularyPractised, markVocabularySkipped, markVocabularyUnpractised, practiceReady, ready, refreshKeyPhrases, refreshJourneyData, refreshVocabulary, sentenceProgress, updateScenario, vocabulary, vocabularyProgress]);
   return <LifeStepDataContext.Provider value={value}>{children}</LifeStepDataContext.Provider>;
 }
 

@@ -71,6 +71,7 @@
   --app-header-offset: var(--app-desktop-header-height);
   --app-device-bg: var(--background);
   --app-safe-top-color: var(--app-device-bg);
+  --app-ios-header-bg: #e6f1ed;
   --app-safe-top-overlay: linear-gradient(transparent, transparent);
   --app-default-global-bg:
     radial-gradient(circle at 12% 4%, color-mix(in srgb, #5cc9a7 18%, transparent), transparent 30rem),
@@ -92,6 +93,7 @@
 
 
 .dark {
+  --app-ios-header-bg: #20352d;
   --background: #1b1b1f;
   --foreground: #e5e5e5;
   --card: rgba(36, 35, 40, .64);
@@ -173,6 +175,47 @@ a { text-decoration: none; }
 
 .app-narrow-width { width: min(640px, calc(100% - 32px)); margin-inline: auto; }
 
+
+/* Test WebKit's color-extension path without a status-bar-style meta.
+   This top-level fixed sampling target paints no pixels (empty text clip)
+   and contributes no layout space. Header padding and offsets stay intact.
+   https://zenn.dev/uakihir0/articles/260920-ios27-pwa-blur */
+.ios-status-color-surface { display: none; }
+
+html.app-ios-standalone:not(.home-surface) .ios-status-color-surface {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 11px;
+  background-color: var(--app-ios-header-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+  z-index: 2147483647;
+}
+@media (max-width: 767px) {
+  html.app-ios-standalone .app-top-chrome {
+    background-color: var(--app-ios-header-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  html.app-ios-standalone .app-top-chrome::before {
+    background: var(--app-ios-header-bg);
+  }
+}
+
+/* Without a status-bar-style meta, iOS can reserve the status bar outside
+   the viewport and report a zero top safe area. Do not add the normal 8px
+   browser fallback on top of that system inset. The shared header-offset
+   variable keeps the page spacer and sticky learning navigation in sync. */
+@media (max-width: 767px) and (orientation: portrait) {
+  html.app-ios-standalone:not(.home-surface) {
+    --app-safe-header-top: var(--app-safe-top);
+  }
+}
 
 /* Viewport chrome */
 .app-mobile-chrome { isolation: isolate; overflow: hidden; background: transparent; }
