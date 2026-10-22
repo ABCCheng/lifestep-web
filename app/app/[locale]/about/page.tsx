@@ -106,6 +106,6 @@ function FeedbackPanel() {
         <Button type="submit" className="w-full" disabled={submitDisabled}>{dictionary.feedbackPage.submit}</Button>
       </form>
     </article>
-    {submitting ? <div className="fixed inset-0 z-120 grid place-items-center bg-black/20 backdrop-blur-[2px] [&_svg]:size-[38px] [&_svg]:animate-spin [&_svg]:text-white"><LoaderCircle /></div> : null}
+    {submitting ? <div className="app-screen-center fixed inset-0 z-120 grid place-items-center bg-black/20 backdrop-blur-[2px] [&_svg]:size-[38px] [&_svg]:animate-spin [&_svg]:text-white"><LoaderCircle /></div> : null}
   </main>;
 }

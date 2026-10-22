@@ -297,6 +297,25 @@ html.app-ios-standalone:not(.home-surface) .ios-status-color-surface {
 
 }
 
+/* Center full-screen UI within the viewport's safe content area. */
+html.app-shell-active .app-screen-center {
+  box-sizing: border-box;
+  padding-top: var(--app-safe-top);
+  padding-bottom: var(--app-safe-bottom);
+}
+
+/* On smaller screens Modal is a bottom sheet, not a centered dialog. */
+@media (min-width: 681px) {
+  html.app-shell-active .app-modal-center {
+    padding-top: calc(1.25rem + var(--app-safe-top));
+    padding-bottom: calc(1.25rem + var(--app-safe-bottom));
+  }
+
+  html.app-shell-active .app-modal-center > [role="dialog"] {
+    max-height: min(90dvh, 780px, calc(var(--app-viewport-height) - var(--app-safe-top) - var(--app-safe-bottom) - 2.5rem));
+  }
+}
+
 /* App foundation */
 .app-shell-root { min-height: var(--app-viewport-height); display: flex; flex-direction: column; background: transparent; }
 

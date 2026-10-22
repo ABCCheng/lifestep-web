@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 This changelog is maintained in English.
 
+## [3.0.2] - 2026-10-22
+
+### Fixed
+
+- Correct splash, dialog, and full-screen loading alignment within the safe area.
+
 ## [3.0.1] - 2026-10-21
 
 ### Removed
